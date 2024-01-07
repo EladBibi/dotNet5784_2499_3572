@@ -1,14 +1,27 @@
 ﻿namespace targil0
 {
+
+
+    enum Days { Sat, Sun, Mon, Tue, Wed, Thu, Fri };
     partial class Program
     {
+
+
+        //Console.WriteLine("Hello123456789, World11!");
+
+
+
+
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello1234567891011, World11!");
+            //Console.WriteLine("Hello123456789, World11!");
+           
+             int f = int.Parse("123");
+            Console.WriteLine("{0} {1}" ,f,25);
 
-            Welcome3572();
+            //Welcome3572();
             Welcome2499();
-            Console.ReadKey();
+            //Console.ReadKey();
         }
         static partial void Welcome2499();
 
@@ -20,4 +33,10 @@
         }
     }
 }
+
+
+
+
+
+
 
