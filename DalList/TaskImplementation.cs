@@ -6,33 +6,53 @@ using DO;
 
 
 
+
 public class TaskImplementation : ITask
 {
     public int Create(Task item)
     {
-        Task temp = new Task(DataSource.Config.NextTask,
-        DataSource.Tasks.Add(item);
-
+        int NewId = DataSource.Config.NextTask;
+        Task NewTask = item with { Id = NewId };
+        DataSource.Tasks.Add(NewTask);
+        return NewId;
 
     }
 
+
+
+
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        if (DataSource.Tasks.RemoveAll(x=>x?.Id==id)==0)
+            throw new Exception("Object of type T with such ID does not exist");
+
     }
 
     public Task? Read(int id)
     {
-        throw new NotImplementedException();
+        Task? temp = DataSource.Tasks.Find(x => x?.Id == id);
+        return temp;
     }
 
-    public List<Task> ReadAll()
+    public List<Task?> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Task?>(DataSource.Tasks);
     }
 
     public void Update(Task item)
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < DataSource.Tasks.Count; ++i)
+
+            if (DataSource.Tasks[i] == item)
+            {
+                DataSource.Tasks.RemoveAt(i);
+                DataSource.Tasks.Insert(i, item);
+                return;
+
+            }
+        throw new Exception("Object of type T with such ID does not exist");
     }
+
+
 }
+    

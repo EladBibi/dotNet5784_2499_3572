@@ -11,6 +11,21 @@ namespace DalTest
             Console.WriteLine("Hello, World!");
 
             MyStaticClass.myStaticVariable = 78;
+            List<int?> pop = new List<int?>();
+            pop.Add(1);
+            pop.Add(2);
+            pop.Add(3);
+            pop.Add(4);
+            pop.Add(5);
+            pop.Add(6);
+
+
+
+            Console.WriteLine((pop.RemoveAll(x => x == 5)));
+             
+
+
+
 
 
 
@@ -18,34 +33,34 @@ namespace DalTest
 
         }
     }
-}
 
-public record StudentA
-{
-    public  required int Id { get; init; } = 7;
-    public required string? Name { get; init; } =null;
-    public string? Alias { get; init; } =null;
-    public bool IsActive { get; init; } = false;
-    public DateTime RegistrationDate => DateTime.Now;
-    //public StudentA(): this() { }
-}
+    public record StudentA
+    {
+        public required int Id { get; init; } = 7;
+        public required string? Name { get; init; } = null;
+        public string? Alias { get; init; } = null;
+        public bool IsActive { get; init; } = false;
+        public DateTime RegistrationDate => DateTime.Now;
+        //public StudentA(): this() { }
+    }
 
 
-//stA1.Id = 11; //compilation error. Id prop is immutable
-public static class MyStaticClass
-
-{
-
-    public static int myStaticVariable = 0;
-
-    public static void MyStaticMethod()
+    //stA1.Id = 11; //compilation error. Id prop is immutable
+    public static class MyStaticClass
 
     {
 
-        Console.WriteLine("This is a static method.");
+        public static int myStaticVariable = 0;
+
+        public static void MyStaticMethod()
+
+        {
+
+            Console.WriteLine("This is a static method.");
+
+        }
+
+        public static int MyStaticProperty { get; set; }
 
     }
-
-    public static int MyStaticProperty { get; set; }
-
 }
