@@ -8,7 +8,7 @@ public class EngineerImplementation : IEngineer
 {
     public int Create(Engineer item)
     {
-        if (DataSource.Engineers.Contains(item))
+        if (DataSource.Engineers.Exists(x=> x.Id==item.Id))
             throw new Exception("An object of type Engineer with such an ID already exists");
         DataSource.Engineers.Add(item);
         return item.Id;

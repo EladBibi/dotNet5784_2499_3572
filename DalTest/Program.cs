@@ -2,6 +2,9 @@
 using Dal;
 using DalApi;
 using DO;
+using System;
+using System.Linq.Expressions;
+
 internal class Program
 {
     
@@ -53,13 +56,27 @@ internal class Program
                                     Console.WriteLine("Enter the ID of the engineer:");
                                     temp = Console.ReadLine()!;
                                     id = int.Parse(temp);
+                                    try
+                                    {
+                                        if (s_Engineer!.Read(id) is null)
 
-                                    if (s_Engineer!.Read(id) is null)
-                                        throw new Exception($"Engineer with ID={id} does Not exist");
+
+                                        
+                                            throw new Exception($"Engineer with ID={id} does Not exist");
+                                        
+                                    }
+
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+
                                     Console.WriteLine(s_Engineer!.Read(id));
+                                   
+
                                     break;
-
-
+                                   
+                                    
 
 
 
@@ -75,9 +92,18 @@ internal class Program
                                     Console.WriteLine("Enter the number of the engineer you want to update");
                                     temp = Console.ReadLine()!;
                                     ID = int.Parse(temp);
-                                    if (s_Engineer!.Read(ID) is null)
-                                        throw new Exception($"Engineer with ID={ID} does Not exist");
-                                    UpdateEngineer(s_Engineer.Read(ID)!);
+                                    try
+                                    {
+                                        if (s_Engineer!.Read(ID) is null)
+                                            throw new Exception($"Engineer with ID={ID} does Not exist");
+                                        else
+                                            UpdateEngineer(s_Engineer!.Read(ID)!);
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    
                                     break;
                                 case 6:
                                     Console.WriteLine("Enter the number of the engineer you want to delete");
@@ -119,9 +145,15 @@ internal class Program
                                     temp = Console.ReadLine()!;
                                     id = int.Parse(temp);
 
-                                    if (s_Task!.Read(id) is null)
-                                        throw new Exception($"Task with ID={id} does Not exist");
-                                    Console.WriteLine(s_Task.Read(id));
+                                    try
+                                    {
+                                        if (s_Task!.Read(id) is null)
+                                            throw new Exception($"Task with ID={id} does Not exist");
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
                                     break;
                                 case 4:
                                     foreach (var TasK in s_Task!.ReadAll())
@@ -133,9 +165,18 @@ internal class Program
                                     Console.WriteLine("Enter the number of the Task you want to update");
                                     temp = Console.ReadLine()!;
                                     ID = int.Parse(temp);
-                                    if (s_Task!.Read(ID) is null)
-                                        throw new Exception($"Task with ID={ID} does Not exist");
-                                    UpdateTask(s_Task.Read(ID)!);
+                                    try
+                                    {
+                                        if (s_Task!.Read(ID) is null)
+                                            throw new Exception($"Task with ID={ID} does Not exist");
+                                        else
+                                            UpdateTask(s_Task!.Read(ID)!);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                   
                                     break;
                                 case 6:
                                     Console.WriteLine("Enter the number of the taks you want to delete");
@@ -174,9 +215,16 @@ internal class Program
                                     temp = Console.ReadLine()!;
                                     id = int.Parse(temp);
 
-                                    if (s_Dependency!.Read(id) is null)
-                                        throw new Exception($"Dependency with ID={id} does Not exist");
-                                    Console.WriteLine(s_Dependency.Read(id));
+                                    try
+                                    {
+                                        if (s_Dependency!.Read(id) is null)
+                                            throw new Exception($"Dependency with ID={id} does Not exist");
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    Console.WriteLine(s_Dependency!.Read(id));
                                     break;
                                 case 4:
                                     foreach (var Dep in s_Dependency!.ReadAll())
@@ -187,9 +235,18 @@ internal class Program
                                     Console.WriteLine("Enter the number of the Dependency you want to update");
                                     temp = Console.ReadLine()!;
                                     ID = int.Parse(temp);
-                                    if (s_Dependency!.Read(ID) is null)
-                                        throw new Exception($"Dependency with ID={ID} does Not exist");
-                                    UpdateDependency(s_Dependency.Read(ID)!);
+                                    try
+                                    {
+                                        if (s_Dependency!.Read(ID) is null)
+                                            throw new Exception($"Dependency with ID={ID} does Not exist");
+                                        else
+                                            UpdateDependency(s_Dependency!.Read(ID)!);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    
                                     break;
                                 case 6:
                                     Console.WriteLine("Enter the number of the dependency you want to delete");
@@ -217,7 +274,7 @@ internal class Program
 
 
                 }
-              Console.WriteLine();
+              
             } while (choise != 0);
 
         }
@@ -322,10 +379,10 @@ internal class Program
         email =Console.ReadLine();
         Console.WriteLine("Enter the engineer's level:");
         temp = Console.ReadLine()!;
-        int k = int.Parse(temp);
-        level = (DO.EngineerExperience)k;
-
+        level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
        
+
+
         Engineer New = new Engineer(id, cost, name, email, level);
         try
         {
@@ -360,10 +417,7 @@ internal class Program
         Console.WriteLine("Enter the engineer's level:");
         temp = Console.ReadLine()!;
         if (temp != "")
-        {
-            int k = int.Parse(temp);
-            level = (DO.EngineerExperience)k;
-        }
+            level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
         Engineer New = new Engineer(e.Id, cost, name, email, level);
         s_Engineer!.Update(New);
   
@@ -418,8 +472,7 @@ internal class Program
         DeadLineDate = DateTime.Parse(temp);
         Console.WriteLine("Enter the engineer level required for the task:");
         temp = Console.ReadLine()!;
-        int k = int.Parse(temp);
-        level = (DO.EngineerExperience)k;
+        level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
         Console.WriteLine("Enter the amount of time needed for the task:");
         temp = Console.ReadLine()!;
         RequiredEffortTime = TimeSpan.Parse(temp);
@@ -495,10 +548,7 @@ internal class Program
         Console.WriteLine("Enter the new visible engineer level");
         temp = Console.ReadLine()!;
         if (temp != "")
-        {
-            int k = int.Parse(temp);
-            level = (DO.EngineerExperience)k;
-        }
+            level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
         Console.WriteLine("Enter the amount of time needed for the task:");
         temp = Console.ReadLine()!;
         if (temp != "")
