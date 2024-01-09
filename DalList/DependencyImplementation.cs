@@ -36,7 +36,7 @@ public class DependencyImplementation : IDependency
     {
         for (int i = 0; i < DataSource.Tasks.Count; ++i)
 
-            if (DataSource.Dependencies[i] == item)
+            if (DataSource.Dependencies[i].Id == item.Id)
             {
                 Delete(item.Id);
                 DataSource.Dependencies.Insert(i, item);

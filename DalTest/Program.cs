@@ -2,8 +2,8 @@
 using Dal;
 using DalApi;
 using DO;
-using System;
-using System.Linq.Expressions;
+
+
 
 internal class Program
 {
@@ -342,7 +342,7 @@ internal class Program
         temp = Console.ReadLine()!;
         if (temp != "")
             DependsOnTask = int.Parse(temp);
-        Dependency New = new Dependency(0, DependentTask, DependsOnTask);
+        Dependency New = new Dependency(dep.Id, DependentTask, DependsOnTask);
         s_Dependency!.Update(New);
 
     }
@@ -379,7 +379,7 @@ internal class Program
         email =Console.ReadLine();
         Console.WriteLine("Enter the engineer's level:");
         temp = Console.ReadLine()!;
-        level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
+         level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp); 
        
 
 
