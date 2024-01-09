@@ -24,7 +24,7 @@ public class TaskImplementation : ITask
     public void Delete(int id)
     {
         if (DataSource.Tasks.RemoveAll(x=>x?.Id==id)==0)
-            throw new Exception("Object of type T with such ID does not exist");
+            throw new Exception(@"Object of type ""Task"" with such ID does not exist");
 
     }
 
@@ -34,23 +34,23 @@ public class TaskImplementation : ITask
         return temp;
     }
 
-    public List<Task?> ReadAll()
+    public List<Task> ReadAll()
     {
-        return new List<Task?>(DataSource.Tasks);
+        return new List<Task>(DataSource.Tasks);
     }
 
     public void Update(Task item)
     {
         for (int i = 0; i < DataSource.Tasks.Count; ++i)
 
-            if (DataSource.Tasks[i] == item)
+            if (DataSource.Tasks[i].Id == item.Id)
             {
-                DataSource.Tasks.RemoveAt(i);
+                Delete(item.Id);
                 DataSource.Tasks.Insert(i, item);
                 return;
 
             }
-        throw new Exception("Object of type T with such ID does not exist");
+        throw new Exception(@"Object of type ""Task"" with such ID does not exist");
     }
 
 
