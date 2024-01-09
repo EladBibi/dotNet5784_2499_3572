@@ -8,7 +8,7 @@ namespace DalTest
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Console.WriteLine("Hello, World");
 
             MyStaticClass.myStaticVariable = 78;
 
