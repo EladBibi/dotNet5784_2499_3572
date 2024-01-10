@@ -1,0 +1,50 @@
+﻿
+
+namespace Dal;
+using DalApi;
+using DO;
+
+
+public class DependencyImplementation : IDependency
+{
+    public int Create(Dependency item)
+    {
+        int NewId = DataSource.Config.NextDependency;
+        Dependency NewDependency = item with { Id = NewId };
+        DataSource.Dependencies.Add(NewDependency);
+        return NewId;
+    }
+
+    public void Delete(int id)
+    {
+        if (DataSource.Dependencies.RemoveAll(x => x?.Id == id) == 0)
+            throw new Exception(@"Object of type ""Dependency"" with such ID does not exist");
+    }
+
+    public Dependency? Read(int id)
+    {
+        Dependency? temp = DataSource.Dependencies.Find(x => x?.Id == id);
+        return temp;
+    }
+
+    public List<Dependency> ReadAll()
+    {
+        return new List<Dependency>(DataSource.Dependencies);
+    }
+
+    public void Update(Dependency item)
+    {
+        for (int i = 0; i < DataSource.Tasks.Count; ++i)
+
+            if (DataSource.Dependencies[i] == item)
+            {
+                Delete(item.Id);
+                DataSource.Dependencies.Insert(i, item);
+                return;
+                
+
+            }
+        throw new Exception(@"Object of type ""Dependency"" with such ID does not exist");
+    }
+}
+
