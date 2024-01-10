@@ -8,285 +8,285 @@ using DO;
 internal class Program
 {
     
-    private static IEngineer? s_Engineer = new EngineerImplementation();
-    private static ITask? s_Task = new TaskImplementation();
-    private static IDependency? s_Dependency = new DependencyImplementation();
-    static void Main(string[] args)
-    {
-        string temp;
+     private static IEngineer? s_Engineer = new EngineerImplementation();
+     private static ITask? s_Task = new TaskImplementation();
+     private static IDependency? s_Dependency = new DependencyImplementation();
+     static void Main(string[] args)
+     {
+
+      
+         string temp;
 
 
-        try
-        {
-            int choise, num;
+         try
+         {
+             int choise, num;
 
-            Initialization.Do(s_Task, s_Engineer, s_Dependency);
-            
-
-
-            do
-            {
-                Console.WriteLine("Enter a number to choose one of the following:\n" +
-                "0:Exit\n" +
-                "1:Engineer\n" +
-                "2:Task\n" +
-                "3:Dependency\n");
-                temp = Console.ReadLine()!;
-                choise = int.Parse(temp);
-                switch (choise)
-                {
-
-
-                    case 1:
-
-                        do
-                        {
-                            Program.print();
-                            temp = Console.ReadLine()!;
-                            num = int.Parse(temp);
-                            switch (num)
-                            {
-
-                                case 2:
-
-                                    Program.AddEngineer();
-                                    break;
-                                case 3:
-                                    int id;
-                                    Console.WriteLine("Enter the ID of the engineer:");
-                                    temp = Console.ReadLine()!;
-                                    id = int.Parse(temp);
-                                    try
-                                    {
-                                        if (s_Engineer!.Read(id) is null)
-
-
-                                        
-                                            throw new Exception($"Engineer with ID={id} does Not exist");
-                                        
-                                    }
-
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-
-                                    Console.WriteLine(s_Engineer!.Read(id));
-                                   
-
-                                    break;
-                                   
-                                    
+             Initialization.Do(s_Task, s_Engineer, s_Dependency);
 
 
 
+             do
+             {
+                 Console.WriteLine("Enter a number to choose one of the following:\n" +
+                 "0:Exit\n" +
+                 "1:Engineer\n" +
+                 "2:Task\n" +
+                 "3:Dependency\n");
+                 temp = Console.ReadLine()!;
+                 choise = int.Parse(temp);
+                 switch (choise)
+                 {
+
+
+                     case 1:
+
+                         do
+                         {
+                             Program.print();
+                             temp = Console.ReadLine()!;
+                             num = int.Parse(temp);
+                             switch (num)
+                             {
+
+                                 case 2:
+
+                                     Program.AddEngineer();
+                                     break;
+                                 case 3:
+                                     int id;
+                                     Console.WriteLine("Enter the ID of the engineer:");
+                                     temp = Console.ReadLine()!;
+                                     id = int.Parse(temp);
+                                     try
+                                     {
+                                         if (s_Engineer!.Read(id) is null)
 
 
 
-                                case 4:
-                                    foreach (var Eng in s_Engineer!.ReadAll())
-                                        Console.WriteLine(Eng);
-                                    break;
-                                case 5:
-                                    int ID;
-                                    Console.WriteLine("Enter the number of the engineer you want to update");
-                                    temp = Console.ReadLine()!;
-                                    ID = int.Parse(temp);
-                                    try
-                                    {
-                                        if (s_Engineer!.Read(ID) is null)
-                                            throw new Exception($"Engineer with ID={ID} does Not exist");
-                                        else
-                                            UpdateEngineer(s_Engineer!.Read(ID)!);
-                                    }
-                                    catch(Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    
-                                    break;
-                                case 6:
-                                    Console.WriteLine("Enter the number of the engineer you want to delete");
-                                    int ide;
-                                    temp = Console.ReadLine()!;
-                                    ide = int.Parse(temp);
-                                    try
-                                    {
-                                        s_Engineer!.Delete(ide);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    break;
-                                case 1:
-                                    break;
-                            }
-                            Console.WriteLine();
-                        } while (num != 1);
-                        break;
+                                             throw new Exception($"Engineer with ID={id} does Not exist");
+
+                                     }
+
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+
+                                     Console.WriteLine(s_Engineer!.Read(id));
+
+
+                                     break;
 
 
 
-                    case 2:
-                        do
-                        {
-                            Program.print();
-                            temp = Console.ReadLine()!;
-                            num = int.Parse(temp);
-                            switch (num)
-                            {
-                                case 2:
-                                    Program.AddTask();
-                                    break;
-                                case 3:
-                                    int id;
-                                    Console.WriteLine("Enter the ID of the task:");
-                                    temp = Console.ReadLine()!;
-                                    id = int.Parse(temp);
-
-                                    try
-                                    {
-                                        if (s_Task!.Read(id) is null)
-                                            throw new Exception($"Task with ID={id} does Not exist");
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    break;
-                                case 4:
-                                    foreach (var TasK in s_Task!.ReadAll())
-                                        Console.WriteLine(TasK);
-                                    break;
-
-                                case 5:
-                                    int ID;
-                                    Console.WriteLine("Enter the number of the Task you want to update");
-                                    temp = Console.ReadLine()!;
-                                    ID = int.Parse(temp);
-                                    try
-                                    {
-                                        if (s_Task!.Read(ID) is null)
-                                            throw new Exception($"Task with ID={ID} does Not exist");
-                                        else
-                                            UpdateTask(s_Task!.Read(ID)!);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                   
-                                    break;
-                                case 6:
-                                    Console.WriteLine("Enter the number of the taks you want to delete");
-                                    int ide;
-                                    temp = Console.ReadLine()!;
-                                    ide = int.Parse(temp);
-                                    try
-                                    {
-                                        s_Task!.Delete(ide);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    break;
-                                case 1:
-                                    break;
-                            }
-                            Console.WriteLine();
-                        } while (num != 1);
-                        break;
-                    case 3:
-                        do
-                        {
-                            Program.print();
-                            temp = Console.ReadLine()!;
-                            num = int.Parse(temp);
-                            switch (num)
-                            {
-                                case 2:
-                                    Program.AddDependency();
-                                    break;
-                                case 3:
-                                    int id;
-                                    Console.WriteLine("Enter the ID of the dependency:");
-                                    temp = Console.ReadLine()!;
-                                    id = int.Parse(temp);
-
-                                    try
-                                    {
-                                        if (s_Dependency!.Read(id) is null)
-                                            throw new Exception($"Dependency with ID={id} does Not exist");
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    Console.WriteLine(s_Dependency!.Read(id));
-                                    break;
-                                case 4:
-                                    foreach (var Dep in s_Dependency!.ReadAll())
-                                        Console.WriteLine(Dep);
-                                    break;
-                                case 5:
-                                    int ID;
-                                    Console.WriteLine("Enter the number of the Dependency you want to update");
-                                    temp = Console.ReadLine()!;
-                                    ID = int.Parse(temp);
-                                    try
-                                    {
-                                        if (s_Dependency!.Read(ID) is null)
-                                            throw new Exception($"Dependency with ID={ID} does Not exist");
-                                        else
-                                            UpdateDependency(s_Dependency!.Read(ID)!);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    
-                                    break;
-                                case 6:
-                                    Console.WriteLine("Enter the number of the dependency you want to delete");
-                                    int ide;
-                                    temp = Console.ReadLine()!;
-                                    ide = int.Parse(temp);
-                                    try
-                                    {
-                                        s_Dependency!.Delete(ide);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                    }
-                                    break;
-                                case 1:
-                                    break;
-                            }
-                          Console.WriteLine();
-                        } while (num != 1);
-                        break;
-                    case 0:
-                        break;
 
 
 
-                }
-              
-            } while (choise != 0);
 
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-    }
+
+                                 case 4:
+                                     foreach (var Eng in s_Engineer!.ReadAll())
+                                         Console.WriteLine(Eng);
+                                     break;
+                                 case 5:
+                                     int ID;
+                                     Console.WriteLine("Enter the number of the engineer you want to update");
+                                     temp = Console.ReadLine()!;
+                                     ID = int.Parse(temp);
+                                     try
+                                     {
+                                         if (s_Engineer!.Read(ID) is null)
+                                             throw new Exception($"Engineer with ID={ID} does Not exist");
+                                         else
+                                             UpdateEngineer(s_Engineer!.Read(ID)!);
+                                     }
+                                     catch(Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+
+                                     break;
+                                 case 6:
+                                     Console.WriteLine("Enter the number of the engineer you want to delete");
+                                     int ide;
+                                     temp = Console.ReadLine()!;
+                                     ide = int.Parse(temp);
+                                     try
+                                     {
+                                         s_Engineer!.Delete(ide);
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+                                     break;
+                                 case 1:
+                                     break;
+                             }
+                             Console.WriteLine();
+                         } while (num != 1);
+                         break;
+
+
+
+                     case 2:
+                         do
+                         {
+                             Program.print();
+                             temp = Console.ReadLine()!;
+                             num = int.Parse(temp);
+                             switch (num)
+                             {
+                                 case 2:
+                                     Program.AddTask();
+                                     break;
+                                 case 3:
+                                     int id;
+                                     Console.WriteLine("Enter the ID of the task:");
+                                     temp = Console.ReadLine()!;
+                                     id = int.Parse(temp);
+
+                                     try
+                                     {
+                                         if (s_Task!.Read(id) is null)
+                                             throw new Exception($"Task with ID={id} does Not exist");
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+                                     break;
+                                 case 4:
+                                     foreach (var TasK in s_Task!.ReadAll())
+                                         Console.WriteLine(TasK);
+                                     break;
+
+                                 case 5:
+                                     int ID;
+                                     Console.WriteLine("Enter the number of the Task you want to update");
+                                     temp = Console.ReadLine()!;
+                                     ID = int.Parse(temp);
+                                     try
+                                     {
+                                         if (s_Task!.Read(ID) is null)
+                                             throw new Exception($"Task with ID={ID} does Not exist");
+                                         else
+                                             UpdateTask(s_Task!.Read(ID)!);
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+
+                                     break;
+                                 case 6:
+                                     Console.WriteLine("Enter the number of the taks you want to delete");
+                                     int ide;
+                                     temp = Console.ReadLine()!;
+                                     ide = int.Parse(temp);
+                                     try
+                                     {
+                                         s_Task!.Delete(ide);
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+                                     break;
+                                 case 1:
+                                     break;
+                             }
+                             Console.WriteLine();
+                         } while (num != 1);
+                         break;
+                     case 3:
+                         do
+                         {
+                             Program.print();
+                             temp = Console.ReadLine()!;
+                             num = int.Parse(temp);
+                             switch (num)
+                             {
+                                 case 2:
+                                     Program.AddDependency();
+                                     break;
+                                 case 3:
+                                     int id;
+                                     Console.WriteLine("Enter the ID of the dependency:");
+                                     temp = Console.ReadLine()!;
+                                     id = int.Parse(temp);
+
+                                     try
+                                     {
+                                         if (s_Dependency!.Read(id) is null)
+                                             throw new Exception($"Dependency with ID={id} does Not exist");
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+                                     Console.WriteLine(s_Dependency!.Read(id));
+                                     break;
+                                 case 4:
+                                     foreach (var Dep in s_Dependency!.ReadAll())
+                                         Console.WriteLine(Dep);
+                                     break;
+                                 case 5:
+                                     int ID;
+                                     Console.WriteLine("Enter the number of the Dependency you want to update");
+                                     temp = Console.ReadLine()!;
+                                     ID = int.Parse(temp);
+                                     try
+                                     {
+                                         if (s_Dependency!.Read(ID) is null)
+                                             throw new Exception($"Dependency with ID={ID} does Not exist");
+                                         else
+                                             UpdateDependency(s_Dependency!.Read(ID)!);
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+
+                                     break;
+                                 case 6:
+                                     Console.WriteLine("Enter the number of the dependency you want to delete");
+                                     int ide;
+                                     temp = Console.ReadLine()!;
+                                     ide = int.Parse(temp);
+                                     try
+                                     {
+                                         s_Dependency!.Delete(ide);
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         Console.WriteLine(e.Message);
+                                     }
+                                     break;
+                                 case 1:
+                                     break;
+                             }
+                           Console.WriteLine();
+                         } while (num != 1);
+                         break;
+                     case 0:
+                         break;
+
+
+
+                 }
+
+             } while (choise != 0);
+
+         }
+         catch (Exception e)
+         {
+             Console.WriteLine(e.Message);
+   
+}
      
-
-    
-        
+    }
 
 
 
@@ -299,7 +299,11 @@ internal class Program
 
 
 
-   public static void print() { 
+
+
+
+
+    public static void print() { 
     
         Console.WriteLine("Enter the appropriate number to activate the desired method:\n" +
                          "1:Exit\n" +
