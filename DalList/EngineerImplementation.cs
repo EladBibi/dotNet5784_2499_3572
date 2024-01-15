@@ -3,13 +3,15 @@ namespace Dal;
 using DalApi;
 using DO;
 
-
-public class EngineerImplementation : IEngineer
+internal class EngineerImplementation : IEngineer
 {
+     
+
     public int Create(Engineer item)
     {
         if (DataSource.Engineers.Exists(x=> x.Id==item.Id))
-            throw new Exception("An object of type Engineer with such an ID already exists");
+            if (DataSource.Engineers.FirstOrDefault(s => s.Id == item.Id) is not null)
+                throw new DalAlreadyExistsException("An object of type Engineer with such an ID already exists");
         DataSource.Engineers.Add(item);
         return item.Id;
     }
@@ -17,18 +19,26 @@ public class EngineerImplementation : IEngineer
     public void Delete(int id)
     {
         if (DataSource.Engineers.RemoveAll(x => x?.Id == id) == 0)
-            throw new Exception(@"Object of type ""Engineer"" with such ID does not exist");
+            throw new DalDoesNotExistException(@"Object of type ""Engineer"" with such ID does not exist");
     }
 
     public Engineer? Read(int id)
     {
-        Engineer? temp = DataSource.Engineers.Find(x => x?.Id == id);
-        return temp;
+        return DataSource.Engineers.FirstOrDefault(s => s.Id == id);
+       
     }
-
-    public List<Engineer> ReadAll()
+     public Engineer? Read(Func<Engineer, bool> filter)
     {
-        return new List<Engineer>(DataSource.Engineers);
+        return DataSource.Engineers.FirstOrDefault(s =>filter(s));
+
+    }
+    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
+    {
+
+        if (filter == null)
+            return DataSource.Engineers.Select(item => item);
+        else
+            return DataSource.Engineers.Where(filter);
     }
 
     public void Update(Engineer item)
@@ -43,7 +53,7 @@ public class EngineerImplementation : IEngineer
                 return;
 
             }
-        throw new Exception(@"Object of type ""Engineer"" with such ID does not exist");
+        throw new DalDoesNotExistException(@"Object of type ""Engineer"" with such ID does not exist");
     }
 }
 

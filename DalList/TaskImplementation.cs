@@ -7,7 +7,7 @@ using DO;
 
 
 
-public class TaskImplementation : ITask
+internal class TaskImplementation : ITask
 {
     public int Create(Task item)
     {
@@ -23,22 +23,30 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        if (DataSource.Tasks.RemoveAll(x=>x?.Id==id)==0)
-            throw new Exception(@"Object of type ""Task"" with such ID does not exist");
+        if (DataSource.Tasks.RemoveAll(x => x?.Id == id) == 0)
+            throw new DalDoesNotExistException(@"Object of type ""Task"" with such ID does not exist");
 
     }
 
     public Task? Read(int id)
     {
-        Task? temp = DataSource.Tasks.Find(x => x?.Id == id);
-        return temp;
+        return DataSource.Tasks.FirstOrDefault(s => s.Id == id);
+       
     }
 
-    public List<Task> ReadAll()
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
-        return new List<Task>(DataSource.Tasks);
-    }
 
+        if (filter == null)
+            return DataSource.Tasks.Select(item => item);
+        else
+            return DataSource.Tasks.Where(filter);
+    }
+   public Task? Read(Func<Task, bool> filter)
+    {
+
+        return DataSource.Tasks.FirstOrDefault(s =>filter(s));
+    }
     public void Update(Task item)
     {
         for (int i = 0; i < DataSource.Tasks.Count; ++i)
@@ -50,7 +58,7 @@ public class TaskImplementation : ITask
                 return;
 
             }
-        throw new Exception(@"Object of type ""Task"" with such ID does not exist");
+        throw new DalDoesNotExistException(@"Object of type ""Task"" with such ID does not exist");
     }
 
 

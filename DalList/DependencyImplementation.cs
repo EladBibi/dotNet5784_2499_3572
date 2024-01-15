@@ -5,7 +5,7 @@ using DalApi;
 using DO;
 
 
-public class DependencyImplementation : IDependency
+internal class DependencyImplementation : IDependency
 {
     public int Create(Dependency item)
     {
@@ -18,18 +18,25 @@ public class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         if (DataSource.Dependencies.RemoveAll(x => x?.Id == id) == 0)
-            throw new Exception(@"Object of type ""Dependency"" with such ID does not exist");
+            throw new DalDoesNotExistException(@"Object of type ""Dependency"" with such ID does not exist");
     }
 
     public Dependency? Read(int id)
     {
-        Dependency? temp = DataSource.Dependencies.Find(x => x?.Id == id);
-        return temp;
+        return DataSource.Dependencies.FirstOrDefault(s => s.Id == id);
+        
     }
-
-    public List<Dependency> ReadAll()
+   public Dependency? Read(Func<Dependency, bool> filter)
     {
-        return new List<Dependency>(DataSource.Dependencies);
+        return DataSource.Dependencies.FirstOrDefault(s =>filter(s));
+    }
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
+    {
+
+        if (filter == null)
+            return DataSource.Dependencies.Select(item => item);
+        else
+            return DataSource.Dependencies.Where(filter);
     }
 
     public void Update(Dependency item)
@@ -44,7 +51,7 @@ public class DependencyImplementation : IDependency
                 
 
             }
-        throw new Exception(@"Object of type ""Dependency"" with such ID does not exist");
+        throw new DalDoesNotExistException(@"Object of type ""Dependency"" with such ID does not exist");
     }
 }
 
