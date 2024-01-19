@@ -6,289 +6,280 @@ using System.Collections.Generic;
 
 internal class Program
 {
-   
-
-
-
     static readonly IDal s_dal = new DalList();
 
-static void Main(string[] args)
-     {
-
-      
-
+    static void Main(string[] args)
+    {
 
         string temp;
 
 
-                 try
-                 {
-                     int choise, num;
+        try
+        {
+            int choise, num;
 
             Initialization.Do(s_dal);
 
-
-
             do
-                     {
-                         Console.WriteLine("Enter a number to choose one of the following:\n" +
-                         "0:Exit\n" +
-                         "1:Engineer\n" +
-                         "2:Task\n" +
-                         "3:Dependency\n");
-                         temp = Console.ReadLine()!;
-                         choise = int.Parse(temp);
-                         switch (choise)
-                         {
+            {
+                Console.WriteLine("Enter a number to choose one of the following:\n" +
+                "0:Exit\n" +
+                "1:Engineer\n" +
+                "2:Task\n" +
+                "3:Dependency\n");
+                temp = Console.ReadLine()!;
+                choise = int.Parse(temp);
+                switch (choise)
+                {
 
 
-                             case 1:
+                    case 1:
 
-                                 do
-                                 {
-                                     Program.print();
-                                     temp = Console.ReadLine()!;
-                                     num = int.Parse(temp);
-                                     switch (num)
-                                     {
+                        do
+                        {
+                            Program.print();
+                            temp = Console.ReadLine()!;
+                            num = int.Parse(temp);
+                            switch (num)
+                            {
 
-                                         case 2:
+                                case 2:
 
-                                             Program.AddEngineer();
-                                             break;
-                                         case 3:
-                                             int id;
-                                             Console.WriteLine("Enter the ID of the engineer:");
-                                             temp = Console.ReadLine()!;
-                                             id = int.Parse(temp);
-                                             try
-                                             {
-                                                 if (s_dal.Engineer!.Read(id) is null)
-
-
-
-                                                     throw new DalDoesNotExistException($"Engineer with ID={id} does Not exist");
-
-                                             }
-
-                                             catch ( DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-
-                                             Console.WriteLine(s_dal.Engineer!.Read(id));
-
-
-                                             break;
+                                    Program.AddEngineer();
+                                    break;
+                                case 3:
+                                    int id;
+                                    Console.WriteLine("Enter the ID of the engineer:");
+                                    temp = Console.ReadLine()!;
+                                    id = int.Parse(temp);
+                                    try
+                                    {
+                                        if (s_dal.Engineer!.Read(id) is null)
 
 
 
+                                            throw new DalDoesNotExistException($"Engineer with ID={id} does Not exist");
+
+                                    }
+
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+
+                                    Console.WriteLine(s_dal.Engineer!.Read(id));
+
+
+                                    break;
 
 
 
 
 
-                                         case 4:
-                                             foreach (var Eng in s_dal.Engineer!.ReadAll())
-                                                 Console.WriteLine(Eng);
-                                             break;
-                                         case 5:
-                                             int ID;
-                                             Console.WriteLine("Enter the number of the engineer you want to update");
-                                             temp = Console.ReadLine()!;
-                                             ID = int.Parse(temp);
-                                             try
-                                             {
-                                                 if (s_dal.Engineer!.Read(ID) is null)
-                                                     throw new DalDoesNotExistException($"Engineer with ID={ID} does Not exist");
-                                                 else
-                                                     UpdateEngineer(s_dal.Engineer!.Read(ID)!);
-                                             }
-                                             catch(DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-
-                                             break;
-                                         case 6:
-                                             Console.WriteLine("Enter the number of the engineer you want to delete");
-                                             int ide;
-                                             temp = Console.ReadLine()!;
-                                             ide = int.Parse(temp);
-                                             try
-                                             {
-                                                 s_dal.Engineer!.Delete(ide);
-                                             }
-                                             catch (DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-                                             break;
-                                         case 1:
-                                             break;
-                                     }
-                                     Console.WriteLine();
-                                 } while (num != 1);
-                                 break;
 
 
 
-                             case 2:
-                                 do
-                                 {
-                                     Program.print();
-                                     temp = Console.ReadLine()!;
-                                     num = int.Parse(temp);
-                                     switch (num)
-                                     {
-                                         case 2:
-                                             Program.AddTask();
-                                             break;
-                                         case 3:
-                                             int id;
-                                             Console.WriteLine("Enter the ID of the task:");
-                                             temp = Console.ReadLine()!;
-                                             id = int.Parse(temp);
+                                case 4:
+                                    foreach (var Eng in s_dal.Engineer!.ReadAll())
+                                        Console.WriteLine(Eng);
+                                    break;
+                                case 5:
+                                    int ID;
+                                    Console.WriteLine("Enter the number of the engineer you want to update");
+                                    temp = Console.ReadLine()!;
+                                    ID = int.Parse(temp);
+                                    try
+                                    {
+                                        if (s_dal.Engineer!.Read(ID) is null)
+                                            throw new DalDoesNotExistException($"Engineer with ID={ID} does Not exist");
+                                        else
+                                            UpdateEngineer(s_dal.Engineer!.Read(ID)!);
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
 
-                                             try
-                                             {
-                                                 if (s_dal.Task!.Read(id) is null)
-                                                     throw new DalDoesNotExistException($"Task with ID={id} does Not exist");
-                                             }
-                                             catch (DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-                                             break;
-                                         case 4:
-                                             foreach (var TasK in s_dal.Task!.ReadAll())
-                                                 Console.WriteLine(TasK);
-                                             break;
-
-                                         case 5:
-                                             int ID;
-                                             Console.WriteLine("Enter the number of the Task you want to update");
-                                             temp = Console.ReadLine()!;
-                                             ID = int.Parse(temp);
-                                             try
-                                             {
-                                                 if (s_dal.Task!.Read(ID) is null)
-                                                     throw new DalDoesNotExistException($"Task with ID={ID} does Not exist");
-                                                 else
-                                                     UpdateTask(s_dal.Task!.Read(ID)!);
-                                             }
-                                             catch (DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-
-                                             break;
-                                         case 6:
-                                             Console.WriteLine("Enter the number of the taks you want to delete");
-                                             int ide;
-                                             temp = Console.ReadLine()!;
-                                             ide = int.Parse(temp);
-                                             try
-                                             {
-                                                 s_dal.Task!.Delete(ide);
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-                                             break;
-                                         case 1:
-                                             break;
-                                     }
-                                     Console.WriteLine();
-                                 } while (num != 1);
-                                 break;
-                             case 3:
-                                 do
-                                 {
-                                     Program.print();
-                                     temp = Console.ReadLine()!;
-                                     num = int.Parse(temp);
-                                     switch (num)
-                                     {
-                                         case 2:
-                                             Program.AddDependency();
-                                             break;
-                                         case 3:
-                                             int id;
-                                             Console.WriteLine("Enter the ID of the dependency:");
-                                             temp = Console.ReadLine()!;
-                                             id = int.Parse(temp);
-
-                                             try
-                                             {
-                                                 if (s_dal.Dependency!.Read(id) is null)
-                                                     throw new  DalDoesNotExistException($"Dependency with ID={id} does Not exist");
-                                             }
-                                             catch (DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-                                             Console.WriteLine(s_dal.Dependency!.Read(id));
-                                             break;
-                                         case 4:
-                                             foreach (var Dep in s_dal.Dependency!.ReadAll())
-                                                 Console.WriteLine(Dep);
-                                             break;
-                                         case 5:
-                                             int ID;
-                                             Console.WriteLine("Enter the number of the Dependency you want to update");
-                                             temp = Console.ReadLine()!;
-                                             ID = int.Parse(temp);
-                                             try
-                                             {
-                                                 if (s_dal.Dependency!.Read(ID) is null)
-                                                     throw new  DalDoesNotExistException($"Dependency with ID={ID} does Not exist");
-                                                 else
-                                                     UpdateDependency(s_dal.Dependency!.Read(ID)!);
-                                             }
-                                             catch (DalDoesNotExistException e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-
-                                             break;
-                                         case 6:
-                                             Console.WriteLine("Enter the number of the dependency you want to delete");
-                                             int ide;
-                                             temp = Console.ReadLine()!;
-                                             ide = int.Parse(temp);
-                                             try
-                                             {
-                                                 s_dal.Dependency!.Delete(ide);
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 Console.WriteLine(e.Message);
-                                             }
-                                             break;
-                                         case 1:
-                                             break;
-                                     }
-                                   Console.WriteLine();
-                                 } while (num != 1);
-                                 break;
-                             case 0:
-                                 break;
+                                    break;
+                                case 6:
+                                    Console.WriteLine("Enter the number of the engineer you want to delete");
+                                    int ide;
+                                    temp = Console.ReadLine()!;
+                                    ide = int.Parse(temp);
+                                    try
+                                    {
+                                        s_dal.Engineer!.Delete(ide);
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    break;
+                                case 1:
+                                    break;
+                            }
+                            Console.WriteLine();
+                        } while (num != 1);
+                        break;
 
 
 
-                         }
+                    case 2:
+                        do
+                        {
+                            Program.print();
+                            temp = Console.ReadLine()!;
+                            num = int.Parse(temp);
+                            switch (num)
+                            {
+                                case 2:
+                                    Program.AddTask();
+                                    break;
+                                case 3:
+                                    int id;
+                                    Console.WriteLine("Enter the ID of the task:");
+                                    temp = Console.ReadLine()!;
+                                    id = int.Parse(temp);
 
-                     } while (choise != 0);
+                                    try
+                                    {
+                                        if (s_dal.Task!.Read(id) is null)
+                                            throw new DalDoesNotExistException($"Task with ID={id} does Not exist");
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    break;
+                                case 4:
+                                    foreach (var TasK in s_dal.Task!.ReadAll())
+                                        Console.WriteLine(TasK);
+                                    break;
 
-                 }
-                 catch (Exception e)
-                 {
-                     Console.WriteLine(e.Message);
+                                case 5:
+                                    int ID;
+                                    Console.WriteLine("Enter the number of the Task you want to update");
+                                    temp = Console.ReadLine()!;
+                                    ID = int.Parse(temp);
+                                    try
+                                    {
+                                        if (s_dal.Task!.Read(ID) is null)
+                                            throw new DalDoesNotExistException($"Task with ID={ID} does Not exist");
+                                        else
+                                            UpdateTask(s_dal.Task!.Read(ID)!);
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+
+                                    break;
+                                case 6:
+                                    Console.WriteLine("Enter the number of the taks you want to delete");
+                                    int ide;
+                                    temp = Console.ReadLine()!;
+                                    ide = int.Parse(temp);
+                                    try
+                                    {
+                                        s_dal.Task!.Delete(ide);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    break;
+                                case 1:
+                                    break;
+                            }
+                            Console.WriteLine();
+                        } while (num != 1);
+                        break;
+                    case 3:
+                        do
+                        {
+                            Program.print();
+                            temp = Console.ReadLine()!;
+                            num = int.Parse(temp);
+                            switch (num)
+                            {
+                                case 2:
+                                    Program.AddDependency();
+                                    break;
+                                case 3:
+                                    int id;
+                                    Console.WriteLine("Enter the ID of the dependency:");
+                                    temp = Console.ReadLine()!;
+                                    id = int.Parse(temp);
+
+                                    try
+                                    {
+                                        if (s_dal.Dependency!.Read(id) is null)
+                                            throw new DalDoesNotExistException($"Dependency with ID={id} does Not exist");
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    Console.WriteLine(s_dal.Dependency!.Read(id));
+                                    break;
+                                case 4:
+                                    foreach (var Dep in s_dal.Dependency!.ReadAll())
+                                        Console.WriteLine(Dep);
+                                    break;
+                                case 5:
+                                    int ID;
+                                    Console.WriteLine("Enter the number of the Dependency you want to update");
+                                    temp = Console.ReadLine()!;
+                                    ID = int.Parse(temp);
+                                    try
+                                    {
+                                        if (s_dal.Dependency!.Read(ID) is null)
+                                            throw new DalDoesNotExistException($"Dependency with ID={ID} does Not exist");
+                                        else
+                                            UpdateDependency(s_dal.Dependency!.Read(ID)!);
+                                    }
+                                    catch (DalDoesNotExistException e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+
+                                    break;
+                                case 6:
+                                    Console.WriteLine("Enter the number of the dependency you want to delete");
+                                    int ide;
+                                    temp = Console.ReadLine()!;
+                                    ide = int.Parse(temp);
+                                    try
+                                    {
+                                        s_dal.Dependency!.Delete(ide);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e.Message);
+                                    }
+                                    break;
+                                case 1:
+                                    break;
+                            }
+                            Console.WriteLine();
+                        } while (num != 1);
+                        break;
+                    case 0:
+                        break;
+
+
+
+                }
+
+            } while (choise != 0);
 
         }
-        
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+
+        }
+
 
     }
 
@@ -297,18 +288,9 @@ static void Main(string[] args)
 
 
 
+    public static void print()
+    {
 
-
-
-
-
-
-
-
-
-
-    public static void print() { 
-    
         Console.WriteLine("Enter the appropriate number to activate the desired method:\n" +
                          "1:Exit\n" +
                          "2:Adding a new object to the list\n" +
@@ -354,16 +336,6 @@ static void Main(string[] args)
         s_dal.Dependency!.Update(New);
 
     }
-    
-
-
-
-
-
-
-
-
-
 
 
 
@@ -384,11 +356,11 @@ static void Main(string[] args)
         Console.WriteLine("Enter the engineer's name:");
         name = Console.ReadLine();
         Console.WriteLine("Enter the engineer's email:");
-        email =Console.ReadLine();
+        email = Console.ReadLine();
         Console.WriteLine("Enter the engineer's level:");
         temp = Console.ReadLine()!;
-         level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp); 
-       
+        level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
+
 
 
         Engineer New = new Engineer(id, cost, name, email, level);
@@ -396,12 +368,13 @@ static void Main(string[] args)
         {
             s_dal.Engineer!.Create(New);
         }
-        catch(DalAlreadyExistsException e ) 
+        catch (DalAlreadyExistsException e)
         {
             Console.WriteLine(e.Message);
         }
     }
-    public static void UpdateEngineer(Engineer e){
+    public static void UpdateEngineer(Engineer e)
+    {
 
         double cost = e.Cost;
         string? name = e.name;
@@ -411,7 +384,7 @@ static void Main(string[] args)
         Console.WriteLine("Enter the new  data:");
         Console.WriteLine("Enter the new salary:");
         temp = Console.ReadLine()!;
-        
+
         if (temp != "")
             cost = double.Parse(temp);
         Console.WriteLine("Enter the engineer's new name:");
@@ -428,12 +401,12 @@ static void Main(string[] args)
             level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
         Engineer New = new Engineer(e.Id, cost, name, email, level);
         s_dal.Engineer!.Update(New);
-  
+
     }
 
     public static void AddTask()
     {
-        
+
         int EngineerId;
         string? Alias;
         string? Description;
@@ -448,7 +421,7 @@ static void Main(string[] args)
         DateTime? DeadLineDate;
         DO.EngineerExperience? level;
         TimeSpan? RequiredEffortTime;
-       
+
         Console.WriteLine("Enter the engineer's id:");
         temp = Console.ReadLine()!;
         EngineerId = int.Parse(temp);
@@ -570,7 +543,7 @@ static void Main(string[] args)
 
 
 
-    
+
 
 
 
@@ -593,10 +566,9 @@ static void Main(string[] args)
 
 
 
-        
 
 
 
 
 
-    
+
