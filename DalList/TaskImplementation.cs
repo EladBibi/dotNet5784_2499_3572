@@ -61,6 +61,10 @@ internal class TaskImplementation : ITask
         throw new DalDoesNotExistException(@"Object of type ""Task"" with such ID does not exist");
     }
 
+    public void DeleteAll()
+    {
+        DataSource.Tasks.Clear();
 
+    }
 }
     

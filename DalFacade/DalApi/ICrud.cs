@@ -12,6 +12,7 @@ public interface ICrud<T> where T : class
                                                           //if there is no condition the original list will be returned
     void Update(T item); //Updates entity object
     void Delete(int id); //Deletes an object by its Id
+    void DeleteAll();
 }
 
 

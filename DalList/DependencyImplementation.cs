@@ -53,5 +53,10 @@ internal class DependencyImplementation : IDependency
             }
         throw new DalDoesNotExistException(@"Object of type ""Dependency"" with such ID does not exist");
     }
+   public void DeleteAll()
+    {
+        DataSource.Dependencies.Clear();
+
+    }
 }
 

@@ -20,4 +20,23 @@ public class DalDeletionImpossible : Exception
     public DalDeletionImpossible(string? message) : base(message) { }
 }
 
+public class DalXMLFileLoadCreateException : Exception
+{
+    public DalXMLFileLoadCreateException(string? message) : base(message) { }
+}
+
+
+public class XmlFormatException : Exception
+{
+    public XmlFormatException(string? message) : base(message) { }
+}
+
+
+
+
+
+
+
+
+
 

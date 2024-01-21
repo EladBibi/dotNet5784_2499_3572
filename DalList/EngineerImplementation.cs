@@ -55,5 +55,10 @@ internal class EngineerImplementation : IEngineer
             }
         throw new DalDoesNotExistException(@"Object of type ""Engineer"" with such ID does not exist");
     }
+    public void DeleteAll()
+    {
+        DataSource.Engineers.Clear();
+
+    }
 }
 
