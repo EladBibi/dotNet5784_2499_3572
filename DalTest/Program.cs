@@ -15,7 +15,7 @@ internal class Program
 
 
 
-    //static readonly IDal s_dal = new DalList();
+   //static readonly IDal s_dal = new DalList();
     static readonly IDal s_dal = new DalXml();
     static void Main(string[] args)
     {
@@ -341,9 +341,7 @@ internal class Program
 
 
 
-    public static void print()
-    {
-
+   
 
 
     public static void DeleteBeforeInitialization()
