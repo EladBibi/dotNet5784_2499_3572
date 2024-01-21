@@ -41,16 +41,16 @@ internal class EngineerImplementation : IEngineer
             return DataSource.Engineers.Where(filter);
     }
 
-    public void Update(Engineer item)
-    {
-        for (int i = 0; i < DataSource.Engineers.Count; ++i)
+        public void Update(Engineer item)
+        {
+            for (int i = 0; i < DataSource.Engineers.Count; ++i)
 
-            if (DataSource.Engineers[i].Id == item.Id)
-            {
-                
-                Delete(item.Id);
-                DataSource.Engineers.Insert(i, item);
-                return;
+                if (DataSource.Engineers[i].Id == item.Id)
+                {
+
+                    Delete(item.Id);
+                    DataSource.Engineers.Insert(i, item);
+                    return;
 
             }
         throw new DalDoesNotExistException(@"Object of type ""Engineer"" with such ID does not exist");
@@ -61,4 +61,5 @@ internal class EngineerImplementation : IEngineer
 
     }
 }
+
 

@@ -341,11 +341,8 @@ internal class Program
 
 
 
-
-
-
-
-
+    public static void print()
+    {
 
 
 
@@ -642,10 +639,9 @@ internal class Program
 
 
 
-        
 
 
 
 
 
-    
+
