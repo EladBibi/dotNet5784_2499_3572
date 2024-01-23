@@ -81,7 +81,7 @@ public static class Initialization
         createEngineers();
         createTasks();
         createDependencies();
-
+        Console.WriteLine("hello");
     }
 }
 
