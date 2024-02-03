@@ -15,8 +15,8 @@ internal class Program
 
 
 
-   //static readonly IDal s_dal = new DalList();
-    static readonly IDal s_dal = new DalXml();
+    static readonly IDal s_dal = Factory.Get;
+
     static void Main(string[] args)
     {
         
@@ -46,7 +46,7 @@ internal class Program
                             if (ans == "Y")
                             {
                                 DeleteBeforeInitialization();
-                                Initialization.Do(s_dal);
+                                Initialization.Do();
                             }
                                 
                             
@@ -126,7 +126,7 @@ internal class Program
 
 
                                     case 4:
-                                    int o = 0;
+                                  
                                     foreach (var Eng in s_dal.Engineer!.ReadAll())
                                     
                                         
