@@ -4,9 +4,9 @@ namespace DalTest;
 using Dal;
 using DO;
 
+internal class Intialize
 {
 
-   
     private static readonly Random s_rand = new Random();
     private const int MIN_ID = 100000000;
     private const int MAX_ID = 1000000000;
@@ -18,7 +18,7 @@ using DO;
 
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 100000000+i, "", "", "", "", false,
+            Task NewTask = new Task(0, 100000000 + i, "", "", "", "", false,
                 DateTimeCreate, null, null, null,
                 null, (DO.EngineerExperience)(i % 5), null);
             s_dal!.Task.Create(NewTask);
@@ -87,10 +87,6 @@ using DO;
 
 
 
-        
-
-
-    
 
 
 
@@ -108,5 +104,10 @@ using DO;
 
 
 
-    
+
+
+
+
+
+
 
