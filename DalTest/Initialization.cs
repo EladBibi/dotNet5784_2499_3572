@@ -70,10 +70,10 @@ using DO;
 
 
 
-    public static void Do(IDal dal)
+    public static void Do()
     {
 
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dal = DalApi.Factory.Get;
         createEngineers();
         createTasks();
         createDependencies();
