@@ -2,13 +2,9 @@
 namespace DalTest;
 
 using Dal;
-using DalApi;
 using DO;
 
-
-public static class Initialization
 {
-    private static IDal? s_dal;
 
    
     private static readonly Random s_rand = new Random();

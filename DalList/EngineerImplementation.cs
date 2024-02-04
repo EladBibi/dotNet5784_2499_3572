@@ -5,13 +5,12 @@ using DO;
 
 internal class EngineerImplementation : IEngineer
 {
-     
+
 
     public int Create(Engineer item)
     {
-        if (DataSource.Engineers.Exists(x=> x.Id==item.Id))
-            if (DataSource.Engineers.FirstOrDefault(s => s.Id == item.Id) is not null)
-                throw new DalAlreadyExistsException("An object of type Engineer with such an ID already exists");
+        if (DataSource.Engineers.Exists(x => x.Id == item.Id))
+            throw new DalAlreadyExistsException("An object of type Engineer with such an ID already exists");
         DataSource.Engineers.Add(item);
         return item.Id;
     }
@@ -25,13 +24,15 @@ internal class EngineerImplementation : IEngineer
     public Engineer? Read(int id)
     {
         return DataSource.Engineers.FirstOrDefault(s => s.Id == id);
-       
-    }
-     public Engineer? Read(Func<Engineer, bool> filter)
-    {
-        return DataSource.Engineers.FirstOrDefault(s =>filter(s));
 
     }
+
+    public Engineer? Read(Func<Engineer, bool> filter)
+    {
+        return DataSource.Engineers.FirstOrDefault(s => filter(s));
+
+    }
+
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {
 
@@ -41,20 +42,21 @@ internal class EngineerImplementation : IEngineer
             return DataSource.Engineers.Where(filter);
     }
 
-        public void Update(Engineer item)
-        {
-            for (int i = 0; i < DataSource.Engineers.Count; ++i)
+    public void Update(Engineer item)
+    {
+        for (int i = 0; i < DataSource.Engineers.Count; ++i)
 
-                if (DataSource.Engineers[i].Id == item.Id)
-                {
+            if (DataSource.Engineers[i].Id == item.Id)
+            {
 
-                    Delete(item.Id);
-                    DataSource.Engineers.Insert(i, item);
-                    return;
+                Delete(item.Id);
+                DataSource.Engineers.Insert(i, item);
+                return;
 
             }
         throw new DalDoesNotExistException(@"Object of type ""Engineer"" with such ID does not exist");
     }
+
     public void DeleteAll()
     {
         DataSource.Engineers.Clear();

@@ -12,14 +12,6 @@ namespace DO;
 /// <param name="EngineerExperience"</Engineer level>
 /// <param name="Email"></email>
 
-
-
-
-
-
-
-
-
 public record Engineer
 (
     

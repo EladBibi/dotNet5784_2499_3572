@@ -25,9 +25,6 @@ internal class EngineerImplementation : IEngineer
         return item.Id;
     }
 
-
-
-
     public void Delete(int id)
     {
         XElement? EngineerList = XMLTools.LoadListFromXMLElement(s_engineers_xml);
@@ -36,8 +33,6 @@ internal class EngineerImplementation : IEngineer
         engineer.Remove();
         XMLTools.SaveListToXMLElement(EngineerList, "engineers");
     }
-
-
 
     public Engineer? Read(int id)
     {
@@ -59,8 +54,6 @@ internal class EngineerImplementation : IEngineer
 
     }
 
-
-
     public Engineer? Read(Func<Engineer, bool> filter)
     {
         XElement? EngineerList = XMLTools.LoadListFromXMLElement(s_engineers_xml);
@@ -78,12 +71,6 @@ internal class EngineerImplementation : IEngineer
               });
         return Engineers.FirstOrDefault(k => filter(k));
     }
-
-
-
-
-
-
 
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {

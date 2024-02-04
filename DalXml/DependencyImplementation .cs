@@ -101,6 +101,11 @@ internal class DependencyImplementation:IDependency
         DependencyList.Add(UpdateDependency);
         XMLTools.SaveListToXMLElement(DependencyList, "dependencies");
     }
+
+
+
+
+
     public void DeleteAll()
     {
         XElement? DependencyList = XMLTools.LoadListFromXMLElement(s_dependency_xml);
@@ -110,6 +115,7 @@ internal class DependencyImplementation:IDependency
         config.Element("NextDependencyId")?.SetValue("0");
         XMLTools.SaveListToXMLElement(config, "data-config");
     }
+
     //פונקציית עזר ליצירת אובייקט חדש עבור הכנסה לקובץ
     public XElement create(Dependency item, int NewId)
     {
