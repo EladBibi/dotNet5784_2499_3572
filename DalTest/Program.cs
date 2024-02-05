@@ -461,77 +461,75 @@ internal class Program
     public static void AddTask()
     {
 
-        int EngineerId;
-        string? Alias;
-        string? Description;
-        string? Deliverables;
-        string? Remarks;
-        string temp;
-        bool IsMilestone;
-        DateTime? CreatedAtDate;
-        DateTime? scheduledDate;
-        DateTime? StartDate;
-        DateTime? CompleteDate;
-        DateTime? DeadLineDate;
-        DO.EngineerExperience? level;
-        TimeSpan? RequiredEffortTime;
+            int EngineerId;
+            string? Alias;
+            string? Description;
+            string? Deliverables;
+            string? Remarks;
+            string temp;
+            bool IsMilestone;
+            DateTime? CreatedAtDate;
+            DateTime? scheduledDate;
+            DateTime? StartDate;
+            DateTime? CompleteDate;
+           
+            DO.EngineerExperience? level;
+            TimeSpan? RequiredEffortTime;
 
-        Console.WriteLine("Enter the engineer's id:");
-        temp = Console.ReadLine()!;
-        EngineerId = int.Parse(temp);
-        Console.WriteLine("Enter the task's alias:");
-        Alias = Console.ReadLine()!;
-        Console.WriteLine("Enter the task's description:");
-        Description = Console.ReadLine()!;
-        Console.WriteLine("Enter the task's deliverables:");
-        Deliverables = Console.ReadLine()!;
-        Console.WriteLine("Enter the task's remarks:");
-        Remarks = Console.ReadLine()!;
-        Console.WriteLine("Is the task a milestone? Enter true or false:");
-        temp = Console.ReadLine()!;
-        IsMilestone = bool.Parse(temp);
-        Console.WriteLine("Enter the task creation date");
-        temp = Console.ReadLine()!;
-        CreatedAtDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the scheduled date of the task");
-        temp = Console.ReadLine()!;
-        scheduledDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the start date of the task");
-        temp = Console.ReadLine()!;
-        StartDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the complete date of the task");
-        temp = Console.ReadLine()!;
-        CompleteDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the dead line Date of the task");
-        temp = Console.ReadLine()!;
-        DeadLineDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the engineer level required for the task:");
-        temp = Console.ReadLine()!;
-        level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
-        Console.WriteLine("Enter the amount of time needed for the task:");
-        temp = Console.ReadLine()!;
-        RequiredEffortTime = TimeSpan.Parse(temp);
-        Task NewTask = new Task(0, EngineerId, Alias, Description, Deliverables,
-            Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
-            CompleteDate, DeadLineDate, level, RequiredEffortTime);
-        s_dal.Task!.Create(NewTask);
-    }
-    public static void UpdateTask(Task tas)
-    {
-        int EngineerId = tas.Id;
-        string? Alias = tas.Alias;
-        string? Description = tas.Description;
-        string? Deliverables = tas.Deliverables;
-        string? Remarks = tas.Remarks;
-        string temp;
-        bool IsMilestone = tas.IsMilestone;
-        DateTime? CreatedAtDate = tas.CreatedAtDate;
-        DateTime? scheduledDate = tas.scheduledDate;
-        DateTime? StartDate = tas.StartDate;
-        DateTime? CompleteDate = tas.CompleteDate;
-        DateTime? DeadLineDate = tas.DeadLineDate;
-        DO.EngineerExperience? level = tas.Complexity;
-        TimeSpan? RequiredEffortTime = tas.RequiredEffortTime;
+            Console.WriteLine("Enter the engineer's id:");
+            temp = Console.ReadLine()!;
+            EngineerId = int.Parse(temp);
+            Console.WriteLine("Enter the task's alias:");
+            Alias = Console.ReadLine()!;
+            Console.WriteLine("Enter the task's description:");
+            Description = Console.ReadLine()!;
+            Console.WriteLine("Enter the task's deliverables:");
+            Deliverables = Console.ReadLine()!;
+            Console.WriteLine("Enter the task's remarks:");
+            Remarks = Console.ReadLine()!;
+            Console.WriteLine("Is the task a milestone? Enter true or false:");
+            temp = Console.ReadLine()!;
+            IsMilestone = bool.Parse(temp);
+            Console.WriteLine("Enter the task creation date");
+            temp = Console.ReadLine()!;
+            CreatedAtDate = DateTime.Parse(temp);
+            Console.WriteLine("Enter the scheduled date of the task");
+            temp = Console.ReadLine()!;
+            scheduledDate = DateTime.Parse(temp);
+            Console.WriteLine("Enter the start date of the task");
+            temp = Console.ReadLine()!;
+            StartDate = DateTime.Parse(temp);
+            Console.WriteLine("Enter the complete date of the task");
+            temp = Console.ReadLine()!;
+            CompleteDate = DateTime.Parse(temp);
+          
+            Console.WriteLine("Enter the engineer level required for the task:");
+            temp = Console.ReadLine()!;
+            level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
+            Console.WriteLine("Enter the amount of time needed for the task:");
+            temp = Console.ReadLine()!;
+            RequiredEffortTime = TimeSpan.Parse(temp);
+            Task NewTask = new Task(0, EngineerId, Alias, Description, Deliverables,
+                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                CompleteDate, level, RequiredEffortTime);
+            s_dal.Task!.Create(NewTask);
+        }
+        public static void UpdateTask(Task tas)
+        {
+            int EngineerId = tas.Id;
+            string? Alias = tas.Alias;
+            string? Description = tas.Description;
+            string? Deliverables = tas.Deliverables;
+            string? Remarks = tas.Remarks;
+            string temp;
+            bool IsMilestone = tas.IsMilestone;
+            DateTime? CreatedAtDate = tas.CreatedAtDate;
+            DateTime? scheduledDate = tas.scheduledDate;
+            DateTime? StartDate = tas.StartDate;
+            DateTime? CompleteDate = tas.CompleteDate;
+            
+            DO.EngineerExperience? level = tas.Complexity;
+            TimeSpan? RequiredEffortTime = tas.RequiredEffortTime;
 
         Console.WriteLine("Enter the new  data:");
         Console.WriteLine("Enter the new engineer's id:");
@@ -572,27 +570,24 @@ internal class Program
         if (temp != "")
             StartDate = DateTime.Parse(temp);
 
-        Console.WriteLine("Enter the new value in the new  Complete date date of the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            CompleteDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the new value in the new  dead line date date of the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            DeadLineDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the new visible engineer level");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
-        Console.WriteLine("Enter the amount of time needed for the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            RequiredEffortTime = TimeSpan.Parse(temp);
-        Task New = new Task(tas.Id, EngineerId, Alias, Description, Deliverables,
-            Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
-            CompleteDate, DeadLineDate, level, RequiredEffortTime);
-        s_dal.Task!.Update(New);
-    }
+            Console.WriteLine("Enter the new value in the new  Complete date date of the task:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                CompleteDate = DateTime.Parse(temp);
+           
+            Console.WriteLine("Enter the new visible engineer level");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
+            Console.WriteLine("Enter the amount of time needed for the task:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                RequiredEffortTime = TimeSpan.Parse(temp);
+            Task New = new Task(tas.Id, EngineerId, Alias, Description, Deliverables,
+                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                CompleteDate,  level, RequiredEffortTime);
+            s_dal.Task!.Update(New);
+        }
 
 }
 

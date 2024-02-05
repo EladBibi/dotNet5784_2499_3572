@@ -30,12 +30,12 @@ public record Task
     string? Description=null,
     string? Deliverables=null,
     string? Remarks=null,
-    bool IsMilestone=false,
+   // bool IsMilestone=false,
     DateTime? CreatedAtDate=null,
     DateTime? scheduledDate = null,
     DateTime? StartDate=null,
     DateTime? CompleteDate =null,
-    DateTime? DeadLineDate=null,
+    
     DO.EngineerExperience? Complexity=null,
     TimeSpan? RequiredEffortTime=null
     )
