@@ -489,7 +489,7 @@ internal class Program
             DateTime? scheduledDate;
             DateTime? StartDate;
             DateTime? CompleteDate;
-            DateTime? DeadLineDate;
+           
             DO.EngineerExperience? level;
             TimeSpan? RequiredEffortTime;
 
@@ -519,9 +519,7 @@ internal class Program
             Console.WriteLine("Enter the complete date of the task");
             temp = Console.ReadLine()!;
             CompleteDate = DateTime.Parse(temp);
-            Console.WriteLine("Enter the dead line Date of the task");
-            temp = Console.ReadLine()!;
-            DeadLineDate = DateTime.Parse(temp);
+          
             Console.WriteLine("Enter the engineer level required for the task:");
             temp = Console.ReadLine()!;
             level = (DO.EngineerExperience)Enum.Parse(typeof(EngineerExperience), temp);
@@ -530,7 +528,7 @@ internal class Program
             RequiredEffortTime = TimeSpan.Parse(temp);
             Task NewTask = new Task(0, EngineerId, Alias, Description, Deliverables,
                 Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
-                CompleteDate, DeadLineDate, level, RequiredEffortTime);
+                CompleteDate, level, RequiredEffortTime);
             s_dal.Task!.Create(NewTask);
         }
         public static void UpdateTask(Task tas)
@@ -546,7 +544,7 @@ internal class Program
             DateTime? scheduledDate = tas.scheduledDate;
             DateTime? StartDate = tas.StartDate;
             DateTime? CompleteDate = tas.CompleteDate;
-            DateTime? DeadLineDate = tas.DeadLineDate;
+            
             DO.EngineerExperience? level = tas.Complexity;
             TimeSpan? RequiredEffortTime = tas.RequiredEffortTime;
 
@@ -593,10 +591,7 @@ internal class Program
             temp = Console.ReadLine()!;
             if (temp != "")
                 CompleteDate = DateTime.Parse(temp);
-            Console.WriteLine("Enter the new value in the new  dead line date date of the task:");
-            temp = Console.ReadLine()!;
-            if (temp != "")
-                DeadLineDate = DateTime.Parse(temp);
+           
             Console.WriteLine("Enter the new visible engineer level");
             temp = Console.ReadLine()!;
             if (temp != "")
@@ -607,7 +602,7 @@ internal class Program
                 RequiredEffortTime = TimeSpan.Parse(temp);
             Task New = new Task(tas.Id, EngineerId, Alias, Description, Deliverables,
                 Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
-                CompleteDate, DeadLineDate, level, RequiredEffortTime);
+                CompleteDate,  level, RequiredEffortTime);
             s_dal.Task!.Update(New);
         }
 

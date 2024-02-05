@@ -23,7 +23,7 @@ public static class Initialization
             DateTime DateTimeCreate = DateTime.Now;
 
             Task NewTask = new Task(0, 100000000+i, "", "", "", "", false,
-                DateTimeCreate, null, null, null,
+                DateTimeCreate, null, null,
                 null, (DO.EngineerExperience)(i % 5), null);
             s_dal!.Task.Create(NewTask);
         }
