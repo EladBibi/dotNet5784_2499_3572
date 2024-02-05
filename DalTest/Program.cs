@@ -12,9 +12,6 @@ using System.Runtime.ExceptionServices;
 internal class Program
 {
 
-
-
-
     static readonly IDal s_dal = Factory.Get;
 
     static void Main(string[] args)
@@ -107,12 +104,6 @@ internal class Program
 
 
                                     break;
-
-
-
-
-
-
 
 
                                     case 4:
