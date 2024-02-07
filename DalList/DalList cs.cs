@@ -28,4 +28,13 @@ sealed internal class DalList : IDal
         return DateTime.TryParse((string?)root.Element(date), out var result) ? (DateTime?)result : null;
 
     }
+    void SetDates(DateTime d, string date)
+    {
+        d.AddMonths(2);
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        root.Element(date)?.SetValue((d).ToString());
+        root.Save(@"..\xml\data-config.xml");
+    }
+
+    
 }
