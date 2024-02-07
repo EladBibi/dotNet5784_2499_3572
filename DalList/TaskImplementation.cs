@@ -18,9 +18,6 @@ internal class TaskImplementation : ITask
 
     }
 
-
-
-
     public void Delete(int id)
     {
         if (DataSource.Tasks.RemoveAll(x => x?.Id == id) == 0)
@@ -31,7 +28,7 @@ internal class TaskImplementation : ITask
     public Task? Read(int id)
     {
         return DataSource.Tasks.FirstOrDefault(s => s.Id == id);
-       
+
     }
 
     public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
@@ -42,10 +39,10 @@ internal class TaskImplementation : ITask
         else
             return DataSource.Tasks.Where(filter);
     }
-   public Task? Read(Func<Task, bool> filter)
+    public Task? Read(Func<Task, bool> filter)
     {
 
-        return DataSource.Tasks.FirstOrDefault(s =>filter(s));
+        return DataSource.Tasks.FirstOrDefault(s => filter(s));
     }
     public void Update(Task item)
     {
@@ -67,4 +64,4 @@ internal class TaskImplementation : ITask
 
     }
 }
-    
+

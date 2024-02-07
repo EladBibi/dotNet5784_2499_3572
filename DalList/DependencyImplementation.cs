@@ -3,40 +3,44 @@
 namespace Dal;
 using DalApi;
 using DO;
+using static DataSource;
 
 
 internal class DependencyImplementation : IDependency
 {
     public int Create(Dependency item)
     {
-        int NewId = DataSource.Config.NextDependency;
-        Dependency NewDependency = item with { Id = NewId };
-        DataSource.Dependencies.Add(NewDependency);
-        return NewId;
+        int id = Config.NextDependency;
+        item =item with { Id = id };  
+        Dependencies.Add(item); 
+        return id;  
     }
 
     public void Delete(int id)
     {
-        if (DataSource.Dependencies.RemoveAll(x => x?.Id == id) == 0)
+        //למצוא בתוך המערך את האובייקט על פי המזהה שנתנו לנו ולמחוק אותו
+        if (Dependencies.RemoveAll(x => x.Id == id) == 0)
             throw new DalDoesNotExistException(@"Object of type ""Dependency"" with such ID does not exist");
     }
 
     public Dependency? Read(int id)
     {
-        return DataSource.Dependencies.FirstOrDefault(s => s.Id == id);
+        Read(x => x.Id == id);
+        return Dependencies.FirstOrDefault(s => s.Id == id);
         
     }
    public Dependency? Read(Func<Dependency, bool> filter)
     {
-        return DataSource.Dependencies.FirstOrDefault(s =>filter(s));
+        return Dependencies.FirstOrDefault(s =>filter(s));
     }
+
     public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
 
         if (filter == null)
-            return DataSource.Dependencies.Select(item => item);
+            return Dependencies.Select(item => item);
         else
-            return DataSource.Dependencies.Where(filter);
+            return Dependencies.Where(filter);
     }
 
     public void Update(Dependency item)

@@ -26,22 +26,22 @@ public record Task
     (
     int Id,
     int EngineerId,
-    string? Alias=null,
-    string? Description=null,
-    string? Deliverables=null,
-    string? Remarks=null,
-   // bool IsMilestone=false,
-    DateTime? CreatedAtDate=null,
+    string? Alias = null,
+    string? Description = null,
+    string? Deliverables = null,
+    string? Remarks = null,
+    // bool IsMilestone=false,
+    DateTime? CreatedAtDate = null,
     DateTime? scheduledDate = null,
-    DateTime? StartDate=null,
-    DateTime? CompleteDate =null,
-    
-    DO.EngineerExperience? Complexity=null,
-    TimeSpan? RequiredEffortTime=null
+    DateTime? StartDate = null,
+    DateTime? CompleteDate = null,
+
+    DO.EngineerExperience? Complexity = null,
+    TimeSpan? RequiredEffortTime = null
     )
 {
     public Task() : this(0, 0) { }
-   
+
 }
 
 
@@ -52,5 +52,5 @@ public record Task
 
 
 
-    
+
 

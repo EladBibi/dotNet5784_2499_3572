@@ -2,15 +2,11 @@
 namespace DalTest;
 
 using Dal;
-using DalApi;
 using DO;
 
-
-public static class Initialization
+internal class Intialize
 {
-    private static IDal? s_dal;
 
-   
     private static readonly Random s_rand = new Random();
     private const int MIN_ID = 100000000;
     private const int MAX_ID = 1000000000;
@@ -91,10 +87,6 @@ public static class Initialization
 
 
 
-        
-
-
-    
 
 
 
@@ -112,5 +104,10 @@ public static class Initialization
 
 
 
-    
+
+
+
+
+
+
 
