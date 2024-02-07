@@ -70,7 +70,7 @@ internal class DependencyImplementation:IDependency
         return Dependencies.FirstOrDefault(k => filter(k));
     }
 
-    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
         XElement? DependencyList = XMLTools.LoadListFromXMLElement(s_dependency_xml);
         IEnumerable<Dependency> Dependencies = DependencyList.Elements()

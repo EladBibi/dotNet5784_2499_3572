@@ -46,13 +46,13 @@ internal class TaskImplementation : ITask
                                        Description = (string?)(s.Element("description")),
                                        Deliverables = (string?)(s.Element("deliverables")),
                                        Remarks = (string?)(s.Element("remarks")),
-                                       IsMilestone = bool.TryParse(s.Element("isMilestone")?.Value, out bool result) ? result : false,
+                                      
 
                                        CreatedAtDate = s.ToDateTimeNullable("createdAtDate"),
                                        scheduledDate = s.ToDateTimeNullable("scheduledDate"),
                                        StartDate = s.ToDateTimeNullable("startDate"),
                                        CompleteDate = s.ToDateTimeNullable("completeDate"),
-                                       DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
+                                      
                                        Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
                                        RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
 
@@ -73,13 +73,13 @@ internal class TaskImplementation : ITask
                   Description = (string?)(s.Element("description")),
                   Deliverables = (string?)(s.Element("deliverables")),
                   Remarks = (string?)(s.Element("remarks")),
-                  IsMilestone = bool.TryParse(s.Element("isMilestone")?.Value, out bool result) ? result : false,
+                 
 
                   CreatedAtDate = s.ToDateTimeNullable("createdAtDate"),
                   scheduledDate = s.ToDateTimeNullable("scheduledDate"),
                   StartDate = s.ToDateTimeNullable("startDate"),
                   CompleteDate = s.ToDateTimeNullable("completeDate"),
-                  DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
+                 
                   Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
                   RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
               });
@@ -91,7 +91,7 @@ internal class TaskImplementation : ITask
 
 
 
-    public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
         XElement? TaskList = XMLTools.LoadListFromXMLElement(s_tasks_xml);
         IEnumerable<Task> Tasks = TaskList.Elements()
@@ -103,13 +103,13 @@ internal class TaskImplementation : ITask
                 Description = (string?)(s.Element("description")),
                 Deliverables = (string?)(s.Element("deliverables")),
                 Remarks = (string?)(s.Element("remarks")),
-                IsMilestone = bool.TryParse(s.Element("isMilestone")?.Value, out bool result) ? result : false,
+                //IsMilestone = bool.TryParse(s.Element("isMilestone")?.Value, out bool result) ? result : false,
 
                 CreatedAtDate = s.ToDateTimeNullable("createdAtDate"),
                 scheduledDate = s.ToDateTimeNullable("scheduledDate"),
                 StartDate = s.ToDateTimeNullable("startDate"),
                 CompleteDate = s.ToDateTimeNullable("completeDate"),
-                DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
+                //DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
                 Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
                 RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
 
@@ -149,9 +149,9 @@ internal class TaskImplementation : ITask
           new XElement("engineerid", item.EngineerId),
           new XElement("alias", item.Alias), new XElement("description", item.Description),
           new XElement("deliverables", item.Deliverables), new XElement("remarks", item.Remarks),
-          new XElement("isMilestone", item.IsMilestone), new XElement("createdAtDate", item.CreatedAtDate),
+          new XElement("createdAtDate", item.CreatedAtDate),
          new XElement("scheduledDate", item.scheduledDate), new XElement("startDate", item.StartDate),
-         new XElement("completeDate", item.CompleteDate), new XElement("deadLineDate", item.DeadLineDate),
+         new XElement("completeDate", item.CompleteDate),
          new XElement("complexity", item.Complexity), new XElement("requiredEffortTime", item.RequiredEffortTime));
         return NewTask;
 

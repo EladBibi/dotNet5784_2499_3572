@@ -85,7 +85,7 @@ internal class EngineerImplementation : IEngineer
 
 
 
-    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
+    public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
         XElement? EngineerList = XMLTools.LoadListFromXMLElement(s_engineers_xml);
         IEnumerable<Engineer> Engineers = EngineerList.Elements()

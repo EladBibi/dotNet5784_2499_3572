@@ -9,9 +9,9 @@ internal class EngineerImplementation : IEngineer
 
     public int Create(Engineer item)
     {
-        if (DataSource.Engineers.Exists(x=> x.Id==item.Id))
-            if (DataSource.Engineers.FirstOrDefault(s => s.Id == item.Id) is not null)
-                throw new DalAlreadyExistsException("An object of type Engineer with such an ID already exists");
+
+        if (DataSource.Engineers.Exists(x => x.Id == item.Id))
+            throw new DalAlreadyExistsException("An object of type Engineer with such an ID already exists");
         DataSource.Engineers.Add(item);
         return item.Id;
     }

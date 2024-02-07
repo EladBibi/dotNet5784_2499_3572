@@ -527,7 +527,7 @@ internal class Program
             temp = Console.ReadLine()!;
             RequiredEffortTime = TimeSpan.Parse(temp);
             Task NewTask = new Task(0, EngineerId, Alias, Description, Deliverables,
-                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                Remarks, CreatedAtDate, scheduledDate, StartDate,
                 CompleteDate, level, RequiredEffortTime);
             s_dal.Task!.Create(NewTask);
         }
@@ -539,7 +539,7 @@ internal class Program
             string? Deliverables = tas.Deliverables;
             string? Remarks = tas.Remarks;
             string temp;
-            bool IsMilestone = tas.IsMilestone;
+            
             DateTime? CreatedAtDate = tas.CreatedAtDate;
             DateTime? scheduledDate = tas.scheduledDate;
             DateTime? StartDate = tas.StartDate;
@@ -570,10 +570,7 @@ internal class Program
             temp = Console.ReadLine()!;
             if (temp != "")
                 Remarks = temp;
-            Console.WriteLine("Enter the new value in the task milestone:");
-            temp = Console.ReadLine()!;
-            if (temp != "")
-                IsMilestone = bool.Parse(temp);
+           
             Console.WriteLine("Enter the new value in the new create date of the task:");
             temp = Console.ReadLine()!;
             if (temp != "")
@@ -601,7 +598,7 @@ internal class Program
             if (temp != "")
                 RequiredEffortTime = TimeSpan.Parse(temp);
             Task New = new Task(tas.Id, EngineerId, Alias, Description, Deliverables,
-                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                Remarks, CreatedAtDate, scheduledDate, StartDate,
                 CompleteDate,  level, RequiredEffortTime);
             s_dal.Task!.Update(New);
         }
