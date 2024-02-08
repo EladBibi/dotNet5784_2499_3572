@@ -31,7 +31,7 @@ internal class EngineerImplementation : IEnginner
         bool isWorkOnTask = dal.Task.ReadAll(x => x.EngineerId == id && x.StartDate != null).Any();
 
         if (isWorkOnTask)
-            throw new Exception("the engineer aork\ed on task");
+            throw new Exception("the engineer aorked on task");
 
         dal.Engineer.Delete(id);
     }
@@ -81,12 +81,27 @@ internal class EngineerImplementation : IEnginner
         try
         {
             //TODO
-            if (engineer.Task != null) {
+            if (engineer.Task != null)
+            {
                 DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? throw new Exception();
-                if(task.EngineerId!= engineer.Id) { }
+                if (task.EngineerId != engineer.Id && task.EngineerId != 0)
+                    throw new Exception();//TODO
+
+                DO.Engineer eng = dal.Engineer.Read(engineer.Id) ?? throw new Exception();
+
+                DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level?
+                    (DO.EngineerExperience)engineer.Level: eng.level;
+                eng = eng with
+                {
+                    Cost = engineer.Cost,
+                    Email = engineer.Email,
+                    level = newLevel,
+                    name = engineer.name
+                };
+
+                dal.Engineer.Update(eng);
+
             }
-
-
         }
         //TODO
         catch (Exception ex) { throw new Exception(ex.Message); }

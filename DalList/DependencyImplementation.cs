@@ -11,7 +11,7 @@ internal class DependencyImplementation : IDependency
     public int Create(Dependency item)
     {
         int id = Config.NextDependency;
-        item =item with { Id = id };  
+        item = item with { Id = id };  //כיוון שהישות היא מסוג רשומה , איך לנו את היכולת לשנותא תה שדה
         Dependencies.Add(item); 
         return id;  
     }

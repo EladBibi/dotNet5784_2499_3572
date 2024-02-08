@@ -86,11 +86,6 @@ internal class TaskImplementation : ITask
         return Tasks.FirstOrDefault(k => filter(k));
     }
 
-
-
-
-
-
     public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
     {
         XElement? TaskList = XMLTools.LoadListFromXMLElement(s_tasks_xml);
