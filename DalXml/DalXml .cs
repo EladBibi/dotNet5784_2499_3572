@@ -17,4 +17,9 @@ sealed public class DalXml : IDal
     public IDependency Dependency => new DependencyImplementation();
 
     public ITask Task => new TaskImplementation();
+
+    public DateTime? GetDates(string date)
+    {
+        throw new NotImplementedException();
+    }
 }
