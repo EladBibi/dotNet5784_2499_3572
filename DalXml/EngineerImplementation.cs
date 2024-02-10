@@ -122,18 +122,12 @@ internal class EngineerImplementation : IEngineer
     public XElement create(Engineer item, int NewId)
     {
 
-
-
-
-        XElement NewEngineer = new XElement("Engineer", new XElement("id", NewId),
-
-
-
-            new XElement("cost", item.Cost), new XElement("name", item.name),
+        XElement NewEngineer = new XElement("Engineer",
+            new XElement("id", NewId),
+            new XElement("cost", item.Cost),
+            new XElement("name", item.name),
             new XElement("email", item.Email),
             new XElement("level", item.level));
-
-
         return NewEngineer;
     }
 

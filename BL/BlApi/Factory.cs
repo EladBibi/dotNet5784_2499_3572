@@ -4,9 +4,7 @@ using BlImplementation;
 
 namespace BlApi;
 
-internal class Factory
+public  class Factory
 {
-
-
     public static IBl Get() => new BlImplementation.Bl();
 }

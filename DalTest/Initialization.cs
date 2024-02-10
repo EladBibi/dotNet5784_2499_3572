@@ -6,13 +6,12 @@ using DalApi;
 using DO;
 using DalApi;
 
-internal static class Intialize
+public static class Intialize
 {
-    private static IDal? s_dal;
     private static readonly Random s_rand = new Random();
     private static readonly int MIN_ID = 100000000;
     private static readonly int MAX_ID = 1000000000;
-    private static  IDal s_dal;
+    private static IDal s_dal;
 
     private static void createTasks()
     {
@@ -21,9 +20,7 @@ internal static class Intialize
             TimeSpan span = TimeSpan.FromDays(s_rand.Next(365, 901));
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 100000000+i, "", "", "", "",
-                DateTimeCreate, null, null,
-                null, (DO.EngineerExperience)(i % 5),span);
+            Task NewTask = new Task(0, 100000000 + i, "", "", "", "", DateTimeCreate, null, null, null, (DO.EngineerExperience)(i % 5), span);
             s_dal!.Task.Create(NewTask);
         }
     }
@@ -53,10 +50,8 @@ internal static class Intialize
         for (int i = 1; i <= 13;)
         {
 
-
             for (int k = 0, j = i + 2; k < 2; ++k)
             {
-
 
                 for (int l = 0; l < 3; ++l, ++j)
                 {
@@ -71,13 +66,11 @@ internal static class Intialize
 
     }
 
-
-
     public static void Do(IDal dal)
     {
 
-        s_dal = DalApi.Factory.Get;
-        s_dal.SetDates( 0,"StartDate")
+        s_dal = dal;
+        s_dal.SetDates(0, "StartDate");
         createEngineers();
         createTasks();
         createDependencies();
