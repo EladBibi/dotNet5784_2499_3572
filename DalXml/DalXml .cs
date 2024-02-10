@@ -3,6 +3,7 @@
 namespace Dal;
 using DalApi;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 sealed public class DalXml : IDal
 {
@@ -17,9 +18,17 @@ sealed public class DalXml : IDal
     public IDependency Dependency => new DependencyImplementation();
 
     public ITask Task => new TaskImplementation();
-
     public DateTime? GetDates(string date)
     {
-        throw new NotImplementedException();
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        return root.ToDateTimeNullable(date);
+
+    }
+    public void SetDates(DateTime d, string date)
+    {
+        d.AddMonths(2);
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        root.Element(date)?.SetValue((d).ToString());
+        root.Save(@"..\xml\data-config.xml");
     }
 }

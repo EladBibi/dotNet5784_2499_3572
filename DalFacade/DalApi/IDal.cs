@@ -10,6 +10,8 @@ public interface IDal
     IDependency Dependency { get; }
     ITask Task { get; }
     DateTime? GetDates(string date);
-   
+    public void SetDates(DateTime d, string date);
+
+
 
 }
