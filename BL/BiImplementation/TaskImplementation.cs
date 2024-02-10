@@ -278,84 +278,99 @@ internal class TaskImplementation : ITask
         Read(IdDepented)!.Dependencies!.Add(newTask);
     }
 
-    
-        
-        void UpdateEngineer(int id, EngineerInTask engineer)
-        {
-            DateTime? temp = _dal.GetDates("StartDate");
+
+
+    void UpdateEngineer(int id, EngineerInTask engineer)
+    {
+        DateTime? temp = _dal.GetDates("StartDate");
         if (temp is null)
             throw new BlLogicalErrorException("It is not possible to assign an engineer before the start of the execution phase");
 
 
         DO.Task? dotask = _dal.Task.Read(id);
-            DO.Engineer? doengineer = _dal.Engineer.Read(engineer.Id);
-            if (engineer.Name is null || engineer.Name == "" || engineer.Id <= 0 || id <= 0 || dotask is null || doengineer is null)
-              throw new BlInvalidInputException("The data entered does not match");
+        DO.Engineer? doengineer = _dal.Engineer.Read(engineer.Id);
+        if (engineer.Name is null || engineer.Name == "" || engineer.Id <= 0 || id <= 0 || dotask is null || doengineer is null)
+            throw new BlInvalidInputException("The data entered does not match");
 
 
         if ((int?)dotask.Complexity > (int?)doengineer.level)
             throw new BlLogicalErrorException("The task level is not suitable for an engineer");
-
-
-            DO.Task UpdateTask = dotask with { EngineerId = engineer.Id };
-            _dal.Task.Update(UpdateTask);
-
-        }
-
-
-
-
-        DateTime? forcaste(DO.Task T)
-        {
-            DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
-
-            max = max + T.RequiredEffortTime;
-            return max;
-        }
-        BO.Status getstatus(DO.Task T)
-        {
-
-            int i = 0;
-            if (T.StartDate is not null)
-                i = 1;
-            if (T.CompleteDate is not null)
-                if (T.CompleteDate <= DateTime.Now)
-                    i = 3;
-                else
-                    i = 2;
-
-            switch (i)
-            {
-                case 0:
-                    return (Status)0;
-
-                case 1:
-                    return (Status)1;
-
-                case 2:
-                    return (Status)2;
-
-                case 3:
-                    return (Status)3;
-
-                default:
-                    return 0;
-
-            }
-        }
-        //מתודת עזר בשביל חישוב האם כל המשימות התלוות במשימה זו הסתיימו
-        bool EndOfTasks(DO.Task T)
-        {
-            if (_dal.Dependency.ReadAll(p => p.DependentTask == T.Id)
-                .FirstOrDefault(k => getstatus(_dal.Task.Read(k.DependsOnTask)!) != BO.Status.Done) is not null)
-                return false;
-            return true;
-        }
+        //מאחר והמנהדס עובר למשימה חדשה צמריך לבדוק אם הייתה לו משימה קודמת ולעדכן בהתאם לכך שזמן הסיום יהיה כעת ואז הסטטוס יהיה done 
+        
+        var item = _dal.Task.ReadAll(p=>p.EngineerId == engineer.Id);
+        if (item.Any())
+            foreach (var item2 in item)
+                if (item2.CompleteDate > DateTime.Now)
+                {
+                    DO.Task NewTask = item2 with { CompleteDate = DateTime.Now };
+                    _dal.Task.Update(NewTask);
+                }
 
 
 
 
 
 
+
+        DO.Task UpdateTask = dotask with { EngineerId = engineer.Id };
+        _dal.Task.Update(UpdateTask);
 
     }
+
+
+
+
+    DateTime? forcaste(DO.Task T)
+    {
+        DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
+
+        max = max + T.RequiredEffortTime;
+        return max;
+    }
+    BO.Status getstatus(DO.Task T)
+    {
+
+        int i = 0;
+        if (T.StartDate is not null)
+            i = 1;
+        if (T.CompleteDate is not null)
+            if (T.CompleteDate <= DateTime.Now)
+                i = 3;
+            else
+                i = 2;
+
+        switch (i)
+        {
+            case 0:
+                return (Status)0;
+
+            case 1:
+                return (Status)1;
+
+            case 2:
+                return (Status)2;
+
+            case 3:
+                return (Status)3;
+
+            default:
+                return 0;
+
+        }
+    }
+    //מתודת עזר בשביל חישוב האם כל המשימות התלוות במשימה זו הסתיימו
+    bool EndOfTasks(DO.Task T)
+    {
+        if (_dal.Dependency.ReadAll(p => p.DependentTask == T.Id)
+            .FirstOrDefault(k => getstatus(_dal.Task.Read(k.DependsOnTask)!) != BO.Status.Done) is not null)
+            return false;
+        return true;
+    }
+
+}
+
+
+
+
+
+    

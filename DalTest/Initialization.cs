@@ -3,10 +3,11 @@ namespace DalTest;
 
 using Dal;
 using DO;
+using DalApi;
 
 internal class Intialize
 {
-
+    private static IDal? s_dal;
     private static readonly Random s_rand = new Random();
     private const int MIN_ID = 100000000;
     private const int MAX_ID = 1000000000;
@@ -15,12 +16,12 @@ internal class Intialize
     {
         for (int i = 0; i < 25; ++i)
         {
-
+            TimeSpan span = TimeSpan.FromDays(s_rand.Next(365, 901));
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 100000000+i, "", "", "", "", false,
+            Task NewTask = new Task(0, 100000000+i, "", "", "", "",
                 DateTimeCreate, null, null,
-                null, (DO.EngineerExperience)(i % 5), null);
+                null, (DO.EngineerExperience)(i % 5),span);
             s_dal!.Task.Create(NewTask);
         }
     }
@@ -74,6 +75,7 @@ internal class Intialize
     {
 
         s_dal = DalApi.Factory.Get;
+        s_dal.SetDates( 0,"StartDate")
         createEngineers();
         createTasks();
         createDependencies();

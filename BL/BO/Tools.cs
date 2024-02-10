@@ -15,7 +15,7 @@ namespace BO
 
 
             StringBuilder str = new StringBuilder();
-            foreach (PropertyInfo item in obj.GetType().GetProperties())
+            foreach (PropertyInfo item in obj!.GetType().GetProperties())
             {
                 str.AppendLine($"{item.Name}: {item.GetValue(obj, null)}");
             }
