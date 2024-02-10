@@ -6,7 +6,7 @@ namespace BlImplementation;
 
 internal class EngineerImplementation : IEnginner
 {
-    private readonly IDal dal = Factory.Get;
+    private readonly IDal dal = DalApi.Factory.Get;
     public int Create(BO.Engineer engineer)
     {
         //TODO update Exception

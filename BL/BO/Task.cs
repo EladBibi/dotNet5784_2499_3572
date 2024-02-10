@@ -23,7 +23,7 @@ public class Task
     public TimeSpan? RequiredEffortTime { get; init; }
     public BO.Status? Status { get; set; }
     public List<BO.TaskInList>? Dependencies { get; init; } = null;
-    //public BO.MilestoneInTask? Milestone { get; init; } = null;
+   
     public BO.EngineerInTask? Engineer { get; set; } = null;
-    //public override string ToString() => this.ToStringProperty();
+    public override string ToString() => this.ToStringProperty();
 }

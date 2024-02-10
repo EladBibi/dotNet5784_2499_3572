@@ -510,7 +510,7 @@ internal class Program
             temp = Console.ReadLine()!;
             RequiredEffortTime = TimeSpan.Parse(temp);
             Task NewTask = new Task(0, EngineerId, Alias, Description, Deliverables,
-                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                Remarks, CreatedAtDate, scheduledDate, StartDate,
                 CompleteDate, level, RequiredEffortTime);
             s_dal.Task!.Create(NewTask);
         }
@@ -522,7 +522,7 @@ internal class Program
             string? Deliverables = tas.Deliverables;
             string? Remarks = tas.Remarks;
             string temp;
-            bool IsMilestone = tas.IsMilestone;
+            
             DateTime? CreatedAtDate = tas.CreatedAtDate;
             DateTime? scheduledDate = tas.scheduledDate;
             DateTime? StartDate = tas.StartDate;
@@ -535,40 +535,37 @@ internal class Program
         Console.WriteLine("Enter the new engineer's id:");
         temp = Console.ReadLine()!;
 
-        if (temp != "")
-            EngineerId = int.Parse(temp);
-        Console.WriteLine("Enter the new task's alias:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            Alias = temp;
-        Console.WriteLine("Enter the new task's Description");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            Description = temp;
-        Console.WriteLine("Enter the new task's Deliverables");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            Deliverables = temp;
-        Console.WriteLine("Enter the new task's remarks");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            Remarks = temp;
-        Console.WriteLine("Enter the new value in the task milestone:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            IsMilestone = bool.Parse(temp);
-        Console.WriteLine("Enter the new value in the new create date of the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            CreatedAtDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the new value in the new scheduled date date of the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            scheduledDate = DateTime.Parse(temp);
-        Console.WriteLine("Enter the new value in the new start date of the task:");
-        temp = Console.ReadLine()!;
-        if (temp != "")
-            StartDate = DateTime.Parse(temp);
+            if (temp != "")
+                EngineerId = int.Parse(temp);
+            Console.WriteLine("Enter the new task's alias:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                Alias = temp;
+            Console.WriteLine("Enter the new task's Description");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                Description = temp;
+            Console.WriteLine("Enter the new task's Deliverables");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                Deliverables = temp;
+            Console.WriteLine("Enter the new task's remarks");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                Remarks = temp;
+           
+            Console.WriteLine("Enter the new value in the new create date of the task:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                CreatedAtDate = DateTime.Parse(temp);
+            Console.WriteLine("Enter the new value in the new scheduled date date of the task:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                scheduledDate = DateTime.Parse(temp);
+            Console.WriteLine("Enter the new value in the new start date of the task:");
+            temp = Console.ReadLine()!;
+            if (temp != "")
+                StartDate = DateTime.Parse(temp);
 
             Console.WriteLine("Enter the new value in the new  Complete date date of the task:");
             temp = Console.ReadLine()!;
@@ -584,7 +581,7 @@ internal class Program
             if (temp != "")
                 RequiredEffortTime = TimeSpan.Parse(temp);
             Task New = new Task(tas.Id, EngineerId, Alias, Description, Deliverables,
-                Remarks, IsMilestone, CreatedAtDate, scheduledDate, StartDate,
+                Remarks, CreatedAtDate, scheduledDate, StartDate,
                 CompleteDate,  level, RequiredEffortTime);
             s_dal.Task!.Update(New);
         }
