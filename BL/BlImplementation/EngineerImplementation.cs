@@ -1,4 +1,5 @@
-﻿using BlApi;
+﻿
+using BlApi;
 using DalApi;
 
 namespace BlImplementation;
@@ -13,14 +14,17 @@ internal class EngineerImplementation : IEnginner
             throw new Exception("the details of engineer faild");
         try
         {
-            return dal.Engineer.Create(new DO.Engineer()
+            DO.Engineer eng = new DO.Engineer()
             {
                 Id = engineer.Id,
                 name = engineer.name,
                 Email = engineer.Email,
                 Cost = engineer.Cost,
                 level = (DO.EngineerExperience)engineer.Level!,
-            });
+            };
+
+            int id = dal.Engineer.Create(eng);
+            return id;
         }
         //TODO update Exception
         catch (Exception ex) { throw new Exception(ex.Message); }
@@ -40,7 +44,8 @@ internal class EngineerImplementation : IEnginner
     {
         //TODO update Exception
         DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new Exception("the engineer id dost exist");
-        DO.Task task = dal.Task.Read(x => x.EngineerId == id) ?? new DO.Task();
+        DO.Task task = dal.Task.Read(x => x.EngineerId == id &&
+            x.StartDate != null && x.CompleteDate == null) ?? new DO.Task();
 
         return new BO.Engineer()
         {
@@ -48,6 +53,7 @@ internal class EngineerImplementation : IEnginner
             name = engineerd.name,
             Cost = engineerd.Cost,
             Email = engineerd.Email,
+            Level = (BO.EngineerExperience)engineerd.level!,
             Task = new BO.TaskInEngineer()
             {
                 Alias = task.Alias,
@@ -89,8 +95,8 @@ internal class EngineerImplementation : IEnginner
 
                 DO.Engineer eng = dal.Engineer.Read(engineer.Id) ?? throw new Exception();
 
-                DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level?
-                    (DO.EngineerExperience)engineer.Level: eng.level;
+                DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
+                    (DO.EngineerExperience)engineer.Level : eng.level;
                 eng = eng with
                 {
                     Cost = engineer.Cost,

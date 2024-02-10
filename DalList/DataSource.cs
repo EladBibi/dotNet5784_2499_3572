@@ -14,7 +14,7 @@ internal static class DataSource
         internal static int NextDependency { get => ++nextDependency; }
     }
 
-
+    //כל רשימה מכילה הפניה לאותו טיפוס
     internal static List<DO.Engineer> Engineers { get; } = new();
     internal static List<DO.Task> Tasks { get; } = new();
     internal static List<DO.Dependency> Dependencies { get; } = new();

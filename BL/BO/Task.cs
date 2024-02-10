@@ -6,35 +6,6 @@ namespace BO;
 /// </summary>
 public class Task
 {
-  /* public Task(int id, string? alias, string? description, string? deliverables,
-            string? remarks, DateTime? createdAtDate, DateTime? scheduledDate, DateTime? startDate, DateTime? completeDate,
-           DateTime? foreCastDate, BO.EngineerExperience? complexity, TimeSpan? requiredEffortTime, BO.Status? status,
-           List<BO.TaskInList>? dependencies, BO.MilestoneInTask? milestone, BO.EngineerInTask? engineer)
-    {
-        Id = id;
-        Alias = alias;
-        Description = description;
-        Deliverables = deliverables;
-        Remarks = remarks;
-        CreatedAtDate = createdAtDate;
-        ScheduledDate = scheduledDate;
-        StartDate = startDate;
-        CompleteDate = completeDate;
-        ForeCastDate = foreCastDate;
-        Complexity = complexity;
-        RequiredEffortTime = requiredEffortTime;
-        Status = status;
-        Dependencies = dependencies;
-        Milestone = milestone;
-        Engineer = engineer;
-    }
-  */
-
-
-
-
-
-
     public int Id { get; init; }
 
     public string? Alias { get; set; }
