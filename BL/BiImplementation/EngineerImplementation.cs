@@ -62,7 +62,7 @@ internal class EngineerImplementation : IEnginner
         };
     }
 
-    public IEnumerable<BO.Engineer> ReadAll(Func<BO.Engineer, bool> filter = null)
+    public IEnumerable<BO.Engineer> ReadAll(Func<BO.Engineer, bool>? filter = null)
     {
         return (from eng in dal.Engineer.ReadAll()
                 let task = dal.Task.Read(x => x.EngineerId == eng.Id) ?? new()

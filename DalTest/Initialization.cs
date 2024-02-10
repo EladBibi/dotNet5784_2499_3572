@@ -6,7 +6,7 @@ using DalApi;
 using DO;
 using DalApi;
 
-public static class Intialize
+public class Initialization
 {
     private static readonly Random s_rand = new Random();
     private static readonly int MIN_ID = 100000000;
@@ -69,8 +69,9 @@ public static class Intialize
     public static void Do(IDal dal)
     {
 
-        s_dal = dal;
-        s_dal.SetDates(0, "StartDate");
+        s_dal = DalApi.Factory.Get;
+        s_dal.SetDates(DateTime.MinValue,"StartDate");
+        s_dal.SetDates(DateTime.MinValue,"FinishDate");
         createEngineers();
         createTasks();
         createDependencies();
