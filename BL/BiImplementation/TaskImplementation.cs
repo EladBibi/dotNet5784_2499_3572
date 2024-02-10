@@ -16,9 +16,10 @@ internal class TaskImplementation : ITask
 
     public int Create(BO.Task item)
     {
-        DateTime? temp = _dal.GetDates("StartDate");
-        if (temp is not null)
+        if (_dal.GetDates("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to create new tasks after entering a start date for the project");
+            
+
 
         if (CheckData(item))
             throw new BlInvalidInputException("The data you entered is incorrect for the task");
@@ -77,8 +78,9 @@ internal class TaskImplementation : ITask
                 {
                     UpdateDate(date, temp.Id);
                 }
-                catch (BlLogicalErrorException ex)
+                catch (BlLogicalErrorException)
                 {
+
                     throw;
                 }
 
@@ -91,8 +93,7 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        DateTime? temp = _dal.GetDates("StartDate");
-        if (temp is not null)
+        if (_dal.GetDates("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to delete  tasks after entering a start date for the project");
 
 
@@ -204,7 +205,7 @@ internal class TaskImplementation : ITask
         DO.Task NewdoTask = new DO.Task(item.Id, item.Engineer!.Id, item.Alias, item.Deliverables, item.Description,
            item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
             (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
-        if (_dal.GetDates("StartDate") is not null)
+        if (_dal.GetDates("StartDate") != DateTime.MinValue)
             if (OldTask.EngineerId != NewdoTask.EngineerId || OldTask.CreatedAtDate != NewdoTask.CreatedAtDate
                 || OldTask.scheduledDate != NewdoTask.scheduledDate || OldTask.StartDate != NewdoTask.StartDate
                 || OldTask.CompleteDate != NewdoTask.CompleteDate || OldTask.Complexity != NewdoTask.Complexity
@@ -230,8 +231,8 @@ internal class TaskImplementation : ITask
 
     public void UpdateDate(DateTime d, int id)
     {
-        if (_dal.GetDates("StartDate") is null)
-            throw new BlLogicalErrorException("Cant not update dates before  you enter a start date for the project");
+        if (_dal.GetDates("StartDate") == DateTime.MinValue)
+            throw new BlLogicalErrorException("Cant not update dates before you enter a start date for the project");
         DO.Task? dotask = _dal.Task.Read(id);
         if (dotask is null)
             throw new BlNullPropertyException($"Task with ID={id} does Not exist");
@@ -257,9 +258,10 @@ internal class TaskImplementation : ITask
 
     public void AddDependency(int IdDepented, int IdDepentedOn)
     {
-        DateTime? temp = _dal.GetDates("StartDate");
-        if (temp is not null)
+        if (_dal.GetDates("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("Dependencies cannot be added after the execution phase has started");
+
+
         DO.Dependency doDependency = new DO.Dependency(0, IdDepented, IdDepentedOn);
         _dal.Dependency.Create(doDependency);
         BO.Task? botask = Read(IdDepentedOn);
@@ -282,9 +284,10 @@ internal class TaskImplementation : ITask
 
     void UpdateEngineer(int id, EngineerInTask engineer)
     {
-        DateTime? temp = _dal.GetDates("StartDate");
-        if (temp is null)
+        if( _dal.GetDates("StartDate")== DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to assign an engineer before the start of the execution phase");
+
+
 
 
         DO.Task? dotask = _dal.Task.Read(id);

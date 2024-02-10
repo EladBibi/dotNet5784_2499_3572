@@ -5,7 +5,7 @@ using Dal;
 using DO;
 using DalApi;
 
-internal class Intialize
+public class Initialization
 {
     private static IDal? s_dal;
     private static readonly Random s_rand = new Random();
@@ -75,7 +75,8 @@ internal class Intialize
     {
 
         s_dal = DalApi.Factory.Get;
-        s_dal.SetDates( 0,"StartDate")
+        s_dal.SetDates(DateTime.MinValue,"StartDate");
+        s_dal.SetDates(DateTime.MinValue,"FinishDate");
         createEngineers();
         createTasks();
         createDependencies();
