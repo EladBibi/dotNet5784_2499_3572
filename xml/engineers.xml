@@ -42,4 +42,46 @@
     <email>OriIsraelof110@gmail.com</email>
     <level>Beginner</level>
   </Engineer>
+  <Engineer>
+    <id>882445914</id>
+    <cost>2238</cost>
+    <name>Avi Levi</name>
+    <email>AviLevi100@gmail.com</email>
+    <level>Beginner</level>
+  </Engineer>
+  <Engineer>
+    <id>996312731</id>
+    <cost>1719</cost>
+    <name>Eli Amar</name>
+    <email>EliAmar102@gmail.com</email>
+    <level>Intermediate</level>
+  </Engineer>
+  <Engineer>
+    <id>648568038</id>
+    <cost>2264</cost>
+    <name>Yair Cohen</name>
+    <email>YairCohen104@gmail.com</email>
+    <level>Expert</level>
+  </Engineer>
+  <Engineer>
+    <id>562980856</id>
+    <cost>2007</cost>
+    <name>Moshe Levin</name>
+    <email>MosheLevin106@gmail.com</email>
+    <level>AdvancedBeginner</level>
+  </Engineer>
+  <Engineer>
+    <id>507801939</id>
+    <cost>1649</cost>
+    <name>Daniel Klein</name>
+    <email>DanielKlein108@gmail.com</email>
+    <level>Advanced</level>
+  </Engineer>
+  <Engineer>
+    <id>674185222</id>
+    <cost>2263</cost>
+    <name>Ori Israelof</name>
+    <email>OriIsraelof110@gmail.com</email>
+    <level>Beginner</level>
+  </Engineer>
 </ArrayOfEngineers>

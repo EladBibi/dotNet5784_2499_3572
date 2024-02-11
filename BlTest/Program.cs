@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 using BlApi;
 using BO;
+//using DO;
 using Task = BO.Task;
 
 namespace BlTest;
@@ -40,13 +41,13 @@ internal class Program
 
                 case 3:
                     Console.Write("Would you like to create Initial data? (Y/N)\n");
-                    string ans = Console.ReadLine() ?? "Y";
-                    if (ans == "Y") ;
-                        //DalTest.Initialization.Do();
+                    string ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
+                    if (ans == "Y") 
+                        DalTest.Initialization.Do();
                     break;
                 case 6:
                     return;
-
+                     
                 default:
                     break;
             }
@@ -76,7 +77,15 @@ internal class Program
                         Console.WriteLine("Enter the data to test xml and press Y");
                         string accept = Console.ReadLine()!;
                         if (accept == "Y")
-                            bl.Engineer.Create(LoadTest<Engineer>(EngPath));
+                            try
+                            {
+                                bl.Engineer.Create(LoadTest<Engineer>(EngPath));
+                            }
+                            catch(DalXMLFileLoadCreateException ex)
+                            {
+                                Console.WriteLine( ex.Message);
+                            }
+
                         break;
 
                     case 2:
@@ -89,7 +98,14 @@ internal class Program
                         Console.WriteLine("Enter the data to test xml and press Y");
                         accept = Console.ReadLine()!;
                         if (accept == "Y")
-                            bl.Engineer.Update(LoadTest<Engineer>(EngPath));
+                            try
+                            {
+                                bl.Engineer.Update(LoadTest<Engineer>(EngPath));
+                            }
+                            catch (DalXMLFileLoadCreateException ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                         break;
 
                     case 4:
@@ -121,7 +137,7 @@ internal class Program
             Console.WriteLine(
                 "Add task press 1\n" +
                 "Read task press 2\n" +
-                "Read all engineers press 3\n" +
+                "Read all tasks press 3\n" +
                 "Update task press 4\n" +
                 "Delete task press 5\n" +
                 "Update date press 6" +
@@ -133,23 +149,95 @@ internal class Program
                 switch (action)
                 {
                     case 1:
+                        Console.WriteLine("Enter the data to test xml and press Y");
+                        string accept = Console.ReadLine()!;
+                        if (accept == "Y")
+                            try
+                            {
+                                bl.Task.Create(LoadTest<Task>(TaskPath));
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                                break;
 
-                        break;
+
+                                
 
                     case 2:
- 
+                   
+                        Console.Write("Enter Task Id: ");
+                        id = int.Parse(Console.ReadLine()!);
+                        try
+                        {
+                            Console.WriteLine(bl.Task!.Read(id));
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine( e.Message);
+                        }
+
+                            
                         break;
 
+                        
                     case 3:
+                        Console.WriteLine("Enter the data to test xml and press Y");
+                        accept = Console.ReadLine()!;
+                        if (accept == "Y")
+                            try
+                            {
+                                bl.Task.Update(LoadTest<Task>(EngPath));
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+
+
                         break;
 
                     case 4:
+                       
+                            foreach (var eng in bl.Task.ReadAll())
+                                Console.WriteLine(eng);
+                        
+
                         break;
 
                     case 5:
+                        Console.WriteLine("enter the id of the task");
+                        id = int.Parse(Console.ReadLine()!);
+                        try
+                        {
+                            bl.Task.Delete(id);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 6:
+                        DateTime d;
+                        Console.WriteLine("enter id of the task");
+                        id = int.Parse(Console.ReadLine()!);
+                        Console.WriteLine( "Enter the date you want to update");
+                        if (!DateTime.TryParse(Console.ReadLine()!, out d))
+                            throw new FormatException("Wrong input");
+                        try
+                        {
+                            bl.Task.UpdateDate(d, id);
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine( e.Message);
+                        }
+
+
+
+
                         break;
 
                     case 7:
@@ -168,7 +256,7 @@ internal class Program
     {
         using FileStream file = new(filePath, FileMode.Open);
         XmlSerializer x = new(typeof(Item));
-        return x.Deserialize(file) as Item;
+        return x.Deserialize(file) as Item ?? throw new DalXMLFileLoadCreateException("Can't load the field");
     }
 
 }

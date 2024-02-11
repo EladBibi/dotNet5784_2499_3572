@@ -39,7 +39,7 @@ internal class Program
                             if (ans == "Y")
                             {
                                 DeleteBeforeInitialization();
-                                Initialization.Do(s_dal);
+                                Initialization.Do();
                             }
 
 
