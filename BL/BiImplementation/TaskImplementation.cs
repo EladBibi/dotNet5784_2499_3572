@@ -60,7 +60,7 @@ internal class TaskImplementation : ITask
         _dal.SetDates(DateTime.Now, "StartDate");
         foreach (var temp in _dal.Task.ReadAll())
         {
-
+            Console.WriteLine( "enter the scheduled date for the task");
             string s = Console.ReadLine()!;
             if (!DateTime.TryParse(s, out date))
                 throw new BlInvalidInputException("The data you entered is incorrect for a date");
