@@ -2,7 +2,7 @@
 namespace Dal;
 using DalApi;
 using System.Xml.Linq;
-
+//sealed - מחלקה שלא ניתן לרשת ממנה
 sealed internal class DalList : IDal
 {
     

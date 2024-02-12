@@ -20,7 +20,7 @@ internal class Program
         {
             Console.WriteLine(
                 "to engineer action press 1\n" +
-                "to tak action press 2\n" +
+                "to task action press 2\n" +
                 "to intialize the data press 3 \n" +
                 "to add start project value press 4\n" +
                 "to add end project value press 5\n" +
