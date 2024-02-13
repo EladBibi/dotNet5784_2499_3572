@@ -42,7 +42,7 @@ internal class Program
                 case 3:
                     Console.Write("Would you like to create Initial data? (Y/N)\n");
                     string ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
-                    if (ans == "Y") 
+                    if (ans == "Y")
                         DalTest.Initialization.Do();
                     break;
                 case 6:
@@ -91,7 +91,9 @@ internal class Program
                     case 2:
                         Console.Write("Enter Engineer Id: ");
                         Id = int.Parse(Console.ReadLine()!);
-                        Console.WriteLine(bl.Engineer!.Read(Id));
+                        Engineer engineer = bl.Engineer!.Read(Id);
+                        //Save(engineer, EngPath);
+                        Console.WriteLine(engineer);
                         break;
 
                     case 3:
@@ -252,6 +254,13 @@ internal class Program
 
     }
 
+    private static void Save<Item>(Item item, string filePath) where Item : class
+    {
+        using FileStream file = new(filePath, FileMode.Create,FileAccess.ReadWrite, FileShare.None);
+        XmlSerializer x = new(typeof(Item));
+        x.Serialize(file, item);
+        file.Close();
+    }
     private static Item LoadTest<Item>(string filePath) where Item : class
     {
         using FileStream file = new(filePath, FileMode.Open);

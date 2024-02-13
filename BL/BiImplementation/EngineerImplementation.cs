@@ -4,7 +4,7 @@ using DalApi;
 
 namespace BlImplementation;
 
-internal class EngineerImplementation : IEnginner
+internal class EngineerImplementation : BlApi.IEnginner
 {
     private readonly IDal dal = DalApi.Factory.Get;
     public int Create(BO.Engineer engineer)
@@ -89,7 +89,7 @@ internal class EngineerImplementation : IEnginner
             //TODO
             if (engineer.Task != null)
             {
-                DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? throw new Exception();
+                DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? new();
                 if (task.EngineerId != engineer.Id && task.EngineerId != 0)
                     throw new Exception();//TODO
 
