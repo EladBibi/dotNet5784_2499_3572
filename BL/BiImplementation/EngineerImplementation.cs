@@ -65,18 +65,19 @@ internal class EngineerImplementation : IEnginner
     public IEnumerable<BO.Engineer> ReadAll(Func<BO.Engineer, bool>? filter = null)
     {
         return (from eng in dal.Engineer.ReadAll()
-                let task = dal.Task.Read(x => x.EngineerId == eng.Id) ?? new()
+                let task = dal.Task.Read(x => x.EngineerId == eng.Id)
                 select new BO.Engineer()
                 {
                     name = eng.name,
                     Cost = eng.Cost,
                     Email = eng.Email,
+                    Level = (BO.EngineerExperience)eng.level!,
                     Id = eng.Id,
-                    Task = new BO.TaskInEngineer()
+                    Task = task is not null ? new BO.TaskInEngineer()
                     {
                         Alias = task.Alias,
                         Id = task.Id,
-                    }
+                    } : null
                 }).Where(eng => filter is null ? true : filter(eng));
     }
 

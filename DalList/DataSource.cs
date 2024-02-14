@@ -7,11 +7,13 @@ internal static class DataSource
         private const int FirstTask = 0;
         private static int nextTask = FirstTask;
         internal static int NextTask { get => ++nextTask; }
+      
 
 
-        private const int startDependency = 0;
+       private const int startDependency = 0;
         private static int nextDependency = startDependency;
         internal static int NextDependency { get => ++nextDependency; }
+        internal static void reset() { nextTask = 0; nextDependency = 0; }
     }
 
     //כל רשימה מכילה הפניה לאותו טיפוס

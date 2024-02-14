@@ -11,7 +11,7 @@ public class Initialization
     private static readonly Random s_rand = new Random();
     private static readonly int MIN_ID = 100000000;
     private static readonly int MAX_ID = 1000000000;
-    private static IDal? s_dal;
+    private static IDal? s_dal = null;
 
     private static void createTasks()
     {
@@ -76,6 +76,21 @@ public class Initialization
         createTasks();
         createDependencies();
     }
+
+    public static void Rest()
+    {
+        if (s_dal is not null)
+        {
+            s_dal.Engineer.DeleteAll();
+            s_dal.Task.DeleteAll();
+            s_dal.Dependency.DeleteAll();
+        }
+    }
+
+
+
+
+        
 }
 
 

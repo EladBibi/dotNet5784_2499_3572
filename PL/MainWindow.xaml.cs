@@ -8,6 +8,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PL.Engineer;
+using BlApi;
+
+
 
 namespace PL
 {
@@ -16,13 +20,44 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
+      
         public MainWindow()
         {
             InitializeComponent();
+        
+
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void btnEngineer_Click(object sender, RoutedEventArgs e)
+        { new EngineerListWindow().Show(); }
+
+        private void Init_Data(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("be cerful!!!!!!!");
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the data?", "Init",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+                Factory.Get().InitializeDB();
         }
+
+        private void Rest_Data(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to rest the data?", "Rest",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+                Factory.Get().RestDB();
+        }
+
+
+
+        
+
+
+
+
+
+
+
+
     }
 }
+
