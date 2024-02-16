@@ -39,12 +39,12 @@ namespace PL
                 Factory.Get().InitializeDB();
         }
 
-        private void Rest_Data(object sender, RoutedEventArgs e)
+        private void Reset_Data(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to rest the data?", "Rest",
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to rest the data?", "Reset",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
-                Factory.Get().RestDB();
+                Factory.Get().ResetDB();
         }
 
 

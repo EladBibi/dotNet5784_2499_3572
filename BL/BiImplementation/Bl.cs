@@ -12,6 +12,6 @@ public class Bl : IBl
 
     public void InitializeDB() => DalTest.Initialization.Do();
 
-    public void RestDB() => DalTest.Initialization.Rest();
+    public void ResetDB() => DalTest.Initialization.Reset();
 
 }

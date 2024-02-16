@@ -43,6 +43,29 @@ public partial class EngineerListWindow : Window
             s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => item.Level == level)!;
     }
 
+    private void Add_Click(object sender, RoutedEventArgs e)
+    {
+
+        new EngineerWindow().ShowDialog();
+        EngineerList = s_bl?.Engineer.ReadAll()!;
+    }
+  
+
+    private void Update_DoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        BO.Engineer? Engineer = (sender as ListView)?.SelectedItem as BO.Engineer;
+        if (Engineer is not null)
+        {
+            new EngineerWindow(Engineer.Id).ShowDialog();
+            EngineerList = s_bl?.Engineer.ReadAll()!;
+        }
 
 
+
+
+
+        else
+            MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+    }
 }

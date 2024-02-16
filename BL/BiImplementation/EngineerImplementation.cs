@@ -10,8 +10,8 @@ internal class EngineerImplementation : IEnginner
     public int Create(BO.Engineer engineer)
     {
         //TODO update Exception
-        if (IsValid(engineer))
-            throw new Exception("the details of engineer faild");
+        if (!IsValid(engineer))
+            throw new Exception("the details of engineer is not valid");
         try
         {
             DO.Engineer eng = new DO.Engineer()
@@ -44,8 +44,9 @@ internal class EngineerImplementation : IEnginner
     {
         //TODO update Exception
         DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new Exception("the engineer id dost exist");
-        DO.Task task = dal.Task.Read(x => x.EngineerId == id &&
-            x.StartDate != null && x.CompleteDate == null) ?? new DO.Task();
+        
+        DO.Task? task = dal.Task.Read(x => x.EngineerId == id &&
+            x.StartDate != null && x.CompleteDate == null);
 
         return new BO.Engineer()
         {
@@ -54,11 +55,11 @@ internal class EngineerImplementation : IEnginner
             Cost = engineerd.Cost,
             Email = engineerd.Email,
             Level = (BO.EngineerExperience)engineerd.level!,
-            Task = new BO.TaskInEngineer()
+            Task = task is not null ? new BO.TaskInEngineer()
             {
                 Alias = task.Alias,
                 Id = task.Id,
-            }
+            } : null
         };
     }
 
@@ -83,9 +84,9 @@ internal class EngineerImplementation : IEnginner
 
     public void Update(BO.Engineer engineer)
     {
-        if (IsValid(engineer))
+        if (!IsValid(engineer))
             throw new Exception("the details of engineer faild");
-        try
+       try
         {
             //TODO
             if (engineer.Task != null)
@@ -93,8 +94,12 @@ internal class EngineerImplementation : IEnginner
                 DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? throw new Exception();
                 if (task.EngineerId != engineer.Id && task.EngineerId != 0)
                     throw new Exception();//TODO
-
-                DO.Engineer eng = dal.Engineer.Read(engineer.Id) ?? throw new Exception();
+            }
+               
+    
+        
+        DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
+            throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists"); 
 
                 DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
                     (DO.EngineerExperience)engineer.Level : eng.level;
@@ -108,7 +113,7 @@ internal class EngineerImplementation : IEnginner
 
                 dal.Engineer.Update(eng);
 
-            }
+            
         }
         //TODO
         catch (Exception ex) { throw new Exception(ex.Message); }
@@ -120,6 +125,6 @@ internal class EngineerImplementation : IEnginner
             engineer.Cost <= 0.0 ? false :
             engineer.Id < 1 ? false :
             engineer.name is null ? false :
-            engineer.Level is not null ? false : true;
+            engineer.Level is null ? false : true;
     }
 }

@@ -11,13 +11,14 @@
     <!--Extrnal Grid-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="23*"/>
+            <RowDefinition Height="261*"/>
+            <RowDefinition Height="28*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+        <Grid Height="auto" Grid.Row="0" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400*"/>
                 <ColumnDefinition Width="280*"/>
@@ -33,13 +34,16 @@
                 ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}"
      
                   Grid.Column="1"    Margin="105,0,94,5" Grid.ColumnSpan="5"/>
-
-
-
         </Grid>
 
-        <ListView Grid.Row="1">
-            <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=EngineerList}"/>
+
+
+
+
+
+        <Button Content="Add" Click="Add_Click"  Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        
+        <ListView Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="Update_DoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -47,7 +51,7 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+
 
 
 

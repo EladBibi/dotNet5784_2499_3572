@@ -68,7 +68,8 @@ public class Initialization
 
     public static void Do()
     {
-
+        if (s_dal is not null) 
+        Reset();
         s_dal = DalApi.Factory.Get;
         s_dal.SetDates(DateTime.MinValue,"StartDate");
         s_dal.SetDates(DateTime.MinValue,"FinishDate");
@@ -77,7 +78,7 @@ public class Initialization
         createDependencies();
     }
 
-    public static void Rest()
+    public static void Reset()
     {
         if (s_dal is not null)
         {

@@ -8,7 +8,7 @@ public  interface IBl
     public IEnginner Engineer { get; }
     public void InitializeDB();
     
-    public void RestDB();
+    public void ResetDB();
 
 }
 
