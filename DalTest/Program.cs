@@ -29,6 +29,7 @@ internal class Program
                 string? ans = null;
                 do
                 {
+                    //Initialization.Do() לא נרצה לייצר את בסיס נתונים כל פעם מחדש, אלא בעיקר בפעם הראשונה, לכן נכניס כבחירה את הקריאה למתודה 
 
                     Console.WriteLine("Would you like to create Initial data? (Y/N)");
                     try
@@ -38,7 +39,7 @@ internal class Program
                         {
                             if (ans == "Y")
                             {
-                                DeleteBeforeInitialization();
+                                DeleteBeforeInitialization();//מחיקת הישן, אם קיים, לפני יצירת החדש
                                 Initialization.Do();
                             }
 

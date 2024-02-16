@@ -2,6 +2,9 @@
 
 namespace Dal;
 
+/// <summary>
+/// מכיוון שהנתונים נשמרים בקובץ ומתעדכנים בקובץ, אזי היתרון הוא שהם ישמרו מריצה לריצה. למשל: המספר הרץ האחרון מהריצה הקודמת ישאר ובריצה הבאה נמשיך להתקדם ממנו
+
 internal static class Config
 {
     static string s_data_config_xml = "data-config";

@@ -11,7 +11,7 @@ public class Initialization
     private static readonly Random s_rand = new Random();
     private static readonly int MIN_ID = 100000000;
     private static readonly int MAX_ID = 1000000000;
-    private static IDal? s_dal;
+    private static IDal? s_dal;//נעבוד כעת מול ממשק אחד בשכבת הנתונים ולא מול 3 ממשקים נפרדים
 
     private static void createTasks()
     {
@@ -65,7 +65,7 @@ public class Initialization
         }
 
     }
-
+    //זוהי מתודה ציבורית דו, שתזמן את המתודות הפרטיות שהכנו ותחולל את האתחולים של הרשימות 
     public static void Do()
     {
 
