@@ -68,9 +68,10 @@ public class Initialization
 
     public static void Do()
     {
-        if (s_dal is not null) 
-        Reset();
-        s_dal = DalApi.Factory.Get;
+        if (s_dal is null)
+            s_dal = DalApi.Factory.Get;
+
+          Reset();
         s_dal.SetDates(DateTime.MinValue,"StartDate");
         s_dal.SetDates(DateTime.MinValue,"FinishDate");
         createEngineers();
@@ -80,12 +81,12 @@ public class Initialization
 
     public static void Reset()
     {
-        if (s_dal is not null)
-        {
+        if (s_dal is null)
+            s_dal = DalApi.Factory.Get;
             s_dal.Engineer.DeleteAll();
             s_dal.Task.DeleteAll();
             s_dal.Dependency.DeleteAll();
-        }
+        
     }
 
 

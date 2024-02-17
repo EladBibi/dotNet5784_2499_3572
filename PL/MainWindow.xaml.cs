@@ -16,8 +16,8 @@ namespace PL
     using System.Windows.Shapes;
     using PL.Engineer;
     using BlApi;
-    
-    
+
+
     /// <summary>
 
 
@@ -25,11 +25,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-      
+
         public MainWindow()
         {
             InitializeComponent();
-        
+
 
         }
 
@@ -49,8 +49,20 @@ namespace PL
             MessageBoxResult result = MessageBox.Show("Are you sure you want to rest the data?", "Reset",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
+              Factory.Get().ResetDB();
+        }
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to save the data?", "Exit",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
                 Factory.Get().ResetDB();
         }
+    }
+
+}
+
+
 
 
 
@@ -63,6 +75,5 @@ namespace PL
 
 
 
-    }
-}
+ 
 

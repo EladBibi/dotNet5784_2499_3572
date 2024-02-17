@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        Closing="MainWindow_Closing"
         Title="MainWindow" Height="528" Width="800">
+        
     <Grid Background="LightBlue">
 
 
@@ -32,6 +34,7 @@
 
 
     </Grid>
+   
 </Window>
 
 
