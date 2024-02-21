@@ -11,7 +11,7 @@ public class Initialization
     private static readonly Random s_rand = new Random();
     private static readonly int MIN_ID = 100000000;
     private static readonly int MAX_ID = 1000000000;
-    private static IDal? s_dal;//נעבוד כעת מול ממשק אחד בשכבת הנתונים ולא מול 3 ממשקים נפרדים
+    private static IDal? s_dal = null;
 
     private static void createTasks()
     {
@@ -68,7 +68,8 @@ public class Initialization
     //זוהי מתודה ציבורית דו, שתזמן את המתודות הפרטיות שהכנו ותחולל את האתחולים של הרשימות 
     public static void Do()
     {
-
+        if (s_dal is not null) 
+        Reset();
         s_dal = DalApi.Factory.Get;
         s_dal.SetDates(DateTime.MinValue,"StartDate");
         s_dal.SetDates(DateTime.MinValue,"FinishDate");
@@ -76,6 +77,21 @@ public class Initialization
         createTasks();
         createDependencies();
     }
+
+    public static void Reset()
+    {
+        if (s_dal is not null)
+        {
+            s_dal.Engineer.DeleteAll();
+            s_dal.Task.DeleteAll();
+            s_dal.Dependency.DeleteAll();
+        }
+    }
+
+
+
+
+        
 }
 
 
