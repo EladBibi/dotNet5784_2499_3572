@@ -1,5 +1,6 @@
 ﻿
 using BlApi;
+using BO;
 using DalApi;
 
 namespace BlImplementation;
@@ -11,7 +12,7 @@ internal class EngineerImplementation : BlApi.IEnginner
     {
         //TODO update Exception
         if (!IsValid(engineer))
-            throw new Exception("the details of engineer is not valid");
+            throw new InvalidDataException("the details of engineer is not valid");
         try
         {
             DO.Engineer eng = new DO.Engineer()
@@ -23,28 +24,30 @@ internal class EngineerImplementation : BlApi.IEnginner
                 level = (DO.EngineerExperience)engineer.Level!,
             };
 
-            int id = dal.Engineer.Create(eng);
-            return id;
+            return dal.Engineer.Create(eng);
         }
         //TODO update Exception
-        catch (Exception ex) { throw new Exception(ex.Message); }
+        catch (Exception ex) { throw new BlAlreadyExistsException(ex.Message); }
     }
 
     public void Delete(int id)
     {
-        bool isWorkOnTask = dal.Task.ReadAll(x => x.EngineerId == id && x.StartDate != null).Any();
+        try
+        {
+            bool isWorkOnTask = dal.Task.ReadAll(x => x.EngineerId == id && x.StartDate != null).Any();
 
-        if (isWorkOnTask)
-            throw new Exception("the engineer aorked on task");
+            if (isWorkOnTask)
+                throw new InvalidOperationException("the engineer aorked on task");
 
-        dal.Engineer.Delete(id);
+            dal.Engineer.Delete(id);
+        }
+        catch (Exception ex) { throw new BlDoesNotExistException(ex.Message)}
     }
 
     public BO.Engineer Read(int id)
     {
-        //TODO update Exception
-        DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new Exception("the engineer id dost exist");
-        
+        DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new BlDoesNotExistException("the engineer id dost exist");
+
         DO.Task? task = dal.Task.Read(x => x.EngineerId == id &&
             x.StartDate != null && x.CompleteDate == null);
 
@@ -86,45 +89,41 @@ internal class EngineerImplementation : BlApi.IEnginner
     {
         if (!IsValid(engineer))
             throw new Exception("the details of engineer faild");
-       try
+        try
         {
             //TODO
             if (engineer.Task != null)
             {
                 DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? new();
                 if (task.EngineerId != engineer.Id && task.EngineerId != 0)
-                    throw new Exception();//TODO
+                    throw new InvalidDataException("the worker task on other engineer");//TODO
             }
-               
-    
-        
-        DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
-            throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists"); 
 
-                DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
-                    (DO.EngineerExperience)engineer.Level : eng.level;
-                eng = eng with
-                {
-                    Cost = engineer.Cost,
-                    Email = engineer.Email,
-                    level = newLevel,
-                    name = engineer.name
-                };
+            DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
+                throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists");
 
-                dal.Engineer.Update(eng);
+            DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
+                (DO.EngineerExperience)engineer.Level : eng.level;
 
-            
+            eng = eng with
+            {
+                Cost = engineer.Cost,
+                Email = engineer.Email,
+                level = newLevel,
+                name = engineer.name
+            };
+
+            dal.Engineer.Update(eng);
         }
-        //TODO
         catch (Exception ex) { throw new Exception(ex.Message); }
     }
 
     private bool IsValid(BO.Engineer engineer)
     {
-        return engineer.Email is null ? false :
+        return string.IsNullOrEmpty(engineer.Email) ? false :
             engineer.Cost <= 0.0 ? false :
             engineer.Id < 1 ? false :
-            engineer.name is null ? false :
+            string.IsNullOrEmpty(engineer.name) ? false :
             engineer.Level is null ? false : true;
     }
 }
