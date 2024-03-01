@@ -33,7 +33,7 @@ namespace PL
 
         private void Init_Data(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the data?", "Init",
+            MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to initialize the data?", "Init",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
                 Factory.Get().InitializeDB();
@@ -41,23 +41,16 @@ namespace PL
 
         private void Reset_Data(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to rest the data?", "Reset",
+            MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to rest the data?", "Reset",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
                 Factory.Get().ResetDB();
         }
 
-
-
-        
-
-
-
-
-
-
-
-
+        private void TaskClick(object sender, RoutedEventArgs e)
+        {
+            new TaskListWindow().Show();    
+        }
     }
 }
 

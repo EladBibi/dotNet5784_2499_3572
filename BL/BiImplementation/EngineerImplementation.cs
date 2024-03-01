@@ -41,7 +41,7 @@ internal class EngineerImplementation : BlApi.IEnginner
 
             dal.Engineer.Delete(id);
         }
-        catch (Exception ex) { throw new BlDoesNotExistException(ex.Message)}
+        catch (Exception ex) { throw new BlDoesNotExistException(ex.Message); }
     }
 
     public BO.Engineer Read(int id)
@@ -109,7 +109,7 @@ internal class EngineerImplementation : BlApi.IEnginner
             {
                 Cost = engineer.Cost,
                 Email = engineer.Email,
-                level = newLevel,
+                level = newLevel,//ערך התקין לוגית אותו וידאנו לעיל
                 name = engineer.name
             };
 
