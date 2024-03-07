@@ -7,40 +7,16 @@
         mc:Ignorable="d"
         Closing="MainWindow_Closing"
         Title="MainWindow" Height="528" Width="800">
-        
+
     <Grid Background="LightBlue">
-
-
-
-
-        <Button Content="Init" Click="Init_Data" HorizontalAlignment="Left" Margin="51,287,0,0" VerticalAlignment="Top"
-                Height="32" Width="164" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF6E7070" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
-
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="0.211"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="0.397"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-
-        </Button>
-        <Button Content="Reset" Click="Reset_Data" HorizontalAlignment="Left" Margin="476,287,0,0" VerticalAlignment="Top" Width="164" Height="32" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
-        <Button Content="Handle Engineer" Click="btnEngineer_Click"
-                HorizontalAlignment="Left" Margin="267,287,0,0" VerticalAlignment="Top" Width="164" Height="32" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
-
-
-
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="169*"/>
+            <ColumnDefinition Width="58*"/>
+            <ColumnDefinition Width="173*"/>
+        </Grid.ColumnDefinitions>
+       
     </Grid>
-   
 </Window>
-
-
-
-
-
 
 
 
