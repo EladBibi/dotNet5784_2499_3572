@@ -2,7 +2,7 @@
 namespace Dal;
 using DalApi;
 using System.Xml.Linq;
-
+//sealed - מחלקה שלא ניתן לרשת ממנה
 sealed internal class DalList : IDal
 {
     
@@ -17,6 +17,7 @@ sealed internal class DalList : IDal
 
     // public static IDal Instance { get; } = new DalList();
     private DalList() { }
+    // IDal עבור כל אחד מתתי הממשקים נממש את התכונה המתאימה שהוגדרה עבורו בממשק
     public IEngineer Engineer => new EngineerImplementation();
 
     public IDependency Dependency => new DependencyImplementation();

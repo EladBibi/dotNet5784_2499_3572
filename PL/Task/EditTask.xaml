@@ -1,0 +1,108 @@
+﻿<Window x:Class="PL.Task.EditTask"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Task"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="EditTask" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <!--DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EditTask.Task}}}"-->
+
+            <Grid Grid.Row="0" Margin="10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <!-- Id -->
+                    <TextBlock Text="ID:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="5" Text="{Binding Task.Id ,Mode=TwoWay}"/>
+
+                    <!-- Alias -->
+                    <TextBlock Text="Alias:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="5" Text="{Binding Task.Alias ,Mode=TwoWay}"/>
+
+                    <!-- Description -->
+                    <TextBlock Text="Description:" Grid.Row="1" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Description,Mode=TwoWay}"/>
+
+                    <!-- Created At Date -->
+                    <TextBlock Text="Created At:" Grid.Row="2" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="2" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CreatedAtDate,Mode=TwoWay}"/>
+
+                    <!-- Required Effort Time -->
+                    <TextBlock Text="Required Effort Time:" Grid.Row="3" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Task.RequiredEffortTime,Mode=TwoWay}"/>
+
+                    <!-- Complexity -->
+                    <TextBlock Text="Complexity:" Grid.Row="4" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" SelectedItem="{Binding Task.Complexity,Mode=TwoWay}"/>
+
+                    <!-- Deliverables -->
+                    <TextBlock Text="Deliverables:" Grid.Row="5" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Deliverables,Mode=TwoWay}"/>
+
+                    <!-- Remarks -->
+                    <TextBlock Text="Remarks:" Grid.Row="6" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Remarks,Mode=TwoWay}"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <!-- Start Date -->
+                    <TextBlock Text="Start Date:" Grid.Row="7" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="7" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.StartDate,Mode=TwoWay}"/>
+
+                    <!-- Scheduled Date -->
+                    <TextBlock Text="Scheduled Date:" Grid.Row="8" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="8" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.ScheduledDate,Mode=TwoWay}"/>
+
+                    <!-- Deadline Date -->
+                    <!--<TextBlock Text="Deadline Date:" Grid.Row="9" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="9" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.DeadlineDate}"/>-->
+
+                    <!-- Complete Date -->
+                    <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
+
+                    <!-- Forecast Date -->
+                    <TextBlock Text="Forecast Date:" Grid.Row="11" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="11" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.ForeCastDate,Mode=TwoWay}"/>
+
+                    <!-- Engineer -->
+                    <TextBlock Text="Engineer:" Grid.Row="12" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="12" Grid.Column="1" Margin="5" Text="{Binding Task.Engineer.Name,Mode=TwoWay}"/>
+
+                    <!-- Edit dependencies -->
+                    <Button Content="Edit Dependencies:" VerticalAlignment="Center" Click="OpenDialoge"/>
+
+
+                </StackPanel>
+                <!-- Assuming Dependencies is a collection of TaskInList -->
+                <DataGrid Grid.Column="2" Margin="5" ItemsSource="{Binding Task.Dependencies,Mode=TwoWay}" DisplayMemberPath="Alias"/>
+
+            </Grid>
+
+            <Button Grid.Row="1" Content="Save" HorizontalAlignment="Center"  Click="Save_Click" Width="80" Height="30"/>
+
+        </Grid>
+        <materialDesign:DialogHost IsOpen="{Binding ShowDialog}" CloseOnClickAway="True"  >
+            <materialDesign:DialogHost.DialogContent >
+                <Grid  Width="800" Height="400" >
+                    <ListView ItemsSource="{Binding TasksList}" MouseDoubleClick="AddDependency"/>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+    </Grid>
+</Window>

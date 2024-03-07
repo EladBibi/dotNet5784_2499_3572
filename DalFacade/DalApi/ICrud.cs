@@ -2,6 +2,13 @@
 
 namespace DalApi;
 using DO;
+
+/// <read:>
+/// The method will receive a pointer to a boolean function, 
+/// a delegate of type Func, which will act on each member of the list of type T 
+/// and return the first object in the list that the function returns true.
+/// <summary>
+
 public interface ICrud<T> where T : class
 {
     int Create(T item); //Creates new entity object in DAL

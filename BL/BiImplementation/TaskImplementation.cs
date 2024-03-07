@@ -18,7 +18,7 @@ internal class TaskImplementation : ITask
     {
         if (_dal.GetDates("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to create new tasks after entering a start date for the project");
-            
+
 
 
         if (CheckData(item))
@@ -60,7 +60,7 @@ internal class TaskImplementation : ITask
         _dal.SetDates(DateTime.Now, "StartDate");
         foreach (var temp in _dal.Task.ReadAll())
         {
-            Console.WriteLine( "enter the scheduled date for the task");
+            Console.WriteLine("enter the scheduled date for the task");
             string s = Console.ReadLine()!;
             if (!DateTime.TryParse(s, out date))
                 throw new BlInvalidInputException("The data you entered is incorrect for a date");
@@ -115,7 +115,13 @@ internal class TaskImplementation : ITask
 
     public BO.Task? Read(int id)
     {
-        DO.Task? doTask = _dal.Task.Read(id);
+        DO.Task doTask = _dal.Task.Read(id) ?? throw new BlDoesNotExistException("The Taskdosnt exist");
+        IEnumerable<Dependency> depList = _dal.Dependency.ReadAll(t => t.DependentTask == id);
+        DO.Engineer eng = _dal.Engineer.Read(doTask.EngineerId) ?? new();
+
+        if (depList is null)
+            depList = new List<Dependency>();
+
         if (doTask == null)
             throw new BO.BlDoesNotExistException($"Task with ID={id} does Not exist");
         return new BO.Task()
@@ -133,7 +139,7 @@ internal class TaskImplementation : ITask
             Complexity = (BO.EngineerExperience?)doTask.Complexity,
             RequiredEffortTime = doTask.RequiredEffortTime,
             Status = getstatus(doTask),
-            Dependencies = (from item in _dal.Dependency.ReadAll(t => t.DependentTask == id)
+            Dependencies = (from item in depList
                             select new TaskInList()
                             {
                                 Id = item.DependsOnTask,
@@ -141,7 +147,7 @@ internal class TaskImplementation : ITask
                                 Alias = _dal.Task.Read(item.DependsOnTask)!.Alias,
                                 Status = 0
                             }).ToList(),
-            Engineer = new EngineerInTask() { Id = doTask.EngineerId, Name = _dal.Engineer.Read(doTask.EngineerId)!.name }
+            Engineer = new EngineerInTask() { Id = doTask.EngineerId, Name = eng.name }
         };
     }
 
@@ -198,9 +204,7 @@ internal class TaskImplementation : ITask
     }
     bool CheckData(BO.Task item)
     {
-        return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id <= 0 || item.Engineer.Name == "" ||
-            item.Engineer.Name is null || item.ScheduledDate < DateTime.Now || item.StartDate < DateTime.Now ||
-            item.CompleteDate < DateTime.Now);
+        return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
     }
 
     public void UpdateDate(DateTime d, int id)
@@ -255,7 +259,7 @@ internal class TaskImplementation : ITask
 
     void UpdateEngineer(int id, EngineerInTask engineer)
     {
-        if( _dal.GetDates("StartDate")== DateTime.MinValue)
+        if (_dal.GetDates("StartDate") == DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to assign an engineer before the start of the execution phase");
 
 
@@ -270,8 +274,8 @@ internal class TaskImplementation : ITask
         if ((int?)dotask.Complexity > (int?)doengineer.level)
             throw new BlLogicalErrorException("The task level is not suitable for an engineer");
         //מאחר והמנהדס עובר למשימה חדשה צמריך לבדוק אם הייתה לו משימה קודמת ולעדכן בהתאם לכך שזמן הסיום יהיה כעת ואז הסטטוס יהיה done 
-        
-        var item = _dal.Task.ReadAll(p=>p.EngineerId == engineer.Id);
+
+        var item = _dal.Task.ReadAll(p => p.EngineerId == engineer.Id);
         if (item.Any())
             foreach (var item2 in item)
                 if (item2.CompleteDate > DateTime.Now)
@@ -344,4 +348,4 @@ internal class TaskImplementation : ITask
 
 
 
-    
+

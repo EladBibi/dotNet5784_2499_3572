@@ -3,7 +3,7 @@
 namespace BlImplementation;
 using BlApi;
 
-public class Bl : IBl
+internal class Bl : IBl
 {
     
     public ITask Task => new TaskImplementation();

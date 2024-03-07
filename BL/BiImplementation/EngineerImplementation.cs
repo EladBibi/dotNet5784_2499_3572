@@ -1,18 +1,19 @@
 ﻿
 using BlApi;
+using BO;
 using DalApi;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlImplementation;
 
-internal class EngineerImplementation : IEnginner
+internal class EngineerImplementation : BlApi.IEnginner
 {
     private readonly IDal dal = DalApi.Factory.Get;
     public int Create(BO.Engineer engineer)
     {
         //TODO update Exception
         if (!IsValid(engineer))
-            throw new Exception("the details of engineer is not valid");
+            throw new InvalidDataException("the details of engineer is not valid");
         try
         {
             DO.Engineer eng = new DO.Engineer()
@@ -24,28 +25,30 @@ internal class EngineerImplementation : IEnginner
                 level = (DO.EngineerExperience)engineer.Level!,
             };
 
-            int id = dal.Engineer.Create(eng);
-            return id;
+            return dal.Engineer.Create(eng);
         }
         //TODO update Exception
-        catch (Exception ex) { throw new Exception(ex.Message); }
+        catch (Exception ex) { throw new BlAlreadyExistsException(ex.Message); }
     }
 
     public void Delete(int id)
     {
-        bool isWorkOnTask = dal.Task.ReadAll(x => x.EngineerId == id && x.StartDate != null).Any();
+        try
+        {
+            bool isWorkOnTask = dal.Task.ReadAll(x => x.EngineerId == id && x.StartDate != null).Any();
 
-        if (isWorkOnTask)
-            throw new Exception("the engineer aorked on task");
+            if (isWorkOnTask)
+                throw new InvalidOperationException("the engineer aorked on task");
 
-        dal.Engineer.Delete(id);
+            dal.Engineer.Delete(id);
+        }
+        catch (Exception ex) { throw new BlDoesNotExistException(ex.Message); }
     }
 
     public BO.Engineer Read(int id)
     {
-        //TODO update Exception
-        DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new Exception("the engineer id dost exist");
-        
+        DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new BlDoesNotExistException("the engineer id dost exist");
+
         DO.Task? task = dal.Task.Read(x => x.EngineerId == id &&
             x.StartDate != null && x.CompleteDate == null);
 
@@ -92,9 +95,9 @@ internal class EngineerImplementation : IEnginner
             //TODO
             if (engineer.Task != null)
             {
-                DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? throw new Exception();
+                DO.Task task = dal.Task.Read(engineer.Task!.Id) ?? new();
                 if (task.EngineerId != engineer.Id && task.EngineerId != 0)
-                    throw new Exception();//TODO
+                    throw new InvalidDataException("the worker task on other engineer");//TODO
             }
 
 

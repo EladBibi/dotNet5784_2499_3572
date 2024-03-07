@@ -65,7 +65,7 @@ public class Initialization
         }
 
     }
-
+    //זוהי מתודה ציבורית דו, שתזמן את המתודות הפרטיות שהכנו ותחולל את האתחולים של הרשימות 
     public static void Do()
     {
         if (s_dal is null)

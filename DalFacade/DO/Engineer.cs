@@ -15,7 +15,7 @@ namespace DO;
 public record Engineer
 (
 
-   int Id,
+   int Id,//מספר מזהה ייחודי- מספר רגיל וטבעי
    double Cost,
     string? name = null,
     string? Email = null,

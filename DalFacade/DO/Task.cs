@@ -7,7 +7,7 @@ namespace DO;
 
 
 /// Here the characteristics of the task to be performed are defined as follows:
-/// <param name="Id"></Id of the task>
+/// <param name="Id"></Id of the task> 
 /// <param name="EngineerId"></Identity card of the engineer responsible for the task
 /// <param name="Alias"></A short, unique name>
 /// <param name="Description"></Description of the task>
@@ -24,7 +24,7 @@ namespace DO;
 
 public record Task
     (
-    int Id,
+    int Id,//מספר מזהה ייחודי- מספר רץ אוטומטי
     int EngineerId,
     string? Alias = null,
     string? Description = null,

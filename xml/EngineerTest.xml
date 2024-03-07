@@ -1,10 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<EngineerTest>
-	<Engineer>
-		<id>308600478</id>
-		<cost>2178</cost>
-		<name>Avi Levi</name>
-		<email>AviLevi100@gmail.com</email>
-		<level>Beginner</level>
-	</Engineer>
-</EngineerTest>
+<?xml version="1.0" encoding="utf-8"?>
+<Engineer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>308600478</Id>
+  <Cost>2178</Cost>
+  <name>Doron Levi</name>
+  <Email>AviLevi100@gmail.com</Email>
+  <Level>Beginner</Level>
+  <Task>
+    <Id>0</Id>
+  </Task>
+</Engineer>
