@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using BlApi;
 using BO;
 using PL.Engineer;
@@ -60,6 +61,9 @@ namespace PL.Task
             if (!AddMode)
                 Task = bl.Task.Read(id) ?? new();
 
+            if (Task.Dependencies is null)
+                Task.Dependencies = new List<BO.TaskInList>();
+
             InitializeComponent();
         }
 
@@ -72,16 +76,16 @@ namespace PL.Task
                 else
                     bl.Task.Update(Task);
             }
-            catch (Exception ex) {MessageBox.Show(ex.Message); }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
 
-           MessageBox.Show("succeful update");
-            this.Close();   
+            MessageBox.Show("succeful update");
+            this.Close();
         }
 
         private void OpenDialoge(object sender, RoutedEventArgs e)
         {
             TasksList = bl.Task.ReadAll();
-            ShowDialog= true;
+            ShowDialog = true;
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
@@ -97,6 +101,24 @@ namespace PL.Task
                 Task.Dependencies!.Remove((checkBox.Tag as TaskInList)!);
                 //TasksList.Remove((checkBox.Tag as TaskInList)!);
             }
+        }
+
+        private void AddDependency(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            try
+            {
+                if (sender is ListView listView)
+                {
+                    TaskInList selected = (TaskInList)listView.SelectedItem;
+                    Task.Dependencies!.Add(selected);
+                    BO.Task tmp = Task;
+                    Task = null;
+                    Task = tmp;
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
         }
     }
 }

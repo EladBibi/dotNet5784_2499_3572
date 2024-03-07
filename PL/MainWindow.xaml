@@ -6,15 +6,13 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Closing="MainWindow_Closing"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Title="MainWindow" Height="528" Width="800">
-        
+
     <Grid Background="LightBlue">
 
-
-
-
         <Button Content="Init" Click="Init_Data" HorizontalAlignment="Left" Margin="51,287,0,0" VerticalAlignment="Top"
-                Height="32" Width="164" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF6E7070" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+                Height="32" Width="164" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF6E7070">
 
             <Button.RenderTransform>
                 <TransformGroup>
@@ -26,17 +24,21 @@
             </Button.RenderTransform>
 
         </Button>
-        <Button Content="Reset" Click="Reset_Data" HorizontalAlignment="Left" Margin="476,287,0,0" VerticalAlignment="Top" Width="164" Height="32" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+        <Button Content="Reset" Click="Reset_Data" HorizontalAlignment="Left" Margin="476,287,0,0" VerticalAlignment="Top" Width="164" Height="32"/>
         <Button Content="Handle Engineer" Click="btnEngineer_Click"
-                HorizontalAlignment="Left" Margin="267,287,0,0" VerticalAlignment="Top" Width="164" Height="32" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+                HorizontalAlignment="Left" Margin="267,287,0,0" VerticalAlignment="Top" Width="164" Height="32" />
 
-        <Button Content="Handle Task"  Click="TaskClick"  Width="164" Height="32" HorizontalAlignment="Center"/>
+        <Button Content="Handle Task"  Click="TaskClick"  Width="164" Height="32" HorizontalAlignment="Left" RenderTransformOrigin="0.391,0.562" Margin="270,210,0,240"/>
+        <Button Content="Gantt" Click="GanttClick" Width="164" Margin="-500,-20,10,10" HorizontalAlignment="Center"/>
 
+        <Label Content="{Binding Date , StringFormat='{}{0:dd-MM-yyyy}'}" FontSize="30"/>
 
-
+        <Button Content="Add Day" Click="ChangeDate" Margin="20,50,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add Month" Click="ChangeDate" Margin="140,50,0,0" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add Year" Click="ChangeDate" Margin="270,50,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
     </Grid>
-   
+
 </Window>
 
 

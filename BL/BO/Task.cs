@@ -22,8 +22,8 @@ public class Task
     public BO.EngineerExperience? Complexity { get; set; }
     public TimeSpan? RequiredEffortTime { get; init; }
     public BO.Status? Status { get; set; }
-    public List<BO.TaskInList>? Dependencies { get; init; } = null;
-   
+    public List<BO.TaskInList>? Dependencies { get; set; }
+
     public BO.EngineerInTask? Engineer { get; set; } = null;
     public override string ToString() => this.ToStringProperty();
 }
