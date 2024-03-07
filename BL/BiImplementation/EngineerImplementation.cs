@@ -1,6 +1,7 @@
 ﻿
 using BlApi;
 using DalApi;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlImplementation;
 
@@ -86,7 +87,7 @@ internal class EngineerImplementation : IEnginner
     {
         if (!IsValid(engineer))
             throw new Exception("the details of engineer faild");
-       try
+        try
         {
             //TODO
             if (engineer.Task != null)
@@ -95,14 +96,17 @@ internal class EngineerImplementation : IEnginner
                 if (task.EngineerId != engineer.Id && task.EngineerId != 0)
                     throw new Exception();//TODO
             }
-               
-    
-        
-        DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
-            throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists"); 
 
-                DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
-                    (DO.EngineerExperience)engineer.Level : eng.level;
+
+
+            DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
+                throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists");
+
+            DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
+
+           (DO.EngineerExperience)engineer.Level : eng.level;
+          
+            
                 eng = eng with
                 {
                     Cost = engineer.Cost,
@@ -113,17 +117,24 @@ internal class EngineerImplementation : IEnginner
 
                 dal.Engineer.Update(eng);
 
-            
-        }
-        //TODO
-        catch (Exception ex) { throw new Exception(ex.Message); }
-    }
 
-    private bool IsValid(BO.Engineer engineer)
+            }
+            //TODO
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        
+        }
+        
+        
+
+    private bool IsValid(  BO.Engineer engineer)
     {
+        
+
+
+
         return engineer.Email is null ? false :
-            engineer.Cost <= 0.0 ? false :
-            engineer.Id < 1 ? false :
+           engineer.Cost <= 0.0 ? false :
+        engineer.Id < 1 ? false :
             engineer.name is null ? false :
             engineer.Level is null ? false : true;
     }
