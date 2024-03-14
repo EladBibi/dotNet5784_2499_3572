@@ -19,13 +19,22 @@
         <!--Internal, Upper Grid-->
         <Grid  Grid.Row="0" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="337*"/>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="54*"/>
+                <ColumnDefinition Width="400*"/>
             </Grid.ColumnDefinitions>
+            <Label Content="Select by status:" HorizontalAlignment="Left" Margin="56,20,0,0" VerticalAlignment="Top" Width="144" Height="30" FontWeight="Bold" FontSize="14"/>
+            <ComboBox HorizontalAlignment="Left"
+                      SelectionChanged="Status_Selector_SelectionChanged" 
+          SelectedValue="{Binding Path=status, Mode=TwoWay}"
+              ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}"
+          
+                      Margin="200,20,0,0" Width="162" Height="26"
+                      RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Grid.ColumnSpan="3" FontSize="14"/>
 
-            <Label Content="Select:" HorizontalAlignment="Right" Margin="153,10,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-            <ComboBox  Grid.Column="1"    Margin="105,0,94,5" Grid.ColumnSpan="5"/>
         </Grid>
+
 
         <ListView Grid.Row="1" ItemsSource="{Binding TasksList}" MouseDoubleClick="EditTask" Tag="{Binding}">
             <ListView.View>
@@ -39,3 +48,5 @@
 
     </Grid>
 </Window>
+
+

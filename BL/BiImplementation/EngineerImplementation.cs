@@ -2,6 +2,7 @@
 using BlApi;
 using BO;
 using DalApi;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlImplementation;
 
@@ -99,31 +100,45 @@ internal class EngineerImplementation : BlApi.IEnginner
                     throw new InvalidDataException("the worker task on other engineer");//TODO
             }
 
+
+
             DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
                 throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists");
 
             DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
-                (DO.EngineerExperience)engineer.Level : eng.level;
 
-            eng = eng with
-            {
-                Cost = engineer.Cost,
-                Email = engineer.Email,
-                level = newLevel,//ערך התקין לוגית אותו וידאנו לעיל
-                name = engineer.name
-            };
+           (DO.EngineerExperience)engineer.Level : eng.level;
+          
+            
+                eng = eng with
+                {
+                    Cost = engineer.Cost,
+                    Email = engineer.Email,
+                    level = newLevel,
+                    name = engineer.name
+                };
 
-            dal.Engineer.Update(eng);
+                dal.Engineer.Update(eng);
+
+
+            }
+            //TODO
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        
         }
-        catch (Exception ex) { throw new Exception(ex.Message); }
-    }
+        
+        
 
-    private bool IsValid(BO.Engineer engineer)
+    private bool IsValid(  BO.Engineer engineer)
     {
-        return string.IsNullOrEmpty(engineer.Email) ? false :
-            engineer.Cost <= 0.0 ? false :
-            engineer.Id < 1 ? false :
-            string.IsNullOrEmpty(engineer.name) ? false :
+        
+
+
+
+        return engineer.Email is null ? false :
+           engineer.Cost <= 0.0 ? false :
+        engineer.Id < 1 ? false :
+            engineer.name is null ? false :
             engineer.Level is null ? false : true;
     }
 }

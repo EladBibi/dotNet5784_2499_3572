@@ -90,9 +90,18 @@ public class Initialization
     }
 
 
+    public static int Get_Task_Id()
+    {
+       
+        if (s_dal is null)
+            s_dal = DalApi.Factory.Get;
+        Task? task = s_dal.Task.ReadAll().LastOrDefault();
+        int id = task is  not null ? task.Id : 0;
+        return id;
+
+    }
 
 
-        
 }
 
 

@@ -3,6 +3,7 @@ using BO;
 using PL.Task;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PL.Engineer;
 
@@ -12,19 +13,36 @@ namespace PL.Engineer;
 public partial class TaskListWindow : Window
 {
     static readonly BlApi.IBl bl = BlApi.Factory.Get();
-
-    public ObservableCollection<BO.TaskInList> TasksList
+   
+    public IEnumerable<BO.TaskInList> TasksList
     {
-        get { return (ObservableCollection<BO.TaskInList>)GetValue(TaskListProperty); }
+        get { return (IEnumerable<BO.TaskInList>)GetValue(TaskListProperty); }
         set { SetValue(TaskListProperty, value); }
     }
 
+
     public static readonly DependencyProperty TaskListProperty =
-        DependencyProperty.Register(nameof(TasksList), typeof(ObservableCollection<BO.TaskInList>), typeof(TaskListWindow));
+        DependencyProperty.Register(nameof(TasksList), typeof(IEnumerable<BO.TaskInList>), typeof(TaskListWindow));
+
+
+
+
+
+
+
+
+    private void Status_Selector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+       TasksList = ((status == BO.Status.None) ?
+            bl?.Task.ReadAll()! : bl.Task.ReadAll(item => bl.Task.getstatus(item) == status)!);
+    }
+
+    public BO.Status status { get; set; } = BO.Status.None;
 
     public TaskListWindow()
     {
-        TasksList = new(bl.Task.ReadAll());
+        TasksList = bl.Task.ReadAll();
+        
 
         InitializeComponent();
 
@@ -40,6 +58,12 @@ public partial class TaskListWindow : Window
         else
             new EditTask().ShowDialog();
 
-        TasksList = new(bl.Task.ReadAll());
+        TasksList = bl.Task.ReadAll();
     }
+
+
+    
+
+
+
 }

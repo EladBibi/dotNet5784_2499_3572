@@ -10,48 +10,37 @@
         Title="MainWindow" Height="528" Width="800">
 
     <Grid Background="LightBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="781*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button Content="Init" Click="Init_Data" HorizontalAlignment="Left" Margin="51,287,0,0" VerticalAlignment="Top"
-                Height="32" Width="164" RenderTransformOrigin="0.5,0.5" BorderBrush="#FF6E7070">
 
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="0.211"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="0.397"/>
-                </TransformGroup>
-            </Button.RenderTransform>
 
-        </Button>
-        <Button Content="Reset" Click="Reset_Data" HorizontalAlignment="Left" Margin="476,287,0,0" VerticalAlignment="Top" Width="164" Height="32"/>
-        <Button Content="Handle Engineer" Click="btnEngineer_Click"
-                HorizontalAlignment="Left" Margin="267,287,0,0" VerticalAlignment="Top" Width="164" Height="32" />
 
-        <Button Content="Handle Task"  Click="TaskClick"  Width="164" Height="32" HorizontalAlignment="Left" RenderTransformOrigin="0.391,0.562" Margin="270,210,0,240"/>
-        <Button Content="Gantt" Click="GanttClick" Width="164" Margin="-500,-20,10,10" HorizontalAlignment="Center"/>
 
-        <Label Content="{Binding Date , StringFormat='{}{0:dd-MM-yyyy}'}" FontSize="30"/>
 
-        <Button Content="Add Day" Click="ChangeDate" Margin="20,50,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="Add Month" Click="ChangeDate" Margin="140,50,0,0" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="Add Year" Click="ChangeDate" Margin="270,50,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Button Content="Add Day" Click="ChangeDate" Margin="370,104,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add Month" Click="ChangeDate" Margin="111,104,0,0" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add Year" Click="ChangeDate" Margin="245,104,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Label Content="{Binding CurrentTime, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}"
+               HorizontalAlignment="Left" Margin="150,19,0,0" VerticalAlignment="Top"
+               Width="405" Height="80" FontWeight="Bold" FontSize="36" Grid.Column="0"/>
+
+        <Button Content="ADMIN" Click="Is_Admin" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
+        <Button Content="ENGINEER"  HorizontalAlignment="Left" Margin="174,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
+        <Button Content="Initialize Date" Click="ChangeDate" HorizontalAlignment="Left" Margin="499,104,0,0" VerticalAlignment="Top" Width="126" Height="32" RenderTransformOrigin="-0.137,3.339"/>
+
+
+
+
 
     </Grid>
 
 </Window>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

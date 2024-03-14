@@ -16,7 +16,7 @@ using System.Windows.Input;
 public partial class EngineerListWindow : Window
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-    public BO.EngineerExperience level { get; set; } = BO.EngineerExperience.None;
+    public BO.EngineerExperience_List level { get; set; } = BO.EngineerExperience_List.None;
 
     public IEnumerable<BO.Engineer> EngineerList
     {
@@ -26,10 +26,13 @@ public partial class EngineerListWindow : Window
 
     public static readonly DependencyProperty EngineerListProperty =
         DependencyProperty.Register(nameof(EngineerList), typeof(IEnumerable<BO.Engineer>), typeof(EngineerListWindow));
+    
+    
+    
     private void LevelSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        EngineerList = (level == BO.EngineerExperience.None) ?
-            s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => item.Level == level)!;
+        EngineerList = (level == BO.EngineerExperience_List.None) ?
+            s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => item.Level == (BO.EngineerExperience)level)!;
     }
 
     public EngineerListWindow()

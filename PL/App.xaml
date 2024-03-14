@@ -12,9 +12,16 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <local:LevelsCollection x:Key="LevelsCollectionKey"/>
+            <local:ConvertIdToContentTask x:Key="ConvertIdToContentTask_key"/>
+            <local:ConvertIdToContentDependency x:Key="ConvertIdToContentDependencykey"/>
+            <local:LevelsCollection_List x:Key="LevelsCollectionKey_List"/>
+            <local:StatusCollection x:Key="StatusCollectionKey"/>
+            <local:LevelsCollection x:Key="LevelsCollection"/>
             <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
             <local:ConvertIdToBool x:Key="ConverIdToBoolKey"/>
+             
+
+
         </ResourceDictionary>
         
     </Application.Resources>
