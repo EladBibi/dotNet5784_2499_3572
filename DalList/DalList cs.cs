@@ -2,6 +2,8 @@
 namespace Dal;
 using DalApi;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 //sealed - מחלקה שלא ניתן לרשת ממנה
 sealed internal class DalList : IDal
 {
@@ -36,6 +38,6 @@ sealed internal class DalList : IDal
         root.Element(date)?.SetValue((d).ToString());
         root.Save(@"..\xml\data-config.xml");
     }
-
+   
     
 }

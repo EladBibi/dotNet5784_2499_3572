@@ -31,6 +31,8 @@ public partial class Admin : Window
     private void btnEngineer_Click(object sender, RoutedEventArgs e)
     { new EngineerListWindow().Show(); }
 
+    private void btTask_Click(object sender, RoutedEventArgs e)
+    { new TaskListWindow().Show(); }
 
     private void Init_Data(object sender, RoutedEventArgs e)
     {

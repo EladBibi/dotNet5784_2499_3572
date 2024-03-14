@@ -32,6 +32,7 @@ using System.Windows.Threading;
 public partial class MainWindow : Window
 {
     bool first = true;
+   
 
     public string CurrentTime
     {
@@ -46,11 +47,7 @@ public partial class MainWindow : Window
        
 
 
-public DateTime Date
-    {
-        get { return (DateTime)GetValue(DateProperty); }
-        set { SetValue(DateProperty, value); }
-    }
+
 
     // Using a DependencyProperty as the backing store for Date.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty DateProperty =
@@ -58,6 +55,7 @@ public DateTime Date
 
 
     DispatcherTimer timer = new DispatcherTimer();
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
     public MainWindow()
     {
         InitializeComponent();
@@ -78,7 +76,6 @@ public DateTime Date
 
        
 
-        Date = DateTime.Now;
        
     }
     private void Timer_Tick(object sender, EventArgs e)
@@ -107,9 +104,10 @@ public DateTime Date
         timer.Stop();
         if (first is true)
         {
-            Date = DateTime.Now.Date;
+            s_bl.InitializeTime();
             first = false;
         }
+
         try
         {
             if (sender is Button button)
@@ -117,7 +115,8 @@ public DateTime Date
                 switch (button.Content)
                 {
                     case "Add Day":
-                        Date = Date.AddDays(1);
+                       
+                        s_bl.AddDay();
                         
 
 
@@ -125,11 +124,14 @@ public DateTime Date
                         break;
 
                     case "Add Month":
-                        Date = Date.AddMonths(1);
+                        s_bl.AddMonth();
                         break;
 
                     case "Add Year":
-                        Date = Date.AddYears(1);
+                        s_bl.AddYear(); 
+                        break;
+                    case "Initialize Date":
+                        s_bl.InitializeTime();
                         break;
 
                     default: break;
@@ -138,10 +140,10 @@ public DateTime Date
         }
         catch { }
        
-       CurrentTime= Date.ToString();
+       CurrentTime= s_bl.Clock.ToString();
 
     }
-
+    
 
 
 }

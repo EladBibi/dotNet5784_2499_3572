@@ -31,7 +31,7 @@
 
             <ComboBox SelectionChanged="LevelSelector_SelectionChanged" 
                       SelectedValue="{Binding Path=level, Mode=TwoWay}"
-                ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}"
+                ItemsSource="{Binding Source={StaticResource LevelsCollectionKey_List}}"
      
                   Grid.Column="1"    Margin="105,0,94,5" Grid.ColumnSpan="5"/>
         </Grid>

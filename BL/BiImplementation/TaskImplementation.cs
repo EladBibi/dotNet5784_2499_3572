@@ -1,19 +1,29 @@
 ﻿
 
-namespace BlImplementation;
+
 using BlApi;
 using BO;
+
 using DO;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+namespace BlImplementation;
 
 internal class TaskImplementation : ITask
 {
+    private readonly IBl _bl;
+    internal TaskImplementation(IBl bl) => _bl = bl; 
+    
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
+    
+    
+    
+    
     public int Create(BO.Task item)
     {
         if (_dal.GetDates("StartDate") != DateTime.MinValue)
@@ -21,13 +31,20 @@ internal class TaskImplementation : ITask
 
 
 
-        if (CheckData(item))
+        if (item.Alias is null || item.Alias == "")
             throw new BlInvalidInputException("The data you entered is incorrect for the task");
         int EngineerId = 0;
         if (item.Engineer is not null)
+        {
+            if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id!=0)
+                throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
+
             EngineerId = item.Engineer.Id;
+        }
 
 
+        if (item!.Dependencies is null)
+            item.Dependencies = new List<BO.TaskInList>();
 
         DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Deliverables, item.Description,
             item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
@@ -43,12 +60,17 @@ internal class TaskImplementation : ITask
             throw new BO.BlAlreadyExistsException($"Student with ID={item.Id} already exists", ex);
         }
 
+        if (item!.Dependencies is null)
+            item.Dependencies = new List<BO.TaskInList>();
 
-        var result = from Object in item.Dependencies
-                     select new DO.Dependency(0, item.Id, Object.Id);
-        foreach (var Temp in result)
-            _dal.Dependency.Create(Temp);
         return idTask;
+    }
+
+
+
+   public bool check_id_engineer(int id)
+    {
+        return !(_dal.Engineer.ReadAll(k => k.Id == id).Any());
     }
 
 
@@ -57,7 +79,7 @@ internal class TaskImplementation : ITask
         DateTime date;
 
 
-        _dal.SetDates(DateTime.Now, "StartDate");
+        _dal.SetDates(_bl.Clock, "StartDate");
         foreach (var temp in _dal.Task.ReadAll())
         {
             Console.WriteLine("enter the scheduled date for the task");
@@ -115,15 +137,18 @@ internal class TaskImplementation : ITask
 
     public BO.Task? Read(int id)
     {
-        DO.Task doTask = _dal.Task.Read(id) ?? throw new BlDoesNotExistException("The Taskdosnt exist");
+        DO.Task? doTask = _dal.Task.Read(id);
+        if (doTask is null)
+            return null;
+
         IEnumerable<Dependency> depList = _dal.Dependency.ReadAll(t => t.DependentTask == id);
         DO.Engineer eng = _dal.Engineer.Read(doTask.EngineerId) ?? new();
 
         if (depList is null)
             depList = new List<Dependency>();
 
-        if (doTask == null)
-            throw new BO.BlDoesNotExistException($"Task with ID={id} does Not exist");
+
+
         return new BO.Task()
         {
             Id = id,
@@ -202,6 +227,9 @@ internal class TaskImplementation : ITask
                 throw new BlLogicalErrorException("Cant not update thats fields after you enter a start date for the project");
         _dal.Task.Update(NewdoTask);
     }
+   
+    
+    
     bool CheckData(BO.Task item)
     {
         return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
@@ -229,7 +257,7 @@ internal class TaskImplementation : ITask
 
         _dal.Task.Update(UpdateTask);
 
-    }
+    }  
 
     public void AddDependency(int IdDepented, int IdDepentedOn)
     {
@@ -237,12 +265,18 @@ internal class TaskImplementation : ITask
             throw new BlLogicalErrorException("Dependencies cannot be added after the execution phase has started");
 
 
-        DO.Dependency doDependency = new DO.Dependency(0, IdDepented, IdDepentedOn);
-        _dal.Dependency.Create(doDependency);
-        BO.Task? botask = Read(IdDepentedOn);
-        if (botask is null || Read(IdDepented) is null)
-            throw new BlNullPropertyException($"Task with ID={IdDepented} does Not exist");
 
+        BO.Task? Task_Depented = Read(IdDepented);
+        BO.Task? botask = Read(IdDepentedOn);
+        if (botask is null || Task_Depented is null)
+            throw new BlNullPropertyException($"The task does not exist");
+        if(Task_Depented.Dependencies is not null)
+        {
+            if(Task_Depented.Dependencies.Any(k=>k.Id== IdDepentedOn) is true)
+                throw new BlLogicalErrorException("The task already depends on this task");
+
+        }
+       
         BO.TaskInList newTask = new BO.TaskInList()
         {
             Id = IdDepentedOn,
@@ -250,10 +284,48 @@ internal class TaskImplementation : ITask
             Alias = botask.Alias,
             Status = botask.Status
         };
+        BO.Task? temp = Read(IdDepented);
 
-
-        Read(IdDepented)!.Dependencies!.Add(newTask);
+       
+        
+        DO.Dependency doDependency = new DO.Dependency(0, IdDepented, IdDepentedOn);
+        _dal.Dependency.Create(doDependency);
+        temp!.Dependencies!.Add(newTask);
     }
+
+
+    public void DeleteDependency(int IdDepented, int IdDepentedOn)
+    {
+        if (_dal.GetDates("StartDate") != DateTime.MinValue)
+            throw new BlLogicalErrorException("Dependencies cannot be deleted after the execution phase has started");
+       
+        BO.Task? Task_Depented = Read(IdDepented);
+        BO.Task? botask = Read(IdDepentedOn);
+        if (botask is null || Task_Depented is null)
+            throw new BlNullPropertyException($"The task does not exist");
+        if (Task_Depented.Dependencies is not null)
+            Task_Depented.Dependencies.RemoveAll(x => x?.Id == IdDepentedOn);
+
+
+        DO.Dependency? dep_for_delete = _dal.Dependency.Read(x => x.DependentTask == IdDepented
+        && x.DependsOnTask == IdDepentedOn);
+        if (dep_for_delete is not null)
+            _dal.Dependency.Delete(dep_for_delete.Id);
+
+    }
+
+  
+
+
+
+
+
+
+    
+
+
+
+
 
 
 
@@ -278,9 +350,9 @@ internal class TaskImplementation : ITask
         var item = _dal.Task.ReadAll(p => p.EngineerId == engineer.Id);
         if (item.Any())
             foreach (var item2 in item)
-                if (item2.CompleteDate > DateTime.Now)
+                if (item2.CompleteDate > _bl.Clock)
                 {
-                    DO.Task NewTask = item2 with { CompleteDate = DateTime.Now };
+                    DO.Task NewTask = item2 with { CompleteDate = _bl.Clock };
                     _dal.Task.Update(NewTask);
                 }
 
@@ -302,14 +374,15 @@ internal class TaskImplementation : ITask
         max = max + T.RequiredEffortTime;
         return max;
     }
-    BO.Status getstatus(DO.Task T)
+   
+    public BO.Status getstatus(DO.Task T)
     {
 
         int i = 0;
         if (T.StartDate is not null)
             i = 1;
         if (T.CompleteDate is not null)
-            if (T.CompleteDate <= DateTime.Now)
+            if (T.CompleteDate <= _bl.Clock)
                 i = 3;
             else
                 i = 2;

@@ -24,7 +24,7 @@
 
 
         <ComboBox SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, 
-        ValidatesOnExceptions=true}"  ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}"
+        ValidatesOnExceptions=true}"  ItemsSource="{Binding Source={StaticResource LevelsCollection}}"
             HorizontalAlignment="Left" Margin="153,123,0,0" VerticalAlignment="Top" Width="165" Height="26"/>
         <TextBox Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,ValidatesOnExceptions=true}"
             HorizontalAlignment="Left" Margin="153,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" RenderTransformOrigin="0.5,0.5" Height="26">

@@ -34,7 +34,8 @@ public partial class EngineerWindow : Window
             Engineer = (Id == 0) ? new BO.Engineer() : s_bl.Engineer.Read(Id);
         
         if(Engineer is null)
-            MessageBox.Show("Error", $"The ID:{Id}  entered does not exist in the system", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Error", $"The ID:{Id}  entered does not exist in the system",
+                MessageBoxButton.OK, MessageBoxImage.Error);
 
 
 
@@ -66,6 +67,7 @@ DependencyProperty.Register("Engineer", typeof(BO.Engineer),
             return;
         }
         MessageBox.Show("The operation was successful");
+            
         this.Close();
 
     }

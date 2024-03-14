@@ -17,7 +17,7 @@
             <ColumnDefinition Width="415*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Handle Engineer" Click="btnEngineer_Click" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="246" Height="66" Grid.Row="1"/>
-        <Button Content="Handle Task" HorizontalAlignment="Left" Margin="9,196,0,0" Grid.Row="1" VerticalAlignment="Top" Width="247" Height="66">
+        <Button Content="Handle Task" Click="btTask_Click" HorizontalAlignment="Left" Margin="9,196,0,0" Grid.Row="1" VerticalAlignment="Top" Width="247" Height="66">
             <UIElement.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

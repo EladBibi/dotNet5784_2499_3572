@@ -11,7 +11,7 @@ public interface IDal
     ITask Task { get; }
     DateTime? GetDates(string date);
     public void SetDates(DateTime d, string date);
-
+    
 
 
 }
