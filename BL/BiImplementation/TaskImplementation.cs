@@ -5,6 +5,7 @@ using BlApi;
 using BO;
 
 using DO;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -45,10 +46,11 @@ internal class TaskImplementation : ITask
 
         if (item!.Dependencies is null)
             item.Dependencies = new List<BO.TaskInList>();
-
+        
         DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Deliverables, item.Description,
-            item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
+            item.Remarks, DateTime.Now, item.ScheduledDate, item.StartDate, item.CompleteDate,
              (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
+        
         int idTask;
         try
         {
@@ -235,6 +237,11 @@ internal class TaskImplementation : ITask
         return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
     }
 
+   
+    
+    
+    
+    
     public void UpdateDate(DateTime d, int id)
     {
         if (_dal.GetDates("StartDate") == DateTime.MinValue)
@@ -304,7 +311,11 @@ internal class TaskImplementation : ITask
         if (botask is null || Task_Depented is null)
             throw new BlNullPropertyException($"The task does not exist");
         if (Task_Depented.Dependencies is not null)
-            Task_Depented.Dependencies.RemoveAll(x => x?.Id == IdDepentedOn);
+            if(Task_Depented.Dependencies.RemoveAll(x => x?.Id == IdDepentedOn)==0)
+                throw new BlNullPropertyException($"The task does not depend on the task you entered");
+
+
+
 
 
         DO.Dependency? dep_for_delete = _dal.Dependency.Read(x => x.DependentTask == IdDepented

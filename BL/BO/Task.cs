@@ -20,7 +20,7 @@ public class Task
 
     public DateTime? ForeCastDate { get; init; }
     public BO.EngineerExperience? Complexity { get; set; }
-    public TimeSpan? RequiredEffortTime { get; init; }
+    public TimeSpan? RequiredEffortTime { get;  init; }
     public BO.Status? Status { get; set; }
     public List<BO.TaskInList>? Dependencies { get; set; }
 

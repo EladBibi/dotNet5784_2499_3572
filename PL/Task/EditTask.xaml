@@ -56,7 +56,8 @@
 
                     <!-- Deliverables -->
                     <TextBlock Text="Deliverables:" Grid.Row="5" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Deliverables,Mode=TwoWay}"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text=
+                             "{Binding Task.Deliverables,Mode=TwoWay}"/>
 
                     <!-- Remarks -->
                     <TextBlock Text="Remarks:" Grid.Row="6" VerticalAlignment="Center"/>
@@ -81,7 +82,7 @@
                     <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
                     <DatePicker Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
 
-                    <!-- Forecast Date -->
+                    <!-- Forecast Date --> 
                     <TextBlock Text="Forecast Date:" Grid.Row="11" VerticalAlignment="Center"/>
                     <DatePicker Grid.Row="11" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.ForeCastDate,Mode=TwoWay}"/>
 
@@ -89,7 +90,7 @@
                     <TextBlock Text="Engineer Id:" Grid.Row="12" VerticalAlignment="Center"/>
                     <TextBox  Grid.Row="12" Grid.Column="1" Margin="5" 
                        Text="{Binding Task.Engineer.Id,Mode=TwoWay}"/>
-
+                    
                     <!-- Edit dependencies -->
                     <Button Content="{Binding Task.Id, Mode=TwoWay, Converter={StaticResource ConvertIdToContentTask_key}}"
                           VerticalAlignment="Center" Click=" AddUpdate_Click"/>
