@@ -69,6 +69,7 @@ namespace PL.Task
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             try
             {
                 if (AddMode)
