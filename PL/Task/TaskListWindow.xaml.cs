@@ -77,12 +77,15 @@ public partial class TaskListWindow : Window
 
         if (sender is System.Windows.Controls.ListView listView)
         {
-            int id = ((TaskInList)listView.SelectedItem!).Id;
-          
+            if (listView is not null)
+            {
+                int id = ((TaskInList)listView.SelectedItem!).Id;
 
 
-            new EditTask(id).ShowDialog();
 
+                new EditTask(id).ShowDialog();
+
+            }
         }
         else
             new EditTask().ShowDialog();
