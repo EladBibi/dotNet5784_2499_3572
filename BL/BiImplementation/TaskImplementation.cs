@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BlImplementation;
 
 internal class TaskImplementation : ITask
@@ -23,12 +24,18 @@ internal class TaskImplementation : ITask
 
     
     
+    public bool Schedule_date()
+    {
+        return (_dal.Task.ReadAll(k => k.scheduledDate == null).Any());
+
+    }
     
-    
+
+
     public int Create(BO.Task item)
     {
-        if (_dal.GetDates("StartDate") != DateTime.MinValue)
-            throw new BlLogicalErrorException("It is not possible to create new tasks after entering a start date for the project");
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
+            throw new BlLogicalErrorException("It is not possible to create new tasks after the start of the project");
 
 
 
@@ -43,7 +50,7 @@ internal class TaskImplementation : ITask
             EngineerId = item.Engineer.Id;
         }
 
-
+        
         if (item!.Dependencies is null)
             item.Dependencies = new List<BO.TaskInList>();
         
@@ -76,12 +83,12 @@ internal class TaskImplementation : ITask
     }
 
 
-    public void CreateSchedule()
+    public void CreateSchedule(DateTime date)
     {
-        DateTime date;
+       
 
 
-        _dal.SetDates(_bl.Clock, "StartDate");
+        _bl.SetDate(_bl.Clock, "StartDate");
         foreach (var temp in _dal.Task.ReadAll())
         {
             Console.WriteLine("enter the scheduled date for the task");
@@ -90,7 +97,7 @@ internal class TaskImplementation : ITask
                 throw new BlInvalidInputException("The data you entered is incorrect for a date");
             if (!_dal.Dependency.ReadAll(p => p.DependentTask == temp.Id).Any())
             {
-                if (_dal.GetDates("StartDate") > date)
+                if (_bl.GetDate("StartDate") > date)
                     throw new BlLogicalErrorException("The start date cannot be later than the project start date");
                 DO.Task dotask = temp with { scheduledDate = date };
                 _dal.Task.Update(dotask);
@@ -116,13 +123,13 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        if (_dal.GetDates("StartDate") != DateTime.MinValue)
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to delete  tasks after entering a start date for the project");
 
 
 
         if (_dal.Dependency.ReadAll(K => K.DependsOnTask == id).Any())
-            throw new BlNullPropertyException("It is not possible  to delete a task that depends on other tasks");
+            throw new BlNullPropertyException("It is not possible to delete a task that depends on other tasks");
         try
         {
             _dal.Task.Delete(id);
@@ -216,18 +223,29 @@ internal class TaskImplementation : ITask
         new BO.BlAlreadyExistsException($"Task with ID={item.Id} does not exists");
 
 
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
+        {
+            if (item.Engineer is not null)
+            {
+                if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
+                    throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
 
+
+            }
+        }
+      
+        if(item.StartDate is not null)
+            if (item.StartDate < _bl.GetDate("StartDate"))
+                throw new BlInvalidInputException("The start date can't be earlier the project's date start");
 
         DO.Task NewdoTask = new DO.Task(item.Id, item.Engineer!.Id, item.Alias, item.Deliverables, item.Description,
            item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
             (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
-        if (_dal.GetDates("StartDate") != DateTime.MinValue)
-            if (OldTask.EngineerId != NewdoTask.EngineerId || OldTask.CreatedAtDate != NewdoTask.CreatedAtDate
-                || OldTask.scheduledDate != NewdoTask.scheduledDate || OldTask.StartDate != NewdoTask.StartDate
-                || OldTask.CompleteDate != NewdoTask.CompleteDate || OldTask.Complexity != NewdoTask.Complexity
-                || OldTask.RequiredEffortTime != NewdoTask.RequiredEffortTime)
-                throw new BlLogicalErrorException("Cant not update thats fields after you enter a start date for the project");
+        
         _dal.Task.Update(NewdoTask);
+
+
+
     }
    
     
@@ -244,16 +262,25 @@ internal class TaskImplementation : ITask
     
     public void UpdateDate(DateTime d, int id)
     {
-        if (_dal.GetDates("StartDate") == DateTime.MinValue)
+        if(d< DateTime.Now)
+            throw new BlLogicalErrorException("The date you entered has already passed");
+
+        if (_bl.GetDate("StartDate") == DateTime.MinValue)
             throw new BlLogicalErrorException("Cant not update dates before you enter a start date for the project");
+
+        if (_bl.GetDate("StartDate") > d)
+            throw new BlLogicalErrorException("The start date cannot be earlier than the project start date");
+        
+        
+        
         DO.Task? dotask = _dal.Task.Read(id);
         if (dotask is null)
             throw new BlNullPropertyException($"Task with ID={id} does Not exist");
         var Tasks = from DO.Dependency doDependency in _dal.Dependency.ReadAll(p => p.DependentTask == id)
                     let date = _dal.Task.Read(doDependency.DependsOnTask)!.scheduledDate
-                    where date is not null
+                    where date is null
                     select doDependency;
-        if (Tasks.Count() == 0)
+        if (Tasks.Count() != 0)
             throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
         if (Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) < d) is not null)
             throw new BlLogicalErrorException("It is not possible to update a date for" +
@@ -267,8 +294,14 @@ internal class TaskImplementation : ITask
     }  
 
     public void AddDependency(int IdDepented, int IdDepentedOn)
+
+
     {
-        if (_dal.GetDates("StartDate") != DateTime.MinValue)
+
+        if(IdDepented == IdDepentedOn)
+            throw new BlLogicalErrorException("A task cannot depend on itself");
+
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("Dependencies cannot be added after the execution phase has started");
 
 
@@ -283,7 +316,9 @@ internal class TaskImplementation : ITask
                 throw new BlLogicalErrorException("The task already depends on this task");
 
         }
-       
+        if(Circularity_test(IdDepented, IdDepentedOn) is true)
+            throw new BlNullPropertyException("There is a circular dependency in the tasks!");
+
         BO.TaskInList newTask = new BO.TaskInList()
         {
             Id = IdDepentedOn,
@@ -301,9 +336,43 @@ internal class TaskImplementation : ITask
     }
 
 
+    public bool Circularity_test(int task_id,int dep_id)
+    {
+        if (task_id == dep_id)
+            return true;
+        
+        BO.Task? dep_task = Read(dep_id);
+
+        if (dep_task is not null)
+        {
+            if (dep_task.Dependencies is null)
+                return false;
+        }
+        else
+            throw new BlNullPropertyException("The task does not exist");
+
+        foreach (var task in dep_task.Dependencies)
+        {
+            if (Circularity_test(task_id, task.Id) is true)
+                return true;
+
+        }
+
+
+        
+
+   return false;
+
+    }
+
+
+
+
+
+
     public void DeleteDependency(int IdDepented, int IdDepentedOn)
     {
-        if (_dal.GetDates("StartDate") != DateTime.MinValue)
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("Dependencies cannot be deleted after the execution phase has started");
        
         BO.Task? Task_Depented = Read(IdDepented);
@@ -342,7 +411,7 @@ internal class TaskImplementation : ITask
 
     void UpdateEngineer(int id, EngineerInTask engineer)
     {
-        if (_dal.GetDates("StartDate") == DateTime.MinValue)
+        if (_bl.GetDate("StartDate") == DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to assign an engineer before the start of the execution phase");
 
 
@@ -378,11 +447,18 @@ internal class TaskImplementation : ITask
 
     }
 
+
+
+
+    
+
     DateTime? forcaste(DO.Task T)
     {
-        DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
+       
+         DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
 
-        max = max + T.RequiredEffortTime;
+        //max = max + T.RequiredEffortTime;
+
         return max;
     }
    

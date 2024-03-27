@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Admin" Height="450" Width="800">
+        Title="Admin" Height="450" Width="800"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="59*"/>
@@ -34,8 +35,10 @@
                 HorizontalAlignment="Left" Margin="103,196,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66"/>
 
         <Button Content="Gantt" Click="GanttClick" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66"/>
-        
-        <Button Grid.Column="2" Content="Create Schedule" HorizontalAlignment="Left" Margin="103,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66" RenderTransformOrigin="-0.024,0.384"/>
+
+        <Button Grid.Column="2" 
+                  IsEnabled="{Binding is_all_schedule}"
+                Content="Create Schedule" Click="Create_Schedule" HorizontalAlignment="Left" Margin="103,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66" RenderTransformOrigin="-0.024,0.384"/>
 
     </Grid>
 </Window>

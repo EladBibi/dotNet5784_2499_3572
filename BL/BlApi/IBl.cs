@@ -16,7 +16,8 @@ public  interface IBl
     public void AddHour();
     public void InitializeTime();
     public int get_task_id();
-    
+    public DateTime? GetDate(string date);
+    public void SetDate(DateTime d,string date);
 
 
 

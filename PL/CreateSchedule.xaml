@@ -1,0 +1,49 @@
+﻿<Window x:Class="PL.CreateSchedule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Closing="create_schedule_Closing"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="CreateSchedule" Height="450" Width="800"
+          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="117*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="399*"/>
+            <ColumnDefinition Width="401*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Start Date of the project:" VerticalAlignment="Top" Margin="10,10,-10,0" FontWeight="Bold" FontStyle="Italic" FontSize="18" Grid.ColumnSpan="2" Height="24"/>
+        <DatePicker HorizontalAlignment="Left" Margin="230,6,0,0" SelectedDate="{Binding StartDate,Mode=TwoWay}"
+                    VerticalAlignment="Top" Width="191" Height="28" Grid.ColumnSpan="2"/>
+
+
+
+
+        <Button Content="Add date" Click="Add_Date" HorizontalAlignment=
+                "Left" Margin="253,52,0,0" VerticalAlignment="Top" Width="119"/>
+        <Button Content="Create schedule" Click="create_schedule" HorizontalAlignment="Left" Margin="108,158,0,0" Grid.Row="1" VerticalAlignment="Top" Width="204" Height="46"/>
+        <ListView ItemsSource="{Binding TasksList}" 
+                   
+                  MouseDoubleClick= "add_date" Margin="22,6,0,76" Grid.RowSpan="2" Grid.Column="1">
+            
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+
+
+
+
+
+    </Grid>
+</Window>
