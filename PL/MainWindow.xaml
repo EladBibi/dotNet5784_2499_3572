@@ -17,11 +17,6 @@
         </Grid.ColumnDefinitions>
 
 
-
-
-
-
-
         <Button Content="Add Day" Click="ChangeDate" Margin="370,104,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="Add Month" Click="ChangeDate" Margin="111,104,0,0" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="Add Year" Click="ChangeDate" Margin="245,104,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -33,8 +28,6 @@
         <Button Content="ADMIN" Click="Is_Admin" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
         <Button Content="ENGINEER"  HorizontalAlignment="Left" Margin="174,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
         <Button Content="Initialize Date" Click="ChangeDate" HorizontalAlignment="Left" Margin="499,104,0,0" VerticalAlignment="Top" Width="126" Height="32" RenderTransformOrigin="-0.137,3.339"/>
-
-
 
 
 
