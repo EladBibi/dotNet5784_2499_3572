@@ -9,6 +9,9 @@
         
         Title="EditTask" Height="500" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        
+    
+
 
 
     <Grid>
@@ -33,17 +36,26 @@
                     <TextBox Grid.Column="1" Margin="5" Text="{Binding Task.Id ,Mode=TwoWay}"
                               IsEnabled="False"/>
 
+    
+
                     <!-- Alias -->
                     <TextBlock Text="Alias:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Margin="5" Text="{Binding Task.Alias ,Mode=TwoWay}"/>
+                    <TextBox Grid.Column="1" Margin="5" 
+                          
+                    IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                              
+                    Text="{Binding Task.Alias ,Mode=TwoWay}"/>
 
                     <!-- Description -->
                     <TextBlock Text="Description:" Grid.Row="1" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Description,Mode=TwoWay}"/>
+                    <TextBox 
+                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                      Grid.Row="1" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Description,Mode=TwoWay}"/>
 
                     <!-- Created At Date -->
                     <TextBlock Text="Created At:" Grid.Row="2" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="2" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CreatedAtDate,Mode=TwoWay}"/>
+                    <DatePicker Grid.Row="2" Grid.Column="1" Margin="5" 
+                            IsEnabled="False"   SelectedDate="{Binding Task.CreatedAtDate,Mode=TwoWay}"/>
 
                     <!-- Required Effort Time -->
                     <TextBlock Text="Required Effort Time:" Grid.Row="3" VerticalAlignment="Center"/>
@@ -51,27 +63,41 @@
 
                     <!-- Complexity -->
                     <TextBlock Text="Complexity:" Grid.Row="4" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" SelectedItem="{Binding Task.Complexity,Mode=TwoWay}"
-                               ItemsSource="{Binding Source={StaticResource LevelsCollection}}"/>
+                    <ComboBox 
+                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                       Grid.Row="4" Grid.Column="1" Margin="5" SelectedItem="{Binding Task.Complexity,Mode=TwoWay}"
+                       ItemsSource="{Binding Source={StaticResource LevelsCollection}}"/>
 
                     <!-- Deliverables -->
                     <TextBlock Text="Deliverables:" Grid.Row="5" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Deliverables,Mode=TwoWay}"/>
+                    <TextBox 
+                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                      Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text=
+                      "{Binding Task.Deliverables,Mode=TwoWay}"/>
 
                     <!-- Remarks -->
                     <TextBlock Text="Remarks:" Grid.Row="6" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Remarks,Mode=TwoWay}"/>
+                    <TextBox 
+                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                      Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Remarks,Mode=TwoWay}"/>
 
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
                     <!-- Start Date -->
                     <TextBlock Text="Start Date:" Grid.Row="7" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="7" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.StartDate,Mode=TwoWay}"/>
+                    <DatePicker
+                   
+                        
+                        IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                        
+                        Grid.Row="7" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.StartDate,Mode=TwoWay}"/>
 
                     <!-- Scheduled Date -->
                     <TextBlock Text="Scheduled Date:" Grid.Row="8" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="8" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.ScheduledDate,Mode=TwoWay}"/>
+                    <DatePicker Grid.Row="8" Grid.Column="1" Margin="5" 
+                         IsEnabled="False"         
+                                SelectedDate="{Binding Task.ScheduledDate,Mode=TwoWay}"/>
 
                     <!-- Deadline Date -->
                     <!--<TextBlock Text="Deadline Date:" Grid.Row="9" VerticalAlignment="Center"/>
@@ -79,17 +105,23 @@
 
                     <!-- Complete Date -->
                     <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
+                    <DatePicker 
+                         IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                        Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
 
-                    <!-- Forecast Date -->
+                    <!-- Forecast Date --> 
                     <TextBlock Text="Forecast Date:" Grid.Row="11" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="11" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.ForeCastDate,Mode=TwoWay}"/>
+                    <DatePicker Grid.Row="11" Grid.Column="1" Margin="5" 
+                                  IsEnabled="False" SelectedDate="{Binding Task.ForeCastDate,Mode=TwoWay}"/>
 
                     <!-- Engineer -->
                     <TextBlock Text="Engineer Id:" Grid.Row="12" VerticalAlignment="Center"/>
-                    <TextBox  Grid.Row="12" Grid.Column="1" Margin="5" 
+                    <TextBox 
+                         IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                         
+                        Grid.Row="12" Grid.Column="1" Margin="5" 
                        Text="{Binding Task.Engineer.Id,Mode=TwoWay}"/>
-
+                    
                     <!-- Edit dependencies -->
                     <Button Content="{Binding Task.Id, Mode=TwoWay, Converter={StaticResource ConvertIdToContentTask_key}}"
                           VerticalAlignment="Center" Click=" AddUpdate_Click"/>

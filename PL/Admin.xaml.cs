@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BlApi;
+using PL.Task;
 
 namespace PL;
 
@@ -21,9 +22,28 @@ namespace PL;
 /// </summary>
 public partial class Admin : Window
 {
+
+    private readonly IBl bl = BlApi.Factory.Get();
+    
+    
+    
+    public bool is_all_schedule
+    {
+        get { return (bool)GetValue(is_all_scheduleProperty); }
+        set { SetValue(is_all_scheduleProperty, value); }
+    }
+
+    public static readonly DependencyProperty is_all_scheduleProperty =
+      DependencyProperty.Register(nameof(is_all_schedule), typeof(bool), typeof(Admin));
+
+
+  
+
     public Admin()
     {
+        is_all_schedule = bl.Task.Schedule_date();
         InitializeComponent();
+        
     }
 
     private void GanttClick(object sender, RoutedEventArgs e) => new GanttWindow().Show();
@@ -32,7 +52,9 @@ public partial class Admin : Window
     { new EngineerListWindow().Show(); }
 
     private void btTask_Click(object sender, RoutedEventArgs e)
-    { new TaskListWindow().Show(); }
+    { new TaskListWindow().ShowDialog();
+        is_all_schedule = bl.Task.Schedule_date();
+    }
 
     private void Init_Data(object sender, RoutedEventArgs e)
     {
@@ -40,16 +62,37 @@ public partial class Admin : Window
             MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
             Factory.Get().InitializeDB();
+        is_all_schedule = bl.Task.Schedule_date();
     }
 
-    private void TaskClick(object sender, RoutedEventArgs e) => new TaskListWindow().Show();
+    private void TaskClick(object sender, RoutedEventArgs e)=> new TaskListWindow().Show();
+    
 
-    private void Reset_Data(object sender, RoutedEventArgs e)
+        
+       
+    
+
+        private void Reset_Data(object sender, RoutedEventArgs e)
     {
         MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to rest the data?", "Reset",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
             Factory.Get().ResetDB();
+        is_all_schedule = bl.Task.Schedule_date();
     }
+
+    private void Create_Schedule(object sender, RoutedEventArgs e)
+    {
+
+        new CreateSchedule().ShowDialog();
+        is_all_schedule = bl.Task.Schedule_date();
+    }
+
+   
+    
+
+   
+
+
 
 }

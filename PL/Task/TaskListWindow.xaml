@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
         Title="taskListWindow" Height="640" Width="800"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+           DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <!--Extrnal Grid-->
     <Grid>
@@ -36,15 +36,18 @@
         </Grid>
 
 
-        <ListView Grid.Row="1" ItemsSource="{Binding TasksList}" MouseDoubleClick="EditTask" Tag="{Binding}">
+        <ListView Grid.Row="1" ItemsSource="{Binding TasksList}"
+                   PreviewMouseRightButtonDown="delete_task" MouseDoubleClick="EditTask" Tag="{Binding}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-
-        <Button Content="Add" Click="EditTask"  Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        
+        <Button Content="Add"
+           
+         Click="EditTask"  Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
     </Grid>
 </Window>

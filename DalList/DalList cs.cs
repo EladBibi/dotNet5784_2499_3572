@@ -25,19 +25,7 @@ sealed internal class DalList : IDal
     public IDependency Dependency => new DependencyImplementation();
 
     public ITask Task => new TaskImplementation();
-    public DateTime? GetDates(string date)
-    {
-        XElement root = XElement.Load(@"..\xml\data-config.xml");
-        return DateTime.TryParse((string?)root.Element(date), out var result) ? (DateTime?)result : null;
-
-    }
-    public void SetDates(DateTime d, string date)
-    {
-        d.AddMonths(2);
-        XElement root = XElement.Load(@"..\xml\data-config.xml");
-        root.Element(date)?.SetValue((d).ToString());
-        root.Save(@"..\xml\data-config.xml");
-    }
+  
    
     
 }

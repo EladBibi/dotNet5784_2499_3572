@@ -4,7 +4,8 @@ namespace DalTest;
 using Dal;
 using DalApi;
 using DO;
-
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Initialization
 {
@@ -17,10 +18,12 @@ public class Initialization
     {
         for (int i = 0; i < 25; ++i)
         {
-            TimeSpan span = TimeSpan.FromDays(s_rand.Next(7, 22));
+            // TimeSpan? span =  TimeSpan.FromDays(s_rand.Next(7, 22));
+            TimeSpan? span = new TimeSpan(1, s_rand.Next(1, 10), 0);
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 100000000 + i, "", "", "", "", DateTimeCreate, null, null, null, (DO.EngineerExperience)(i % 5), span);
+            Task NewTask = new Task(0, 100000000 + i, "", "", "", "", DateTimeCreate, null, null, null, 
+                (DO.EngineerExperience)(i % 5), span);
             s_dal!.Task.Create(NewTask);
         }
     }
@@ -72,8 +75,8 @@ public class Initialization
             s_dal = DalApi.Factory.Get;
 
           Reset();
-        s_dal.SetDates(DateTime.MinValue,"StartDate");
-        s_dal.SetDates(DateTime.MinValue,"FinishDate");
+        SetDates(DateTime.MinValue,"StartDate");
+        SetDates(DateTime.MinValue,"FinishDate");
         createEngineers();
         createTasks();
         createDependencies();
@@ -86,7 +89,10 @@ public class Initialization
             s_dal.Engineer.DeleteAll();
             s_dal.Task.DeleteAll();
             s_dal.Dependency.DeleteAll();
-        
+        SetDates(DateTime.MinValue, "StartDate");
+        SetDates(DateTime.MinValue, "FinishDate");
+
+
     }
 
 
@@ -100,6 +106,31 @@ public class Initialization
         return id;
 
     }
+
+    public static DateTime? GetDates(string date)
+    {
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        return DateTime.TryParse((string?)root.Element(date), out var result) ? (DateTime?)result : null;
+
+    }
+    public static void SetDates(DateTime d, string date)
+    {
+        d.AddMonths(2);
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        root.Element(date)?.SetValue((d).ToString());
+        root.Save(@"..\xml\data-config.xml");
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

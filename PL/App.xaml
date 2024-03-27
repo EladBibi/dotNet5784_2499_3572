@@ -12,6 +12,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <local:ConvertStartDateTo_un_Bool x:Key="ConvertStartDateTo_un_Boolkey"/>
+            <local:ConvertStartDateToBool x:Key="ConvertStartDateToBoolkey"/>
             <local:ConvertIdToContentTask x:Key="ConvertIdToContentTask_key"/>
             <local:ConvertIdToContentDependency x:Key="ConvertIdToContentDependencykey"/>
             <local:LevelsCollection_List x:Key="LevelsCollectionKey_List"/>

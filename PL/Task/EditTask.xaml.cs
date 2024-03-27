@@ -22,6 +22,23 @@ public partial class EditTask : Window
     private readonly IBl bl = BlApi.Factory.Get();
 
 
+    public static readonly DependencyProperty startdateProperty =
+DependencyProperty.Register(nameof(startdate), typeof(DateTime?), typeof(EditTask));
+
+
+
+    public DateTime? startdate
+    {
+        get { return (DateTime?)GetValue(startdateProperty); }
+        set { SetValue(startdateProperty, value); }
+    }
+
+
+
+
+
+
+
 
 
 
@@ -96,11 +113,11 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         DependencyProperty.Register(nameof(TasksList), typeof(IEnumerable<BO.TaskInList>), typeof(EditTask));
 
 
-
+    int ID;
     public EditTask(int id = 0)
     {
-
-
+        ID = id;
+        startdate = bl.GetDate("StartDate");
         Showdialog = false;
         DependencyEnabled = false;
 
@@ -136,7 +153,8 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         catch (Exception ex)
         {
             MessageBox.Show("Error", ex.Message,
-          MessageBoxButton.OK, MessageBoxImage.Error); return;
+          MessageBoxButton.OK, MessageBoxImage.Error); this.Close(); return;
+
         }
 
         DependencyEnabled = true;
@@ -148,8 +166,8 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
                   MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
                 new update_dependency(Task!.Id).Show();
-           
-                this.Close();
+
+            this.Close();
 
         }
     }
@@ -171,12 +189,18 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
 
 
 
+
+
+
     private void OpenDialoge(object sender, RoutedEventArgs e)
     {
         TasksList = bl.Task.ReadAll();
         Showdialog = true;
         DependencyEnabled = true;
     }
+
+
+
 
     private void CheckBox_Click(object sender, RoutedEventArgs e)
     {
@@ -254,12 +278,15 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
                 }
 
             }
-
     }
+}
+    
 
   
 
-    }
+    
+
+
 
 
 
