@@ -76,8 +76,18 @@ internal class TaskImplementation : ITask
     }
 
 
+    public bool check_level_engineer(int id, BO.EngineerExperience? level)
 
-   public bool check_id_engineer(int id)
+    {
+        if (level is not null)
+        {
+            return (int)(BO.EngineerExperience)_dal.Engineer.Read(id)!.level! >= (int)level;
+        }
+        return true;
+    }
+    
+
+    public bool check_id_engineer(int id)
     {
         return !(_dal.Engineer.ReadAll(k => k.Id == id).Any());
     }
@@ -229,6 +239,8 @@ internal class TaskImplementation : ITask
             {
                 if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
                     throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
+                if (check_level_engineer(item.Engineer.Id,item.Complexity) is true)
+                    throw new BlInvalidInputException("The engineer you entered does not match the mission level");
 
 
             }
@@ -464,15 +476,20 @@ internal class TaskImplementation : ITask
    
     public BO.Status getstatus(DO.Task T)
     {
-
+        
+       
         int i = 0;
-        if (T.StartDate is not null)
+        if (T.scheduledDate is not null)
             i = 1;
+        else
+            return (Status)0;
+
+        if (T.StartDate is not null)
+            if (T.StartDate >= _bl.Clock)
+                i = 2;
         if (T.CompleteDate is not null)
             if (T.CompleteDate <= _bl.Clock)
                 i = 3;
-            else
-                i = 2;
 
         switch (i)
         {
