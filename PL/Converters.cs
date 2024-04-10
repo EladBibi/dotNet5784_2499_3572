@@ -11,6 +11,10 @@ using System.Windows.Media;
 namespace PL;
 
 
+
+
+
+
 internal class ConvertStartDateTo_un_Bool : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

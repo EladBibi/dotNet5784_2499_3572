@@ -6,9 +6,8 @@ namespace BO;
 /// </summary>
 public class Task
 {
-   public Task() { RequiredEffortTime = new TimeSpan(0, 0, 0); }
+  
     public int Id { get; init; }
-
     public string? Alias { get; set; }
     public string? Description { get; set; }
     public string? Deliverables { get; set; }
@@ -21,7 +20,7 @@ public class Task
 
     public DateTime? ForeCastDate { get;init; }
     public BO.EngineerExperience? Complexity { get; set; }
-    public TimeSpan? RequiredEffortTime { get;  set; }
+    public TimeSpan? RequiredEffortTime { get; set; }
     public BO.Status? Status { get; set; }
     public List<BO.TaskInList>? Dependencies { get; set; }
 

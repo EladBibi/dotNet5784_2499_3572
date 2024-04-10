@@ -26,7 +26,7 @@
                Width="405" Height="80" FontWeight="Bold" FontSize="36" Grid.Column="0"/>
 
         <Button Content="ADMIN" Click="Is_Admin" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
-        <Button Content="ENGINEER"  HorizontalAlignment="Left" Margin="174,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
+        <Button Content="ENGINEER" Click="is_engineer"  HorizontalAlignment="Left" Margin="174,378,0,0" VerticalAlignment="Top" Width="159" Height="60"/>
         <Button Content="Initialize Date" Click="ChangeDate" HorizontalAlignment="Left" Margin="499,104,0,0" VerticalAlignment="Top" Width="126" Height="32" RenderTransformOrigin="-0.137,3.339"/>
 
 

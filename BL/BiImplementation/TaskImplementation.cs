@@ -22,11 +22,16 @@ internal class TaskImplementation : ITask
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
+   
+
     public bool Schedule_date()
     {
         return (_dal.Task.ReadAll(k => k.scheduledDate == null).Any());
 
     }
+
+ 
+
 
 
     public int Create(BO.Task item)
@@ -50,6 +55,9 @@ internal class TaskImplementation : ITask
 
         if (item!.Dependencies is null)
             item.Dependencies = new List<BO.TaskInList>();
+        if (item.Complexity is null)
+            item.Complexity = BO.EngineerExperience.Beginner;
+
 
         DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Deliverables, item.Description,
             item.Remarks, DateTime.Now, item.ScheduledDate, item.StartDate, item.CompleteDate,
@@ -71,6 +79,49 @@ internal class TaskImplementation : ITask
 
         return idTask;
     }
+
+
+    public bool check_level_engineer(int id, BO.EngineerExperience? level)
+
+    {
+        if (level is not null)
+        {
+            return (int)(BO.EngineerExperience)_dal.Engineer.Read(id)!.level! < (int)level;
+        }
+        return true;
+    }
+
+    public void reset_schdule_date()
+    {
+        foreach (var temp in ReadAll(p => p.scheduledDate != null))
+            UpdateDate(null, temp.Id, "schedule");
+    }
+
+    public bool list_task_for_engineer(DO.Task do_task, int id)
+    {
+        DO.Engineer do_eng = _dal.Engineer.Read(id)!;
+        BO.Task bo_task = Read(do_task.Id)!;
+        bool flag = false;
+        if (bo_task.Dependencies is null)
+        {
+
+            var tasks = (from dep in bo_task.Dependencies
+                         where dep.Status != BO.Status.Done
+                         select dep).ToList();
+
+            flag = tasks.Any();
+
+        }
+
+
+
+        return (do_task.EngineerId == 0 && !flag && (int)do_eng.level! >= (int)bo_task.Complexity! );
+
+    }
+
+
+
+    
 
     public bool check_id_engineer(int id)
     {
@@ -101,7 +152,7 @@ internal class TaskImplementation : ITask
             {
                 try
                 {
-                    UpdateDate(date, temp.Id);
+                    UpdateDate(date, temp.Id, "schedule");
                 }
                 catch (BlLogicalErrorException)
                 {
@@ -205,6 +256,17 @@ internal class TaskImplementation : ITask
 
     }
 
+    public void update_engineer_id(int eng, int task)
+    {
+        DO.Task update_do_task = _dal.Task.Read(task)!  with {EngineerId=eng};
+        _dal.Task.Update(update_do_task);
+
+    }
+   
+    
+    
+    
+    
     public void Update(BO.Task item)
     {
         if (CheckData(item))
@@ -212,6 +274,11 @@ internal class TaskImplementation : ITask
 
         DO.Task OldTask = _dal.Task.Read(item.Id) ?? throw
         new BO.BlAlreadyExistsException($"Task with ID={item.Id} does not exists");
+        
+        if(OldTask.CompleteDate != item.CompleteDate) 
+            if (OldTask.StartDate is null || item.StartDate is null)
+                throw new BlLogicalErrorException("You cannot enter an end date before the task has started");
+        
 
 
         if (_bl.GetDate("StartDate") != DateTime.MinValue)
@@ -220,6 +287,8 @@ internal class TaskImplementation : ITask
             {
                 if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
                     throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
+                if (check_level_engineer(item.Engineer.Id,item.Complexity) is true)
+                    throw new BlInvalidInputException("The engineer you entered does not match the mission level");
 
 
             }
@@ -259,38 +328,56 @@ internal class TaskImplementation : ITask
         return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
     }
 
-    public void UpdateDate(DateTime d, int id)
+   
+    
+    
+    
+       
+    public void UpdateDate(DateTime? d, int id, string s)
     {
-        if (d < DateTime.Now)
-            throw new BlLogicalErrorException("The date you entered has already passed");
-
-        if (_bl.GetDate("StartDate") == DateTime.MinValue)
-            throw new BlLogicalErrorException("Cant not update dates before you enter a start date for the project");
-
-        if (_bl.GetDate("StartDate") > d)
-            throw new BlLogicalErrorException("The start date cannot be earlier than the project start date");
-
-
-
         DO.Task? dotask = _dal.Task.Read(id);
         if (dotask is null)
             throw new BlNullPropertyException($"Task with ID={id} does Not exist");
-        var Tasks = from DO.Dependency doDependency in _dal.Dependency.ReadAll(p => p.DependentTask == id)
-                    let date = _dal.Task.Read(doDependency.DependsOnTask)!.scheduledDate
-                    where date is null
-                    select doDependency;
-        if (Tasks.Count() != 0)
-            throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
-        if (Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) < d) is not null)
-            throw new BlLogicalErrorException("It is not possible to update a date for" +
-                "a task that is earlier than the date of a task on which it depends");
-        DO.Task? UpdateTask = dotask with { scheduledDate = d };
+
+
+
+        if (d is not null)
+        {
+            if (((DateTime)d).Date < DateTime.Now.Date)
+                throw new BlLogicalErrorException("The date you entered has already passed");
+
+            if (_bl.GetDate("StartDate") == DateTime.MinValue)
+                throw new BlLogicalErrorException("Cant not update dates before you enter a start date for the project");
+
+            if (((DateTime)_bl.GetDate("StartDate")!).Date > ((DateTime)d).Date)
+                throw new BlLogicalErrorException("The start date cannot be earlier than the project start date");
+
+
+
+
+            var Tasks = from DO.Dependency doDependency in _dal.Dependency.ReadAll(p => p.DependentTask == id)
+                        let date = _dal.Task.Read(doDependency.DependsOnTask)!.scheduledDate
+                        where date is null
+                        select doDependency;
+            if (Tasks.Count() != 0)
+                throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
+            if (Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) < d) is not null)
+                throw new BlLogicalErrorException("It is not possible to update a date for" +
+                    "a task that is earlier than the date of a task on which it depends");
+        }
+        DO.Task? UpdateTask;
+        if ( s== "schedule")
+            UpdateTask = dotask with { scheduledDate = d };
+        else
+             UpdateTask = dotask with { StartDate = d };
+
+
 
 
 
         _dal.Task.Update(UpdateTask);
-
-    }
+        
+    }  
 
     public void AddDependency(int IdDepented, int IdDepentedOn)
 
@@ -432,22 +519,27 @@ internal class TaskImplementation : ITask
 
         DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
 
-        //max = max + T.RequiredEffortTime;
+        max = max + T.RequiredEffortTime;
 
         return max;
     }
 
     public Status getstatus(DO.Task T)
     {
-
+        
+       
         int i = 0;
-        if (T.StartDate is not null)
+        if (T.scheduledDate is not null)
             i = 1;
+        else
+            return (Status)0;
+
+        if (T.StartDate is not null)
+            if (T.StartDate >= _bl.Clock)
+                i = 2;
         if (T.CompleteDate is not null)
             if (T.CompleteDate <= _bl.Clock)
                 i = 3;
-            else
-                i = 2;
 
         switch (i)
         {
@@ -468,6 +560,26 @@ internal class TaskImplementation : ITask
 
         }
     }
+
+
+    public void finish_task(int id )
+    {
+
+        DO.Task task = _dal.Task.Read(id)! with { CompleteDate = DateTime.Today };
+        
+
+        _dal.Task.Update(task);
+        
+        
+    }
+
+    public bool time_required()
+    {
+        return (_dal.Task.ReadAll(k => k.RequiredEffortTime == null).Any());
+
+    }
+
+
     //מתודת עזר בשביל חישוב האם כל המשימות התלוות במשימה זו הסתיימו
     bool EndOfTasks(DO.Task T)
     {

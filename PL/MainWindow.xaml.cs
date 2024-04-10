@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 using PL.Engineer;
 using BlApi;
 using System.Windows.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Markup;
 
 
 
@@ -56,8 +58,10 @@ public partial class MainWindow : Window
 
     DispatcherTimer timer = new DispatcherTimer();
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    static public bool first_login { get; set; }
     public MainWindow()
     {
+        first_login = true;
         InitializeComponent();
         
 
@@ -80,8 +84,16 @@ public partial class MainWindow : Window
     }
 
 
-    private void Is_Admin(object sender, RoutedEventArgs e) => new Admin().Show();
-
+    private void Is_Admin(object sender, RoutedEventArgs e)
+    {
+        if (first_login is true)
+        {
+            new LoginWindow().ShowDialog();
+            
+        }
+        else
+            new Admin().Show();
+    }
 
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -92,7 +104,30 @@ public partial class MainWindow : Window
             Factory.Get().ResetDB();
     }
 
-    
+    private void is_engineer(object sender, RoutedEventArgs e)
+    {
+        string userInput = "";
+        int id;
+        
+        
+            userInput = Microsoft.VisualBasic.Interaction.InputBox("Please enter your id:", "Enter", "");
+        if (userInput != "")
+        {
+            if (int.TryParse(userInput, out id) is false || s_bl.Task.check_id_engineer(id) is true)
+            {
+                MessageBox.Show("Error", "The data you entered is incorrect",
+    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            new Engineers_Window(id).Show();
+        }
+        
+
+
+
+    }
+   
+
 
     private void ChangeDate(object sender, RoutedEventArgs e)
     {

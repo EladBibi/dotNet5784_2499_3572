@@ -120,7 +120,7 @@ public partial class CreateSchedule : Window
     private void Add_Date(object sender, RoutedEventArgs e)
     {
 
-        if (StartDate < DateTime.Now)
+        if (StartDate.Date < DateTime.Now.Date)
         {
             MessageBox.Show("Error", "The date you entered has already passed",
                 MessageBoxButton.OK, MessageBoxImage.Error);
@@ -149,12 +149,11 @@ public partial class CreateSchedule : Window
             if (sender is System.Windows.Controls.ListView listView)
             {
                 id = ((TaskInList)listView.SelectedItem!).Id;
-                new DatePicker(id).ShowDialog();
+                new DatePicker("schedule",id).ShowDialog();
             }
 
         }
-
-        private void create_schedule(object sender, RoutedEventArgs e)
+            private void create_schedule(object sender, RoutedEventArgs e)
 
     {
         if (bl.Task.Schedule_date() is true)
@@ -162,7 +161,13 @@ public partial class CreateSchedule : Window
             MessageBox.Show("Error", "You have not entered scheduled dates for all tasks!",
               MessageBoxButton.OK, MessageBoxImage.Error);
             return;
+
         }
+
+      
+
+
+
         if (bl.GetDate("StartDate") == DateTime.MinValue)
         {
             MessageBox.Show("Error", "You have not entered start date for the project!",
@@ -180,15 +185,27 @@ public partial class CreateSchedule : Window
     }
 
 
-    
 
-     private void create_schedule_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+
+    private void create_schedule_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
 
-    if(X is true)
-        bl.SetDate(DateTime.MinValue, "StartDate");
+        if (X is true)
+        { 
 
+        MessageBoxResult result = MessageBox.Show("Are you sure you want to delete the data?", "Exit",
+         MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                bl.SetDate(DateTime.MinValue, "StartDate");
+                bl.Task.reset_schdule_date();
+            }
+            else
+                e.Cancel = true;
     }
+    
+}
+
 
 
 

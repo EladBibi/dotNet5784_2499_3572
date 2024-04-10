@@ -37,6 +37,7 @@
 
 
         <ListView Grid.Row="1" ItemsSource="{Binding TasksList}"
+                
                    PreviewMouseRightButtonDown="delete_task" MouseDoubleClick="EditTask" Tag="{Binding}">
             <ListView.View>
                 <GridView>
