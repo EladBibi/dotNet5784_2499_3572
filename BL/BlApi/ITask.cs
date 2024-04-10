@@ -5,8 +5,9 @@ namespace BlApi;
 public interface ITask
 {
     public BO.Task? Read(int id);
-
+    public  void ScheduleTasks(DateTime startDate);
     public IEnumerable<BO.TaskInList> ReadAll(Func<DO.Task, bool>? filter = null);
+    public IEnumerable<BO.TaskInGantt> GanttList(DateTime date);
     public int  Create(BO.Task item);
     public void Update(BO.Task item);
     public void Delete(int id);

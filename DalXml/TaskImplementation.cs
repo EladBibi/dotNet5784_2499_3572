@@ -111,8 +111,8 @@ internal class TaskImplementation : ITask
                 CompleteDate = s.ToDateTimeNullable("completeDate"),
                 //DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
                 Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
-                RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
-
+                RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime"),
+                DeadLine =s.ToDateTimeNullable("requiredEffortTime")
 
             });
         if (filter == null)
@@ -152,6 +152,7 @@ internal class TaskImplementation : ITask
           new XElement("createdAtDate", item.CreatedAtDate),
          new XElement("scheduledDate", item.scheduledDate), new XElement("startDate", item.StartDate),
          new XElement("completeDate", item.CompleteDate),
+         new XElement("deadLine", item.DeadLine),
          new XElement("complexity", item.Complexity), new XElement("requiredEffortTime", item.RequiredEffortTime));
         return NewTask;
 

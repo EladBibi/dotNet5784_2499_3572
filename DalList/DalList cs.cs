@@ -14,9 +14,6 @@ sealed internal class DalList : IDal
     private static Lazy<IDal> instance=new Lazy<IDal>(()=>new DalList(),LazyThreadSafetyMode.ExecutionAndPublication);
     public static IDal Instance { get; } = instance.Value;
 
-
-
-
     // public static IDal Instance { get; } = new DalList();
     private DalList() { }
     // IDal עבור כל אחד מתתי הממשקים נממש את התכונה המתאימה שהוגדרה עבורו בממשק
@@ -24,8 +21,5 @@ sealed internal class DalList : IDal
 
     public IDependency Dependency => new DependencyImplementation();
 
-    public ITask Task => new TaskImplementation();
-  
-   
-    
+    public ITask Task => new TaskImplementation();    
 }

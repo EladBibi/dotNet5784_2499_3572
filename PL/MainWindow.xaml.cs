@@ -71,12 +71,7 @@ public partial class MainWindow : Window
         timer.Tick += Timer_Tick!;
 
         // Start the timer
-        timer.Start();
-
-
-       
-
-       
+        timer.Start();       
     }
     private void Timer_Tick(object sender, EventArgs e)
     {
@@ -118,9 +113,6 @@ public partial class MainWindow : Window
                        
                         s_bl.AddDay();
                         
-
-
-
                         break;
 
                     case "Add Month":

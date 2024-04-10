@@ -22,8 +22,8 @@ public class Initialization
             TimeSpan? span = new TimeSpan(1, s_rand.Next(1, 10), 0);
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 100000000 + i, "", "", "", "", DateTimeCreate, null, null, null, 
-                (DO.EngineerExperience)(i % 5), span);
+            Task NewTask = new Task(0, 1 + i, "", "", "", "", DateTimeCreate, null, null, null, 
+                (DO.EngineerExperience)(i % 5),RequiredEffortTime:  span);
             s_dal!.Task.Create(NewTask);
         }
     }

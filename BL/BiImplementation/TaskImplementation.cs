@@ -17,19 +17,16 @@ namespace BlImplementation;
 internal class TaskImplementation : ITask
 {
     private readonly IBl _bl;
-    internal TaskImplementation(IBl bl) => _bl = bl; 
-    
+    internal TaskImplementation(IBl bl) => _bl = bl;
+
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
-    
-    
     public bool Schedule_date()
     {
         return (_dal.Task.ReadAll(k => k.scheduledDate == null).Any());
 
     }
-    
 
 
     public int Create(BO.Task item)
@@ -44,20 +41,20 @@ internal class TaskImplementation : ITask
         int EngineerId = 0;
         if (item.Engineer is not null)
         {
-            if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id!=0)
+            if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
                 throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
 
             EngineerId = item.Engineer.Id;
         }
 
-        
+
         if (item!.Dependencies is null)
             item.Dependencies = new List<BO.TaskInList>();
-        
+
         DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Deliverables, item.Description,
             item.Remarks, DateTime.Now, item.ScheduledDate, item.StartDate, item.CompleteDate,
              (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
-        
+
         int idTask;
         try
         {
@@ -75,9 +72,7 @@ internal class TaskImplementation : ITask
         return idTask;
     }
 
-
-
-   public bool check_id_engineer(int id)
+    public bool check_id_engineer(int id)
     {
         return !(_dal.Engineer.ReadAll(k => k.Id == id).Any());
     }
@@ -85,7 +80,7 @@ internal class TaskImplementation : ITask
 
     public void CreateSchedule(DateTime date)
     {
-       
+
 
 
         _bl.SetDate(_bl.Clock, "StartDate");
@@ -139,10 +134,6 @@ internal class TaskImplementation : ITask
             throw new BO.BlDoesNotExistException($"Task with ID={id} does not exists", ex);
         }
     }
-
-
-
-
 
     public BO.Task? Read(int id)
     {
@@ -233,36 +224,44 @@ internal class TaskImplementation : ITask
 
             }
         }
-      
-        if(item.StartDate is not null)
+
+        if (item.StartDate is not null)
             if (item.StartDate < _bl.GetDate("StartDate"))
                 throw new BlInvalidInputException("The start date can't be earlier the project's date start");
 
         DO.Task NewdoTask = new DO.Task(item.Id, item.Engineer!.Id, item.Alias, item.Deliverables, item.Description,
            item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
             (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
-        
+
         _dal.Task.Update(NewdoTask);
 
 
 
     }
-   
-    
-    
+
+    public IEnumerable<BO.TaskInGantt> GanttList(DateTime date)
+    {
+        var x= from task in _dal.Task.ReadAll()
+               select new BO.TaskInGantt()
+               {
+                   Id = task.Id,
+                   Name = task.Description!,
+                   StartOffset = (int)(task.scheduledDate - date).Value.TotalMinutes,
+                   TaskLenght = (int)task.RequiredEffortTime!.Value.TotalMinutes,
+                   Status = getstatus(task),
+                   CompliteValue = CalcValue(task)
+               };
+        return x;
+    }
+
     bool CheckData(BO.Task item)
     {
         return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
     }
 
-   
-    
-    
-    
-    
     public void UpdateDate(DateTime d, int id)
     {
-        if(d< DateTime.Now)
+        if (d < DateTime.Now)
             throw new BlLogicalErrorException("The date you entered has already passed");
 
         if (_bl.GetDate("StartDate") == DateTime.MinValue)
@@ -270,9 +269,9 @@ internal class TaskImplementation : ITask
 
         if (_bl.GetDate("StartDate") > d)
             throw new BlLogicalErrorException("The start date cannot be earlier than the project start date");
-        
-        
-        
+
+
+
         DO.Task? dotask = _dal.Task.Read(id);
         if (dotask is null)
             throw new BlNullPropertyException($"Task with ID={id} does Not exist");
@@ -291,14 +290,14 @@ internal class TaskImplementation : ITask
 
         _dal.Task.Update(UpdateTask);
 
-    }  
+    }
 
     public void AddDependency(int IdDepented, int IdDepentedOn)
 
 
     {
 
-        if(IdDepented == IdDepentedOn)
+        if (IdDepented == IdDepentedOn)
             throw new BlLogicalErrorException("A task cannot depend on itself");
 
         if (_bl.GetDate("StartDate") != DateTime.MinValue)
@@ -310,13 +309,13 @@ internal class TaskImplementation : ITask
         BO.Task? botask = Read(IdDepentedOn);
         if (botask is null || Task_Depented is null)
             throw new BlNullPropertyException($"The task does not exist");
-        if(Task_Depented.Dependencies is not null)
+        if (Task_Depented.Dependencies is not null)
         {
-            if(Task_Depented.Dependencies.Any(k=>k.Id== IdDepentedOn) is true)
+            if (Task_Depented.Dependencies.Any(k => k.Id == IdDepentedOn) is true)
                 throw new BlLogicalErrorException("The task already depends on this task");
 
         }
-        if(Circularity_test(IdDepented, IdDepentedOn) is true)
+        if (Circularity_test(IdDepented, IdDepentedOn) is true)
             throw new BlNullPropertyException("There is a circular dependency in the tasks!");
 
         BO.TaskInList newTask = new BO.TaskInList()
@@ -328,19 +327,19 @@ internal class TaskImplementation : ITask
         };
         BO.Task? temp = Read(IdDepented);
 
-       
-        
+
+
         DO.Dependency doDependency = new DO.Dependency(0, IdDepented, IdDepentedOn);
         _dal.Dependency.Create(doDependency);
         temp!.Dependencies!.Add(newTask);
     }
 
 
-    public bool Circularity_test(int task_id,int dep_id)
+    public bool Circularity_test(int task_id, int dep_id)
     {
         if (task_id == dep_id)
             return true;
-        
+
         BO.Task? dep_task = Read(dep_id);
 
         if (dep_task is not null)
@@ -359,28 +358,24 @@ internal class TaskImplementation : ITask
         }
 
 
-        
 
-   return false;
+
+        return false;
 
     }
-
-
-
-
 
 
     public void DeleteDependency(int IdDepented, int IdDepentedOn)
     {
         if (_bl.GetDate("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("Dependencies cannot be deleted after the execution phase has started");
-       
+
         BO.Task? Task_Depented = Read(IdDepented);
         BO.Task? botask = Read(IdDepentedOn);
         if (botask is null || Task_Depented is null)
             throw new BlNullPropertyException($"The task does not exist");
         if (Task_Depented.Dependencies is not null)
-            if(Task_Depented.Dependencies.RemoveAll(x => x?.Id == IdDepentedOn)==0)
+            if (Task_Depented.Dependencies.RemoveAll(x => x?.Id == IdDepentedOn) == 0)
                 throw new BlNullPropertyException($"The task does not depend on the task you entered");
 
 
@@ -393,21 +388,6 @@ internal class TaskImplementation : ITask
             _dal.Dependency.Delete(dep_for_delete.Id);
 
     }
-
-  
-
-
-
-
-
-
-    
-
-
-
-
-
-
 
     void UpdateEngineer(int id, EngineerInTask engineer)
     {
@@ -447,22 +427,17 @@ internal class TaskImplementation : ITask
 
     }
 
-
-
-
-    
-
     DateTime? forcaste(DO.Task T)
     {
-       
-         DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
+
+        DateTime? max = T.StartDate >= T.scheduledDate ? T.StartDate : T.scheduledDate;
 
         //max = max + T.RequiredEffortTime;
 
         return max;
     }
-   
-    public BO.Status getstatus(DO.Task T)
+
+    public Status getstatus(DO.Task T)
     {
 
         int i = 0;
@@ -501,6 +476,81 @@ internal class TaskImplementation : ITask
             return false;
         return true;
     }
+
+    private int CalcValue(DO.Task task)
+    {
+        if (task.StartDate is null)
+            return 0;
+
+        DateTime clock = Factory.Get().Clock;
+        if (clock > task.StartDate && task.CompleteDate is null)
+            return (int)((double)(clock - task.StartDate).Value.TotalDays / (double)task.RequiredEffortTime!.Value.TotalDays) * 100;
+
+        return 0;
+    }
+
+    public void ScheduleTasks(DateTime startDate)
+    {
+        Dictionary<int, DO.Task> tasks = _dal.Task.ReadAll().ToList().ToDictionary(task => task.Id);
+        List<Dependency> dependencies = _dal.Dependency.ReadAll().ToList();
+
+
+        // Initialize the schedule with tasks that have no dependencies
+        Dictionary<int, DO.Task> schedule = tasks.Where(task => !dependencies.Any(dep => dep.DependentTask == task.Key)).
+            Select(task => task.Value).ToList().ToDictionary(task => task.Id);
+
+        foreach (int key in schedule.Keys)
+        {
+            DO.Task old = schedule[key];
+            TimeSpan? lenghTask = old.RequiredEffortTime;
+            old = old with { scheduledDate = startDate, DeadLine = startDate + lenghTask };
+            schedule[key] = old;
+        }
+
+        foreach (int task in tasks.Keys)
+        {
+            if (schedule.ContainsKey(task))
+                tasks.Remove(task);
+        }
+
+
+        while (tasks.Count > 0)
+        {
+            foreach (int newTask in tasks.Keys)
+            {
+                bool canSchedule = true;
+
+                foreach (Dependency dep in dependencies.Where(dep => dep.DependentTask == newTask))
+                {
+                    if (!schedule.ContainsKey(dep.DependsOnTask))
+                    {
+                        canSchedule = false;
+                        break;
+                    }
+                }
+
+                if (canSchedule)
+                {
+                    DateTime? earlyStart = DateTime.MinValue;
+                    DateTime? lastDepDate = DateTime.MinValue;
+
+                    foreach (Dependency dep in dependencies.Where(dep => dep.DependentTask == newTask))
+                    {
+                        lastDepDate = schedule[dep.DependsOnTask].DeadLine;
+                        if (lastDepDate > earlyStart)
+                            earlyStart = lastDepDate;
+                    }
+                    tasks[newTask] = tasks[newTask] with { scheduledDate = earlyStart, DeadLine = earlyStart + tasks[newTask].RequiredEffortTime };
+
+                    schedule.Add(newTask, tasks[newTask]);
+                    tasks.Remove(newTask);
+                }
+            }
+        }
+
+        schedule.Values.ToList().ForEach(task => { _dal.Task.Update(task); });
+    }
+
 
 }
 
