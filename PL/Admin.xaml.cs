@@ -83,6 +83,12 @@ public partial class Admin : Window
 
     private void Create_Schedule(object sender, RoutedEventArgs e)
     {
+        if (bl.Task.time_required() is true)
+        {
+            MessageBox.Show("Error", "You have not entered required effort time for all tasks!",
+              MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
 
         new CreateSchedule().ShowDialog();
         is_all_schedule = bl.Task.Schedule_date();

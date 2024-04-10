@@ -25,31 +25,41 @@ public partial class DatePicker : Window
 
    
 
-    public DateTime scheduledate
+    public DateTime schedule_start_date
     {
-        get { return (DateTime)GetValue(scheduledateProperty); }
-        set { SetValue (scheduledateProperty, value); }
+        get { return (DateTime)GetValue(schedule_start_dateProperty); }
+        set { SetValue (schedule_start_dateProperty, value); }
     }
 
 
-    public static readonly DependencyProperty scheduledateProperty =
-DependencyProperty.Register(nameof(scheduledate), typeof(DateTime), typeof(DatePicker));
+    public static readonly DependencyProperty schedule_start_dateProperty =
+DependencyProperty.Register(nameof(schedule_start_date), typeof(DateTime), typeof(DatePicker));
 
 
-
-    
-
-
-
-
-
-    int id = 0;
-
-    public DatePicker(int i)
+    public string s_date
     {
+        get { return (string)GetValue(s_dateProperty); }
+        set { SetValue(s_dateProperty, value); }
+    }
 
+
+    public static readonly DependencyProperty s_dateProperty =
+DependencyProperty.Register(nameof(s_date), typeof(string), typeof(DatePicker));
+
+
+
+
+
+    int eng_Id;
+    int id = 0;
+    string Date;
+    public DatePicker(string date, int i, int eng_id=0)
+    {
+        eng_Id = eng_id;
+         Date = date;
+        s_date = "Enter the " + date + " date of the task";
         id = i;
-        scheduledate = DateTime.Now;
+        schedule_start_date = DateTime.Now;
         InitializeComponent();
     }
 
@@ -64,7 +74,17 @@ DependencyProperty.Register(nameof(scheduledate), typeof(DateTime), typeof(DateP
         
         try
         {
-            bl.Task.UpdateDate(scheduledate, id);
+            if (Date == "schedule")
+                bl.Task.UpdateDate(schedule_start_date, id, "schedule");
+            else
+                if (Date == "start")
+            {
+                bl.Task.UpdateDate(schedule_start_date, id, "start");
+                bl.Task.update_engineer_id(eng_Id, id);
+            }
+
+
+
         }
 
         catch ( Exception ex)
@@ -73,7 +93,9 @@ DependencyProperty.Register(nameof(scheduledate), typeof(DateTime), typeof(DateP
              MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-        MessageBox.Show("The operation was successful");
+       
+            
+            MessageBox.Show("The operation was successful");
         this.Close();
 
 

@@ -10,8 +10,11 @@
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
        
-        <TextBox HorizontalAlignment="Left" Margin="15,26,0,0" TextWrapping="Wrap" Text="Enter the schedule date of the task:" VerticalAlignment="Top" Width="270" FontWeight="Bold" FontSize="16"/>
-        <DatePicker SelectedDate= "{Binding scheduledate,Mode=TwoWay}"
+     
+        <TextBox HorizontalAlignment="Left" Margin="15,26,0,0" TextWrapping="Wrap"
+                 Text="{Binding s_date,Mode=TwoWay}"
+                 VerticalAlignment="Top" Width="270" FontWeight="Bold" FontSize="16"/>
+        <DatePicker SelectedDate= "{Binding schedule_start_date,Mode=TwoWay}"
             HorizontalAlignment="Left" Margin="314,31,0,0" VerticalAlignment="Top" Width="134"/>
         
         <Button Content="Add date" Click="Add_Sdate" HorizontalAlignment="Left"

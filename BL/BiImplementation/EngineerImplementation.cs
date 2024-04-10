@@ -44,7 +44,7 @@ internal class EngineerImplementation : BlApi.IEnginner
         }
         catch (Exception ex) { throw new BlDoesNotExistException(ex.Message); }
     }
-
+    
     public BO.Engineer Read(int id)
     {
         DO.Engineer engineerd = dal.Engineer.Read(id) ?? throw new BlDoesNotExistException("the engineer id dost exist");
@@ -90,6 +90,7 @@ internal class EngineerImplementation : BlApi.IEnginner
     {
         if (!IsValid(engineer))
             throw new Exception("the details of engineer faild");
+       
         try
         {
             //TODO
@@ -105,11 +106,13 @@ internal class EngineerImplementation : BlApi.IEnginner
             DO.Engineer eng = dal.Engineer.Read(engineer.Id) ??
                 throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} does not exists");
 
-            DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! > eng.level ?
+            DO.EngineerExperience? newLevel = (DO.EngineerExperience)engineer.Level! >= eng.level ?
 
-           (DO.EngineerExperience)engineer.Level : eng.level;
-          
-            
+           (DO.EngineerExperience)engineer.Level : 
+           throw new BO.BlDoesNotExistException("The engineer level cannot be updated downwards"); 
+
+
+
                 eng = eng with
                 {
                     Cost = engineer.Cost,

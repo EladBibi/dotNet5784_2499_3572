@@ -1,0 +1,41 @@
+﻿<Window x:Class="PL.Engineer.Engineers_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Engineer"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="Engineers_Window" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="359*"/>
+            <ColumnDefinition Width="441*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Current tasks:" HorizontalAlignment="Left"
+           Margin="10,23,0,0" VerticalAlignment="Top" Width="130"
+           Height="31" RenderTransformOrigin="0.373,0.343" FontStyle="Italic" FontSize="18" FontWeight="Bold"/>
+        <ListView  ItemsSource="{Binding TasksList}" 
+                   MouseDoubleClick="finish_task" Margin="10,70,0,-11" HorizontalAlignment="Left" Width="322">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView ItemsSource="{Binding TasksList_done}"  IsEnabled="false"   Grid.Column="1" Margin="0,70,20,-1">
+
+        </ListView>
+        <Label Content="Completed tasks:" HorizontalAlignment="Left" Margin="348,23,0,0" VerticalAlignment="Top" Height="31" FontWeight="Bold" Width="159" FontSize="18" FontStyle="Italic" Grid.ColumnSpan="2"/>
+        <Button Grid.Column="1" Content="Suggested tasks" Click="open_tasks_list" HorizontalAlignment="Left" Margin="260,3,0,0" VerticalAlignment="Top" Height="50" Width="171" FontSize="16" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-2.064"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.991"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+    </Grid>
+</Window>

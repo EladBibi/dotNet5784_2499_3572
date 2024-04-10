@@ -1,6 +1,8 @@
 ﻿
 
 using DO;
+using System.Xml;
+using System;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -20,8 +22,27 @@ static class XMLTools
         Enum.TryParse<T>((string?)element.Element(name), out var result) ? (T?)result : null;
     public static DateTime? ToDateTimeNullable(this XElement element, string name) =>
         DateTime.TryParse((string?)element.Element(name), out var result) ? (DateTime?)result : null;
-    public static TimeSpan? ToTimeSpanNullable(this XElement element, string name) =>
-        TimeSpan.TryParse((string?)element.Element(name), out var result) ? (TimeSpan?)result : null;
+    
+    public static TimeSpan? ToTimeSpanNullable(this XElement element, string name)
+    { 
+
+    if (element.Element(name) is not null)
+    {
+        string timespanValue = element.Element(name)!.Value;
+            if (!string.IsNullOrEmpty(timespanValue))
+            {
+                TimeSpan timespan = XmlConvert.ToTimeSpan(timespanValue);
+                return timespan;
+            }
+    }
+    return null;
+ }
+
+    
+
+
+
+
     public static double? ToDoubleNullable(this XElement element, string name) =>
         double.TryParse((string?)element.Element(name), out var result) ? (double?)result : null;
     public static int? ToIntNullable(this XElement element, string name) =>

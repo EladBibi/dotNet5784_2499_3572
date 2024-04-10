@@ -75,26 +75,44 @@ public partial class TaskListWindow : Window
     private void EditTask(object sender, RoutedEventArgs e)
     {
 
+        
         if (sender is System.Windows.Controls.ListView listView)
         {
-            if (listView is not null)
+            if ((TaskInList)listView.SelectedItem is not null)
             {
-                int id = ((TaskInList)listView.SelectedItem!).Id;
 
-
-
+               int  id = ((TaskInList)listView.SelectedItem).Id;
                 new EditTask(id).ShowDialog();
 
             }
+
+
+
         }
         else
+        {
+            if (bl.GetDate("StartDate") != DateTime.MinValue)
+            {
+                MessageBox.Show("Error", "It is not possible to create new tasks after the start of the project",
+       MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                return;
+            }
             new EditTask().ShowDialog();
 
 
+
+        }
         TasksList = bl.Task.ReadAll();
+        this.Close();
 
     }
-    
+
+
+
+
+
+
 
 
 

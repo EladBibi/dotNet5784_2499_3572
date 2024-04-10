@@ -46,15 +46,16 @@ internal class TaskImplementation : ITask
                                        Description = (string?)(s.Element("description")),
                                        Deliverables = (string?)(s.Element("deliverables")),
                                        Remarks = (string?)(s.Element("remarks")),
-                                      
+
 
                                        CreatedAtDate = s.ToDateTimeNullable("createdAtDate"),
                                        scheduledDate = s.ToDateTimeNullable("scheduledDate"),
                                        StartDate = s.ToDateTimeNullable("startDate"),
                                        CompleteDate = s.ToDateTimeNullable("completeDate"),
-                                      
+
                                        Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
                                        RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
+                                      
 
                                    }).FirstOrDefault();
 
@@ -152,9 +153,10 @@ internal class TaskImplementation : ITask
           new XElement("createdAtDate", item.CreatedAtDate),
          new XElement("scheduledDate", item.scheduledDate), new XElement("startDate", item.StartDate),
          new XElement("completeDate", item.CompleteDate),
-         new XElement("complexity", item.Complexity), new XElement("requiredEffortTime", item.RequiredEffortTime));
+         new XElement("complexity", item.Complexity),
+         new XElement("requiredEffortTime", item.RequiredEffortTime));
         return NewTask;
-
+        
     }
 }
 

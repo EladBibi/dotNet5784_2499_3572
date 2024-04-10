@@ -59,7 +59,10 @@
 
                     <!-- Required Effort Time -->
                     <TextBlock Text="Required Effort Time:" Grid.Row="3" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Task.RequiredEffortTime,Mode=TwoWay}"/>
+                       
+                    <TextBox
+                        IsEnabled ="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                        Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Task.RequiredEffortTime,Mode=TwoWay}"/>
 
                     <!-- Complexity -->
                     <TextBlock Text="Complexity:" Grid.Row="4" VerticalAlignment="Center"/>
@@ -99,9 +102,7 @@
                          IsEnabled="False"         
                                 SelectedDate="{Binding Task.ScheduledDate,Mode=TwoWay}"/>
 
-                    <!-- Deadline Date -->
-                    <!--<TextBlock Text="Deadline Date:" Grid.Row="9" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="9" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.DeadlineDate}"/>-->
+                   
 
                     <!-- Complete Date -->
                     <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
