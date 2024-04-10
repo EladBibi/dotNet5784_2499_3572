@@ -278,14 +278,19 @@ internal class TaskImplementation : ITask
 
         DO.Task OldTask = _dal.Task.Read(item.Id) ?? throw
         new BO.BlAlreadyExistsException($"Task with ID={item.Id} does not exists");
-        
-        if(OldTask.CompleteDate != item.CompleteDate) 
+
+        if (OldTask.CompleteDate != item.CompleteDate)
+        {
             if (OldTask.StartDate is null || item.StartDate is null)
                 throw new BlLogicalErrorException("You cannot enter an end date before the task has started");
-        
+            if (item.CompleteDate < item.StartDate)
+                throw new BlLogicalErrorException("The task cannot be finished before it has started");
+        }
 
 
-        if (_bl.GetDate("StartDate") != DateTime.MinValue)
+
+
+            if (_bl.GetDate("StartDate") != DateTime.MinValue)
         {
             if (item.Engineer is not null)
             {

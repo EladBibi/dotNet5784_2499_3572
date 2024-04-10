@@ -1,10 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfEngineers>
   <Engineer>
-    <id>123</id>
-    <cost>30</cost>
-    <name>re</name>
-    <email>rer</email>
-    <level>AdvancedBeginner</level>
+    <id>1234</id>
+    <cost>344</cost>
+    <name>dfdf</name>
+    <email>fdf</email>
+    <level>Intermediate</level>
+  </Engineer>
+  <Engineer>
+    <id>1</id>
+    <cost>1</cost>
+    <name>wewe</name>
+    <email>wewe</email>
+    <level>Beginner</level>
   </Engineer>
 </ArrayOfEngineers>
