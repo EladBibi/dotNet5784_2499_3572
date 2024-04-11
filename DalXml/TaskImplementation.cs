@@ -112,8 +112,8 @@ internal class TaskImplementation : ITask
                 CompleteDate = s.ToDateTimeNullable("completeDate"),
                 //DeadLineDate = s.ToDateTimeNullable("deadLineDate"),
                 Complexity = s.ToEnumNullable<DO.EngineerExperience>("complexity") ?? 0,
-                RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime")
-
+                RequiredEffortTime = s.ToTimeSpanNullable("requiredEffortTime"),
+                DeadLine =s.ToDateTimeNullable("requiredEffortTime")
 
             });
         if (filter == null)

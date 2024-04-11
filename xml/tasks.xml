@@ -52,7 +52,8 @@
     <createdAtDate>2024-04-10T00:00:00</createdAtDate>
     <scheduledDate>2024-04-10T00:00:00</scheduledDate>
     <startDate>2024-04-10T00:00:00</startDate>
-    <completeDate>2024-04-04T00:00:00</completeDate>
+    <completeDate />
+    <deadLine />
     <complexity>Beginner</complexity>
     <requiredEffortTime>PT15H15M</requiredEffortTime>
   </Task>

@@ -37,7 +37,8 @@ public record Task
     DateTime? CompleteDate = null,
 
     DO.EngineerExperience? Complexity = null,
-    TimeSpan? RequiredEffortTime = null
+    TimeSpan? RequiredEffortTime = null,
+    DateTime? DeadLine = null
     )
 {
     public Task() : this(0, 0) {  }
