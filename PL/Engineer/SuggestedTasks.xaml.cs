@@ -69,8 +69,18 @@ public partial class SuggestedTasks : Window
             if (sender is System.Windows.Controls.ListView listView)
             {
                 id = ((TaskInList)listView.SelectedItem!).Id;
-                new DatePicker("start", id,Id).ShowDialog();
+                try { bl.Task.update_engineer_id(Id, id); }
+                
+                 catch (Exception ex)
+                {
+                    MessageBox.Show("Error", ex.Message,
+                     MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                new DatePicker("start", id, Id).ShowDialog();
                 this.Close();
+
+
             }
 
 

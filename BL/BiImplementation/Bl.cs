@@ -38,7 +38,7 @@ internal class Bl : IBl
     public DateTime? GetDate(string d) => DalTest.Initialization.GetDates(d);
     public void SetDate(DateTime d, string date) => DalTest.Initialization.SetDates(d,date);
 
-
+    public string? getDataBase() => DalTest.Initialization.GetDataBase();
 
 
 

@@ -18,6 +18,8 @@ public  interface IBl
     public int get_task_id();
     public DateTime? GetDate(string date);
     public void SetDate(DateTime d,string date);
+    public string? getDataBase();
+ 
 
 
 

@@ -121,6 +121,15 @@ public class Initialization
         root.Save(@"..\xml\data-config.xml");
     }
 
+    public static string? GetDataBase()
+    {
+        XElement root = XElement.Load(@"..\xml\dal-config.xml");
+        return (string?)root.Element("dal");
+    }
+            
+
+    
+
 
 
 

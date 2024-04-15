@@ -23,4 +23,5 @@ public interface ITask
     public void update_engineer_id(int eng, int task);
     public void finish_task(int id);
     public bool time_required();
+    public void remove_engineer_from_task(int task_id);
 }

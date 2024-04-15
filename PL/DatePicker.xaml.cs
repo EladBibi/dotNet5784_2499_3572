@@ -80,7 +80,7 @@ DependencyProperty.Register(nameof(s_date), typeof(string), typeof(DatePicker));
                 if (Date == "start")
             {
                 bl.Task.UpdateDate(schedule_start_date, id, "start");
-                bl.Task.update_engineer_id(eng_Id, id);
+             
             }
 
 
@@ -91,6 +91,8 @@ DependencyProperty.Register(nameof(s_date), typeof(string), typeof(DatePicker));
         {
             MessageBox.Show("Error", ex.Message,
              MessageBoxButton.OK, MessageBoxImage.Error);
+            if (Date == "Start")
+                bl.Task.update_engineer_id(0, id);
             return;
         }
        

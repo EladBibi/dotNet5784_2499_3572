@@ -98,10 +98,13 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        MessageBoxResult result = MessageBox.Show("Do you want to save the data?", "Exit",
-           MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if (result == MessageBoxResult.No)
-            Factory.Get().ResetDB();
+        if (s_bl.getDataBase() == "xml")
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to save the data?", "Exit",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+                Factory.Get().ResetDB();
+        }
     }
 
     private void is_engineer(object sender, RoutedEventArgs e)

@@ -1,8 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfTask>
-  <Dependency>
-    <id>1</id>
-    <dependentTask>1</dependentTask>
-    <dependsOnTask>2</dependsOnTask>
-  </Dependency>
-</ArrayOfTask>
+<ArrayOfTask />

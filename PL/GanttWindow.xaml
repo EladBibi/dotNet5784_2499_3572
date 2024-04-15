@@ -11,7 +11,12 @@
         <local:ConvertStatusToColor x:Key="ConvertStatusToColorKey"/>
     </Window.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding GanttList}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="79*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Margin="0,38,0,-6" Grid.ColumnSpan="2"
+          ItemsSource="{Binding GanttList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"/>
@@ -22,13 +27,59 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Background="Transparent" Width="{Binding StartOffset}"/>
-                                    <ProgressBar Value="{Binding CompliteValue}" Background="{Binding Status , Converter={StaticResource ConvertStatusToColorKey}}" Width="{Binding TaskLenght}" Height="25"/>
+                                    <ProgressBar Value="{Binding CompliteValue}" 
+                                               Background="{Binding Status , Converter=
+                                        {StaticResource ConvertStatusToColorKey}}" Width="{Binding TaskLenght}" Height="25"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+            
+
+
+
         </ListView>
+        <Button Content="Unscheduled"
+        HorizontalAlignment="Left" 
+        Margin="301,0,0,0" VerticalAlignment="Top" Height="27" Width="116" Foreground="#DD3E4033" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="LightGray" />
+            </Button.Background>
+        </Button>
+
+        <Button Content="Scheduled" HorizontalAlignment="Left" Margin="301,32,0,0"
+                VerticalAlignment="Top" Width="116" Height="27" FontWeight="Bold" FontStyle="Italic" Foreground="#DD2F0B0B">
+            <Button.Background>
+                <SolidColorBrush Color="LightGoldenrodYellow"/>
+            </Button.Background>
+        </Button>
+        <Button Content="OnTrack" HorizontalAlignment="Left" Margin="429,0,0,0"
+                VerticalAlignment="Top" Width="116" Height="27" Foreground="#DD222B2D" FontStyle="Italic" Grid.ColumnSpan="2" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="Yellow"/>
+            </Button.Background>
+        </Button>
+
+        <Button Content="Done" HorizontalAlignment="Left"
+                Margin="429,32,0,0" VerticalAlignment="Top" Width="116" Height="27" FontStyle="Italic" Foreground="#DD5F1E1E" Grid.ColumnSpan="2" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="Orange"/>
+            </Button.Background>
+        </Button>
+
+        <Button   Content="Delayed" HorizontalAlignment="Left"
+                Margin="73,1,0,0" VerticalAlignment="Top" Width="116" Height="26" FontStyle="Italic" Foreground="#DD3E1414" Grid.Column="1" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="Red"/>
+            </Button.Background>
+        </Button>
+
+
+
+
+
+
     </Grid>
 </Window>

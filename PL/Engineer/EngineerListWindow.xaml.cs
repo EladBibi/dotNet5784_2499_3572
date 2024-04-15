@@ -52,6 +52,17 @@ public partial class EngineerListWindow : Window
         this.Close();
     }
 
+    private void engineer_Click(object sender, MouseButtonEventArgs e)
+    {
+        BO.Engineer? Engineer = (sender as System.Windows.Controls.ListView)?.SelectedItem as BO.Engineer;
+        if (Engineer is not null)
+        
+          new Engineers_Window(Engineer.Id,false).ShowDialog();
+
+        
+    }
+
+
 
     private void Update_DoubleClick(object sender, MouseButtonEventArgs e)
     {

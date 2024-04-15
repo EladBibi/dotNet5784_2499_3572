@@ -9,9 +9,6 @@
         
         Title="EditTask" Height="500" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-        
-    
-
 
 
     <Grid>
@@ -36,7 +33,7 @@
                     <TextBox Grid.Column="1" Margin="5" Text="{Binding Task.Id ,Mode=TwoWay}"
                               IsEnabled="False"/>
 
-    
+
 
                     <!-- Alias -->
                     <TextBlock Text="Alias:" VerticalAlignment="Center"/>
@@ -59,7 +56,7 @@
 
                     <!-- Required Effort Time -->
                     <TextBlock Text="Required Effort Time:" Grid.Row="3" VerticalAlignment="Center"/>
-                       
+
                     <TextBox
                         IsEnabled ="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
                         Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Task.RequiredEffortTime,Mode=TwoWay}"/>
@@ -86,13 +83,13 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <StackPanel Grid.Column="1" Margin="10,0,458,-39" Grid.ColumnSpan="2">
                     <!-- Start Date -->
                     <TextBlock Text="Start Date:" Grid.Row="7" VerticalAlignment="Center"/>
                     <DatePicker
                    
                         
-                        IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                        IsEnabled="False"
                         
                         Grid.Row="7" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.StartDate,Mode=TwoWay}"/>
 
@@ -102,7 +99,7 @@
                          IsEnabled="False"         
                                 SelectedDate="{Binding Task.ScheduledDate,Mode=TwoWay}"/>
 
-                   
+
 
                     <!-- Complete Date -->
                     <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
@@ -110,22 +107,30 @@
                          IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
                         Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
 
-                    <!-- Forecast Date --> 
+                    <!-- Forecast Date -->
                     <TextBlock Text="Forecast Date:" Grid.Row="11" VerticalAlignment="Center"/>
                     <DatePicker Grid.Row="11" Grid.Column="1" Margin="5" 
                                   IsEnabled="False" SelectedDate="{Binding Task.ForeCastDate,Mode=TwoWay}"/>
 
                     <!-- Engineer -->
-                    <TextBlock Text="Engineer Id:" Grid.Row="12" VerticalAlignment="Center"/>
-                    <TextBox 
-                         IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
-                         
-                        Grid.Row="12" Grid.Column="1" Margin="5" 
-                       Text="{Binding Task.Engineer.Id,Mode=TwoWay}"/>
-                    
+                    <TextBlock Text="Select engineer:" Grid.Row="12" VerticalAlignment="Center"/>
+                    <ComboBox Width="120"
+                   IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                    SelectedValue="{Binding Task.Engineer, Mode=TwoWay}"
+                    ItemsSource="{Binding EngineerList,Mode=TwoWay}" Margin="-28,0,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Text="Engineer id:" Margin="0,10,0,0"/>
+                    <TextBox TextWrapping="Wrap" IsEnabled="False" Text="{Binding Task.Engineer.Id, Mode=TwoWay}"
+                             Width="120" Margin="-28,0,0,0"/>
+
+                    <Button Content="{Binding Task.Id, Converter={StaticResource ConvertIdToContentTask_key}, Mode=TwoWay}"
+                     Click="AddUpdate_Click"  
+                        Width="130" 
+                          RenderTransformOrigin="0.51,0.716" 
+                        Height="33" Margin="8,50,8,0"/>
+                    <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Margin="0,700,0,0"/>
+                    <TextBox TextWrapping="Wrap" Text="TextBox" Width="120"/>
+
                     <!-- Edit dependencies -->
-                    <Button Content="{Binding Task.Id, Mode=TwoWay, Converter={StaticResource ConvertIdToContentTask_key}}"
-                          VerticalAlignment="Center" Click=" AddUpdate_Click"/>
 
 
                 </StackPanel>
@@ -136,7 +141,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Dependencies:"  IsReadOnly="True"/>
                         <DataGridTextColumn Header="Id"   Binding="{Binding Id}" IsReadOnly="False" />
-                                             
+
 
 
 
@@ -144,10 +149,10 @@
                         <DataGridTextColumn Header="Description"  Binding="{Binding Description}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Alias"  Binding="{Binding Alias}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Status"  Binding="{Binding Status }" IsReadOnly="True"/>
-                        
-                            
-                             
-                            
+
+
+
+
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -161,5 +166,11 @@
 
         </Grid>
     </Grid>
-    
+
 </Window>
+
+
+
+
+
+ 

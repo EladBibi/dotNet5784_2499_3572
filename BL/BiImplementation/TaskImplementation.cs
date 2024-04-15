@@ -197,7 +197,8 @@ internal class TaskImplementation : ITask
 
         if (depList is null)
             depList = new List<Dependency>();
-
+        
+      
 
 
         return new BO.Task()
@@ -258,15 +259,26 @@ internal class TaskImplementation : ITask
 
     public void update_engineer_id(int eng, int task)
     {
+        if(_dal.Task.ReadAll(k=> k.EngineerId==eng).Any() is true )
+            throw new BlLogicalErrorException("The engineer is already assigned a task");
         DO.Task update_do_task = _dal.Task.Read(task)!  with {EngineerId=eng};
         _dal.Task.Update(update_do_task);
 
     }
-   
-    
-    
-    
-    
+
+
+    public void remove_engineer_from_task(int task_id)
+    {
+        DO.Task do_task = _dal.Task.Read(task_id)!;
+            if(getstatus(do_task)==BO.Status.OnTrack)
+                throw new BlLogicalErrorException
+                    ("You cannot remove an engineer from a task that has already started working");
+        DO.Task task = do_task with { EngineerId = 0 };
+        _dal.Task.Update(do_task);
+    }
+
+
+
     public void Update(BO.Task item)
     {
         if (CheckData(item))
@@ -292,6 +304,12 @@ internal class TaskImplementation : ITask
             {
                 if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
                     throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
+                if(item.Engineer.Id==0)
+                    if(item.StartDate is not null)
+                    if(DateTime.Now.Date<= item.StartDate)
+                            throw new BlLogicalErrorException
+                                ("You cannot remove an engineer from a task that has already started working");
+
                 if (check_level_engineer(item.Engineer.Id,item.Complexity) is true)
                     throw new BlInvalidInputException("The engineer you entered does not match the mission level");
 
@@ -320,7 +338,7 @@ internal class TaskImplementation : ITask
                {
                    Id = task.Id,
                    Name = task.Description!,
-                   StartOffset = (int)(task.scheduledDate - date).Value.TotalMinutes,
+                   StartOffset = (int)(task.scheduledDate - date)!.Value.TotalMinutes,
                    TaskLenght = (int)task.RequiredEffortTime!.Value.TotalMinutes,
                    Status = getstatus(task),
                    CompliteValue = CalcValue(task)

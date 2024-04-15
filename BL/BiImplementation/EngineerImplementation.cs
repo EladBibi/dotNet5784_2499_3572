@@ -67,6 +67,7 @@ internal class EngineerImplementation : BlApi.IEnginner
         };
     }
 
+
     public IEnumerable<BO.Engineer> ReadAll(Func<BO.Engineer, bool>? filter = null)
     {
         return (from eng in dal.Engineer.ReadAll()
@@ -85,6 +86,23 @@ internal class EngineerImplementation : BlApi.IEnginner
                     } : null
                 }).Where(eng => filter is null ? true : filter(eng));
     }
+
+
+
+        public IEnumerable<BO.EngineerInTask?> Read_Engineer_In_Task()
+    {
+        return (from eng in dal.Engineer.ReadAll()
+
+                select new BO.EngineerInTask()
+                {
+                    Id = eng.Id,
+                    Name = eng.name
+
+                });
+    }
+
+
+
 
     public void Update(BO.Engineer engineer)
     {

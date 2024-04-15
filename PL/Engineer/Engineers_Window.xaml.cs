@@ -45,7 +45,14 @@ public partial class Engineers_Window : Window
 
 
 
+    public bool is_engineer
+    {
+        get { return (bool)GetValue(is_engineerProperty); }
+        set { SetValue(is_engineerProperty, value); }
+    }
 
+    public static readonly DependencyProperty is_engineerProperty =
+        DependencyProperty.Register(nameof(is_engineer), typeof(bool), typeof(Engineers_Window));
 
 
 
@@ -53,13 +60,16 @@ public partial class Engineers_Window : Window
 
     int Id = 0;
 
+
     static readonly BlApi.IBl bl = BlApi.Factory.Get();
-    public Engineers_Window(int id)
+    public Engineers_Window(int id, bool flag = true)
     {
+        is_engineer = flag;
         Id = id;
         TasksList = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) != BO.Status.Done);
-        TasksList_done = bl.Task.ReadAll(k => k.EngineerId == id &&  bl.Task.getstatus(k) == BO.Status.Done);
+        TasksList_done = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) == BO.Status.Done);
         InitializeComponent();
+
 
     }
 
@@ -71,11 +81,40 @@ public partial class Engineers_Window : Window
 
     }
 
+ 
     private void finish_task(object sender, RoutedEventArgs e)
     {
-        MessageBoxResult result = System.Windows.MessageBox.Show($"Are you sure you finished the task?"
-             , "Finish task",
-             MessageBoxButton.YesNo, MessageBoxImage.Question);
+       
+        if (is_engineer is true)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show($"Are you sure you finished the task?"
+                 , "Finish task",
+                 MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+
+                if (sender is System.Windows.Controls.ListView listView)
+                {
+                    if ((TaskInList)listView.SelectedItem is not null)
+                    {
+                        int id = ((TaskInList)listView.SelectedItem).Id;
+                        bl.Task.finish_task(id);
+                        TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) != BO.Status.Done);
+                        TasksList_done = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.Done);
+
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void delete_task(object sender, RoutedEventArgs e)
+    {
+        MessageBoxResult result = System.Windows.MessageBox.Show($"Are you sure you want to remove the task?"
+                 , "Remove task",
+                 MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
 
@@ -84,24 +123,30 @@ public partial class Engineers_Window : Window
                 if ((TaskInList)listView.SelectedItem is not null)
                 {
                     int id = ((TaskInList)listView.SelectedItem).Id;
-                    bl.Task.finish_task(id);
+                    try { bl.Task.remove_engineer_from_task(id); }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error", ex.Message,
+                     MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+
+                    }
                     TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) != BO.Status.Done);
-                    TasksList_done = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.Done);
-
-
                 }
             }
         }
     }
-
-
 }
 
 
-    
-   
 
 
 
 
- 
+
+
+
+
+
+
+

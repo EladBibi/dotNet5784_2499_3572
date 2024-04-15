@@ -36,12 +36,28 @@ public partial class Admin : Window
     public static readonly DependencyProperty is_all_scheduleProperty =
       DependencyProperty.Register(nameof(is_all_schedule), typeof(bool), typeof(Admin));
 
+    public bool gantt
+    {
+        get { return (bool)GetValue(ganttProperty); }
+        set { SetValue(ganttProperty, value); }
+    }
 
-  
+    public static readonly DependencyProperty ganttProperty =
+      DependencyProperty.Register(nameof(gantt), typeof(bool), typeof(Admin));
+
+
+
+
+
+
+
+
+   
 
     public Admin()
     {
         is_all_schedule = bl.Task.Schedule_date();
+        gantt = !is_all_schedule;
         InitializeComponent();
         
     }
@@ -54,6 +70,7 @@ public partial class Admin : Window
     private void btTask_Click(object sender, RoutedEventArgs e)
     { new TaskListWindow().ShowDialog();
         is_all_schedule = bl.Task.Schedule_date();
+        gantt = !is_all_schedule;
     }
 
     private void Init_Data(object sender, RoutedEventArgs e)
@@ -63,6 +80,7 @@ public partial class Admin : Window
         if (result == MessageBoxResult.Yes)
             Factory.Get().InitializeDB();
         is_all_schedule = bl.Task.Schedule_date();
+        gantt = !is_all_schedule;
     }
 
     private void TaskClick(object sender, RoutedEventArgs e)=> new TaskListWindow().Show();
@@ -92,6 +110,7 @@ public partial class Admin : Window
 
         new CreateSchedule().ShowDialog();
         is_all_schedule = bl.Task.Schedule_date();
+        gantt = !bl.Task.Schedule_date();
     }
 
    

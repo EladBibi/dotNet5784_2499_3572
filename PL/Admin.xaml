@@ -34,7 +34,9 @@
         <Button Grid.Column="2" Content="Reset"  Click="Reset_Data"
                 HorizontalAlignment="Left" Margin="103,196,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66"/>
 
-        <Button Content="Gantt" Click="GanttClick" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66"/>
+        <Button Content="Gantt"
+                 IsEnabled="{Binding gantt}"
+                Click="GanttClick" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="246" Height="66"/>
 
         <Button Grid.Column="2" 
                   IsEnabled="{Binding is_all_schedule}"

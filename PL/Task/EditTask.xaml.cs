@@ -113,6 +113,21 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         DependencyProperty.Register(nameof(TasksList), typeof(IEnumerable<BO.TaskInList>), typeof(EditTask));
 
 
+    public IEnumerable<BO.EngineerInTask?> EngineerList
+    {
+        get { return (IEnumerable<BO.EngineerInTask?>)GetValue(EngineerListProperty); }
+        set { SetValue(EngineerListProperty, value); }
+    }
+
+    public static readonly DependencyProperty EngineerListProperty =
+        DependencyProperty.Register(nameof(EngineerList), typeof(IEnumerable<BO.EngineerInTask?>), typeof(EditTask));
+
+
+
+
+
+
+
     int ID;
     public EditTask(int id = 0)
     {
@@ -132,8 +147,10 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         if (Task!.Dependencies is null)
             Task.Dependencies = new List<BO.TaskInList>();
 
-        if (Task!.Engineer is null)
+        if (Task.Engineer is null)
             Task.Engineer = new BO.EngineerInTask();
+
+        EngineerList = bl.Engineer.Read_Engineer_In_Task();
 
         InitializeComponent();
     }
@@ -279,12 +296,32 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
 
             }
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+
+    }
+
+    private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+    {
+
+    }
+
+    private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
+    {
+
+    }
 }
-    
 
-  
 
-    
+
+
+
 
 
 
