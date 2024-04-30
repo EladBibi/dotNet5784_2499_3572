@@ -45,6 +45,22 @@ public partial class Engineers_Window : Window
 
 
 
+    public IEnumerable<BO.TaskInList> TasksList_schedule
+    {
+        get { return (IEnumerable<BO.TaskInList>)GetValue(TasksList_scheduleProperty); }
+        set { SetValue(TasksList_scheduleProperty, value); }
+    }
+
+    public static readonly DependencyProperty TasksList_scheduleProperty =
+        DependencyProperty.Register(nameof(TasksList_schedule), typeof(IEnumerable<BO.TaskInList>), typeof(Engineers_Window));
+
+
+
+
+
+
+
+
     public bool is_engineer
     {
         get { return (bool)GetValue(is_engineerProperty); }
@@ -66,8 +82,9 @@ public partial class Engineers_Window : Window
     {
         is_engineer = flag;
         Id = id;
-        TasksList = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) != BO.Status.Done);
+        TasksList = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) == BO.Status.OnTrack);
         TasksList_done = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) == BO.Status.Done);
+        TasksList_schedule = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) == BO.Status.Scheduled);
         InitializeComponent();
 
 
@@ -77,29 +94,35 @@ public partial class Engineers_Window : Window
     private void open_tasks_list(object sender, RoutedEventArgs e)
     {
         new SuggestedTasks(Id).ShowDialog();
-        TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) != BO.Status.Done);
+        TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.OnTrack);
 
     }
 
  
     private void finish_task(object sender, RoutedEventArgs e)
     {
-       
+      
+
+
         if (is_engineer is true)
         {
-            MessageBoxResult result = System.Windows.MessageBox.Show($"Are you sure you finished the task?"
+             
+
+                    
+                 MessageBoxResult result = System.Windows.MessageBox.Show($"Are you sure you finished the task?"
                  , "Finish task",
                  MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-
                 if (sender is System.Windows.Controls.ListView listView)
                 {
                     if ((TaskInList)listView.SelectedItem is not null)
                     {
                         int id = ((TaskInList)listView.SelectedItem).Id;
+
+
                         bl.Task.finish_task(id);
-                        TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) != BO.Status.Done);
+                        TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.OnTrack);
                         TasksList_done = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.Done);
 
 
@@ -107,6 +130,41 @@ public partial class Engineers_Window : Window
                 }
             }
         }
+
+    }
+
+    private void Start_task(object sender, RoutedEventArgs e)
+    {
+        MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to start work on the task?", "Task",
+                 MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+        {
+            int id = 0;
+            if (sender is System.Windows.Controls.ListView listView)
+            {
+                id = ((TaskInList)listView.SelectedItem!).Id;
+                try { bl.Task.update_engineer_id(Id, id); }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error", ex.Message,
+                     MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                bl.Task.UpdateDate(DateTime.Now.Date, id, "start");
+                MessageBox.Show("The operation was successful");
+                TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.OnTrack);
+                TasksList_done = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.Done);
+                TasksList_schedule = bl.Task.ReadAll(k => k.EngineerId == id && bl.Task.getstatus(k) == BO.Status.Scheduled);
+
+
+            }
+
+
+        }
+
+
+
 
     }
 
@@ -131,7 +189,7 @@ public partial class Engineers_Window : Window
                         return;
 
                     }
-                    TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) != BO.Status.Done);
+                    TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.OnTrack);
                 }
             }
         }

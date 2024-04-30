@@ -7,10 +7,23 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BlImplementation;
 
 internal class EngineerImplementation : BlApi.IEnginner
+     
+   
 {
     private readonly IDal dal = DalApi.Factory.Get;
+    
+    private readonly IBl _bl;
+    internal EngineerImplementation(IBl bl) => _bl = bl;
+    
     public int Create(BO.Engineer engineer)
     {
+
+        if (_bl.GetDate("FinishDate") != DateTime.MinValue)
+            throw new BlLogicalErrorException("The project is finished!");
+
+
+
+
         //TODO update Exception
         if (!IsValid(engineer))
             throw new InvalidDataException("the details of engineer is not valid");

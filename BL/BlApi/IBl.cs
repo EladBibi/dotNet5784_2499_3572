@@ -14,12 +14,16 @@ public  interface IBl
     public void AddMonth();
     public void AddDay();
     public void AddHour();
+    public void AddSecond();
     public void InitializeTime();
     public int get_task_id();
     public DateTime? GetDate(string date);
     public void SetDate(DateTime d,string date);
     public string? getDataBase();
- 
+    public void Set_Sistem_Date();
+    public DateTime Get_Sistem_Date();
+    
+
 
 
 

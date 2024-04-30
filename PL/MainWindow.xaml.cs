@@ -59,14 +59,16 @@ public partial class MainWindow : Window
     DispatcherTimer timer = new DispatcherTimer();
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
     static public bool first_login { get; set; }
+    DateTime SistemDate;
     public MainWindow()
     {
         first_login = true;
         InitializeComponent();
-        
+        SistemDate = s_bl.Get_Sistem_Date();
+
 
         // Create a DispatcherTimer instance
-        
+
 
         // Set the interval for the timer (1 second in this case)
         timer.Interval = TimeSpan.FromSeconds(1);
@@ -80,8 +82,13 @@ public partial class MainWindow : Window
     private void Timer_Tick(object sender, EventArgs e)
     {
         // Update the CurrentTime property with the current time
-        CurrentTime = DateTime.Now.ToString();
+        s_bl.AddSecond();
+        SistemDate = SistemDate.AddSeconds(1);
+        CurrentTime = SistemDate.ToString();
     }
+
+
+    
 
 
     private void Is_Admin(object sender, RoutedEventArgs e)
@@ -98,6 +105,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
+        
+        s_bl.Set_Sistem_Date();
         if (s_bl.getDataBase() == "xml")
         {
             MessageBoxResult result = MessageBox.Show("Do you want to save the data?", "Exit",

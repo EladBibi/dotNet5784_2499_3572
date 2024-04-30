@@ -13,6 +13,33 @@ namespace PL;
 
 
 
+internal class Convert_done_to_Bool : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if(value is BO.TaskInList task) 
+        return task.Status == BO.Status.Done ? "False" : "True";
+        return "True";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 internal class ConvertStartDateTo_un_Bool : IValueConverter

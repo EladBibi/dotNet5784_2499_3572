@@ -27,8 +27,34 @@ public partial class EngineerWindow : Window
 {
     int id;
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-    public EngineerWindow(int Id = 0)
+
+
+   
+
+
+    public BO.Engineer Engineer
     {
+        get { return (BO.Engineer)GetValue(EngineerProperty); }
+        set { SetValue(EngineerProperty, value); }
+    }
+
+    public static readonly DependencyProperty EngineerProperty =
+DependencyProperty.Register("Engineer", typeof(BO.Engineer),
+    typeof(EngineerWindow), new PropertyMetadata(null));
+
+
+
+
+
+
+
+
+
+
+    public EngineerWindow(int Id = 0)
+
+ {
+       
         InitializeComponent();
         
             Engineer = (Id == 0) ? new BO.Engineer() : s_bl.Engineer.Read(Id);
@@ -41,15 +67,7 @@ public partial class EngineerWindow : Window
 
         id = Id;
     }
-    public BO.Engineer Engineer
-    {
-        get { return (BO.Engineer)GetValue(EngineerProperty); }
-        set { SetValue(EngineerProperty, value); }
-    }
-
-    public static readonly DependencyProperty EngineerProperty =
-DependencyProperty.Register("Engineer", typeof(BO.Engineer),
-    typeof(EngineerWindow), new PropertyMetadata(null));
+   
 
     private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
     {
@@ -64,6 +82,7 @@ DependencyProperty.Register("Engineer", typeof(BO.Engineer),
         catch (Exception ex) { 
         
             MessageBox.Show("Error", ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+            this.Close();
             return;
         }
         MessageBox.Show("The operation was successful");

@@ -32,10 +32,21 @@ internal class TaskImplementation : ITask
 
  
 
-
+   public bool finish_project()
+    {
+        return _bl.GetDate("StartDate") != DateTime.MinValue &&
+            _dal.Task.ReadAll(p => getstatus(p) != Status.Done).Any() is false;
+            
+    }
 
     public int Create(BO.Task item)
     {
+        if (_bl.GetDate("FinishDate") != DateTime.MinValue)
+            throw new BlLogicalErrorException("The project is finished!");
+
+
+
+
         if (_bl.GetDate("StartDate") != DateTime.MinValue)
             throw new BlLogicalErrorException("It is not possible to create new tasks after the start of the project");
 
@@ -58,8 +69,8 @@ internal class TaskImplementation : ITask
         if (item.Complexity is null)
             item.Complexity = BO.EngineerExperience.Beginner;
 
-
-        DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Deliverables, item.Description,
+       
+        DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Description, item.Deliverables,
             item.Remarks, DateTime.Now, item.ScheduledDate, item.StartDate, item.CompleteDate,
              (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
 
@@ -71,7 +82,7 @@ internal class TaskImplementation : ITask
 
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Student with ID={item.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Engineer with ID={item.Id} already exists", ex);
         }
 
         if (item!.Dependencies is null)
@@ -82,8 +93,11 @@ internal class TaskImplementation : ITask
 
 
     public bool check_level_engineer(int id, BO.EngineerExperience? level)
-
     {
+        if (id == 0)
+            return false;
+        
+    
         if (level is not null)
         {
             return (int)(BO.EngineerExperience)_dal.Engineer.Read(id)!.level! < (int)level;
@@ -257,25 +271,42 @@ internal class TaskImplementation : ITask
 
     }
 
+
+
     public void update_engineer_id(int eng, int task)
     {
-        if(_dal.Task.ReadAll(k=> k.EngineerId==eng).Any() is true )
+        if (_dal.Task.ReadAll(k => k.EngineerId == eng && getstatus(k) == Status.OnTrack).Any() is true)
             throw new BlLogicalErrorException("The engineer is already assigned a task");
-        DO.Task update_do_task = _dal.Task.Read(task)!  with {EngineerId=eng};
+        
+        
+        
+        var Tasks = from DO.Dependency doDependency in _dal.Dependency.ReadAll(p => p.DependentTask == task)
+                    let date = _dal.Task.Read(doDependency.DependsOnTask)!.scheduledDate
+                    where date is not null
+                    select doDependency;
+
+        if (Tasks.Any(p => getstatus(_dal.Task.Read(p.DependsOnTask)!) != Status.Done) is true)
+            throw new BlLogicalErrorException("Not all pending tasks have been completed!");
+                
+
+        DO.Task update_do_task = _dal.Task.Read(task)! with { EngineerId = eng };
         _dal.Task.Update(update_do_task);
 
     }
 
 
+
     public void remove_engineer_from_task(int task_id)
     {
         DO.Task do_task = _dal.Task.Read(task_id)!;
-            if(getstatus(do_task)==BO.Status.OnTrack)
-                throw new BlLogicalErrorException
-                    ("You cannot remove an engineer from a task that has already started working");
+        if (getstatus(do_task) == BO.Status.OnTrack)
+            throw new BlLogicalErrorException
+                ("You cannot remove an engineer from a task that has already started working");
         DO.Task task = do_task with { EngineerId = 0 };
         _dal.Task.Update(do_task);
     }
+
+
 
 
 
@@ -296,32 +327,26 @@ internal class TaskImplementation : ITask
         }
 
 
+        //int eng_id = 0;
 
-
-            if (_bl.GetDate("StartDate") != DateTime.MinValue)
+        if (_bl.GetDate("StartDate") != DateTime.MinValue)
         {
-            if (item.Engineer is not null)
-            {
-                if (check_id_engineer(item.Engineer.Id) is true && item.Engineer.Id != 0)
-                    throw new BlInvalidInputException("The data you entered is incorrect for the task's engineer");
-                if(item.Engineer.Id==0)
-                    if(item.StartDate is not null)
-                    if(DateTime.Now.Date<= item.StartDate)
-                            throw new BlLogicalErrorException
-                                ("You cannot remove an engineer from a task that has already started working");
-
-                if (check_level_engineer(item.Engineer.Id,item.Complexity) is true)
-                    throw new BlInvalidInputException("The engineer you entered does not match the mission level");
-
-
-            }
+            if (item.Engineer is null)
+                item.Engineer = new EngineerInTask { Id = 0 };
+            if (check_level_engineer(item.Engineer.Id, item.Complexity) is true)
+                throw new BlInvalidInputException("The engineer you entered does not match the mission level");
         }
+
+
+
+
+        
 
         if (item.StartDate is not null)
             if (item.StartDate < _bl.GetDate("StartDate"))
                 throw new BlInvalidInputException("The start date can't be earlier the project's date start");
 
-        DO.Task NewdoTask = new DO.Task(item.Id, item.Engineer!.Id, item.Alias, item.Deliverables, item.Description,
+        DO.Task NewdoTask = new DO.Task(item.Id, item.Engineer!.Id, item.Alias, item.Description, item.Deliverables,
            item.Remarks, item.CreatedAtDate, item.ScheduledDate, item.StartDate, item.CompleteDate,
             (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
 
@@ -348,7 +373,7 @@ internal class TaskImplementation : ITask
 
     bool CheckData(BO.Task item)
     {
-        return (item.Id <= 0 || item.Alias is null || item.Alias == "" || item.Engineer!.Id < 0);
+        return (item.Id <= 0 || item.Alias is null || item.Alias == "");
     }
 
    
@@ -366,7 +391,7 @@ internal class TaskImplementation : ITask
 
         if (d is not null)
         {
-            if (((DateTime)d).Date < DateTime.Now.Date)
+            if (((DateTime)d).Date < _bl.Clock.Date)
                 throw new BlLogicalErrorException("The date you entered has already passed");
 
             if (_bl.GetDate("StartDate") == DateTime.MinValue)
@@ -379,14 +404,13 @@ internal class TaskImplementation : ITask
 
 
             var Tasks = from DO.Dependency doDependency in _dal.Dependency.ReadAll(p => p.DependentTask == id)
-                        let date = _dal.Task.Read(doDependency.DependsOnTask)!.scheduledDate
-                        where date is null
                         select doDependency;
-            if (Tasks.Count() != 0)
-                throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
-            if (Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) < d) is not null)
+            
+            if(Tasks.Any(p=>_dal.Task.Read(p.DependsOnTask)!.scheduledDate is null) is true)
+            throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
+            if (s== "schedule" && Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) > d) is not null)
                 throw new BlLogicalErrorException("It is not possible to update a date for" +
-                    "a task that is earlier than the date of a task on which it depends");
+                    "a task that is earlier than the completion of pending tasks");
         }
         DO.Task? UpdateTask;
         if ( s== "schedule")
@@ -520,9 +544,9 @@ internal class TaskImplementation : ITask
         var item = _dal.Task.ReadAll(p => p.EngineerId == engineer.Id);
         if (item.Any())
             foreach (var item2 in item)
-                if (item2.CompleteDate > _bl.Clock)
+                if (item2.CompleteDate > _bl.Clock.Date)
                 {
-                    DO.Task NewTask = item2 with { CompleteDate = _bl.Clock };
+                    DO.Task NewTask = item2 with { CompleteDate = _bl.Clock.Date };
                     _dal.Task.Update(NewTask);
                 }
 
@@ -558,10 +582,10 @@ internal class TaskImplementation : ITask
             return (Status)0;
 
         if (T.StartDate is not null)
-            if (T.StartDate >= _bl.Clock)
+            if (T.StartDate >= _bl.Clock.Date)
                 i = 2;
         if (T.CompleteDate is not null)
-            if (T.CompleteDate <= _bl.Clock)
+            if (T.CompleteDate <= _bl.Clock.Date)
                 i = 3;
 
         switch (i)

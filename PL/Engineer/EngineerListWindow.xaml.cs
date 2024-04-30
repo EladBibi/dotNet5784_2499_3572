@@ -17,6 +17,26 @@ using System.Windows.Input;
 /// </summary>
 public partial class EngineerListWindow : Window
 {
+
+    public bool FINISH
+    {
+        get { return (bool)GetValue(FINISHProperty); }
+        set { SetValue(FINISHProperty, value); }
+    }
+
+    public static readonly DependencyProperty FINISHProperty =
+      DependencyProperty.Register(nameof(FINISH), typeof(bool), typeof(EngineerListWindow));
+
+
+
+
+
+
+
+
+
+
+
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
     public BO.EngineerExperience_List level { get; set; } = BO.EngineerExperience_List.None;
 
@@ -39,6 +59,7 @@ public partial class EngineerListWindow : Window
 
     public EngineerListWindow()
     {
+        FINISH = s_bl.GetDate("FinishDate") == DateTime.MinValue;
         InitializeComponent();
         EngineerList = s_bl?.Engineer.ReadAll()!;
 

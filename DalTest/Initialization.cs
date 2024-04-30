@@ -113,9 +113,29 @@ public class Initialization
         return DateTime.TryParse((string?)root.Element(date), out var result) ? (DateTime?)result : null;
 
     }
+
+    public static DateTime Get_Sistem_Date()
+    {
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        return (DateTime.TryParse((string?)root.Element("SistemDate"), out var result) ? (DateTime)result : DateTime.Now).
+            AddSeconds(1);
+           
+
+    }
+
+
+    public static void Set_Sistem_Date()
+    {
+       
+        XElement root = XElement.Load(@"..\xml\data-config.xml");
+        root.Element("SistemDate")?.SetValue((DateTime.Now).ToString());
+        root.Save(@"..\xml\data-config.xml");
+    }
+
+
     public static void SetDates(DateTime d, string date)
     {
-        d.AddMonths(2);
+        
         XElement root = XElement.Load(@"..\xml\data-config.xml");
         root.Element(date)?.SetValue((d).ToString());
         root.Save(@"..\xml\data-config.xml");

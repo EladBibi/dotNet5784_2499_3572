@@ -44,6 +44,7 @@
         <Button Content="Add" Click="Add_Click"  Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
         <ListView Grid.Row="1" ItemsSource="{Binding EngineerList}" 
+                  IsEnabled="{Binding FINISH}"
                   MouseDoubleClick="Update_DoubleClick"
                     PreviewMouseRightButtonUp="engineer_Click" 
                     PreviewMouseRightButtonDown="delete_engineer">

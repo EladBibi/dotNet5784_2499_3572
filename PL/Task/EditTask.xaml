@@ -39,14 +39,14 @@
                     <TextBlock Text="Alias:" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="1" Margin="5" 
                           
-                    IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                   
                               
                     Text="{Binding Task.Alias ,Mode=TwoWay}"/>
 
                     <!-- Description -->
                     <TextBlock Text="Description:" Grid.Row="1" VerticalAlignment="Center"/>
                     <TextBox 
-                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                     
                       Grid.Row="1" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Description,Mode=TwoWay}"/>
 
                     <!-- Created At Date -->
@@ -71,14 +71,14 @@
                     <!-- Deliverables -->
                     <TextBlock Text="Deliverables:" Grid.Row="5" VerticalAlignment="Center"/>
                     <TextBox 
-                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                    
                       Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text=
                       "{Binding Task.Deliverables,Mode=TwoWay}"/>
 
                     <!-- Remarks -->
                     <TextBlock Text="Remarks:" Grid.Row="6" VerticalAlignment="Center"/>
                     <TextBox 
-                      IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateTo_un_Boolkey}}"
+                     
                       Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Text="{Binding Task.Remarks,Mode=TwoWay}"/>
 
                 </StackPanel>
@@ -104,7 +104,7 @@
                     <!-- Complete Date -->
                     <TextBlock Text="Complete Date:" Grid.Row="10" VerticalAlignment="Center"/>
                     <DatePicker 
-                         IsEnabled="{Binding startdate,Mode=OneTime,Converter={StaticResource ConvertStartDateToBoolkey}}"
+                         IsEnabled="False"
                         Grid.Row="10" Grid.Column="1" Margin="5" SelectedDate="{Binding Task.CompleteDate,Mode=TwoWay}"/>
 
                     <!-- Forecast Date -->

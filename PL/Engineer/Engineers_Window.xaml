@@ -13,10 +13,10 @@
             <ColumnDefinition Width="441*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Current tasks:" HorizontalAlignment="Left"
-           Margin="10,23,0,0" VerticalAlignment="Top" Width="130"
+           Margin="10,31,0,0" VerticalAlignment="Top" Width="130"
            Height="31" RenderTransformOrigin="0.373,0.343" FontStyle="Italic" FontSize="18" FontWeight="Bold"/>
         <ListView  ItemsSource="{Binding TasksList}" 
-                   MouseDoubleClick="finish_task" Margin="10,70,0,-11" HorizontalAlignment="Left" Width="322"
+                   MouseDoubleClick="finish_task" Margin="10,68,0,20" HorizontalAlignment="Left" Width="263"
                    PreviewMouseRightButtonDown="delete_task">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -24,12 +24,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView ItemsSource="{Binding TasksList_done}"  IsEnabled="false"   Grid.Column="1" Margin="0,70,20,-1">
-
-        </ListView>
-        <Label Content="Completed tasks:" HorizontalAlignment="Left" Margin="348,23,0,0" VerticalAlignment="Top" Height="31" FontWeight="Bold" Width="159" FontSize="18" FontStyle="Italic" Grid.ColumnSpan="2"/>
-        <Button Grid.Column="1" Content="Suggested tasks" IsEnabled="{Binding is_engineer}"
-                Click="open_tasks_list" HorizontalAlignment="Left" Margin="260,3,0,0" VerticalAlignment="Top" Height="50" Width="171" FontSize="16" RenderTransformOrigin="0.5,0.5">
+        <ListView ItemsSource="{Binding TasksList_done}"  IsEnabled="false" Margin="289,68,289,27" Grid.ColumnSpan="2"/>
+        <Label Content="Completed tasks:" HorizontalAlignment="Left" Margin="304,39,0,0" VerticalAlignment="Top" Height="31" FontWeight="Bold" Width="159" FontSize="18" FontStyle="Italic" Grid.ColumnSpan="2"/>
+        <Button Content="Suggested tasks" IsEnabled="{Binding is_engineer}"
+                Click="open_tasks_list" HorizontalAlignment="Left" Margin="312,1,0,0" VerticalAlignment="Top" Height="31" Width="156" FontSize="16" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -39,5 +37,10 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
+        <ListView ItemsSource="{Binding TasksList_schedule}" Margin="221,68,32,15"
+                  MouseDoubleClick="Start_task" Grid.Column="1">
+      
+        </ListView>
+        <Label Grid.Column="1" Content="Schedule tasks:" HorizontalAlignment="Left" Margin="242,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.345,0.144" FontWeight="Bold" FontSize="18"/>
     </Grid>
 </Window>

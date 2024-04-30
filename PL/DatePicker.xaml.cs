@@ -93,6 +93,7 @@ DependencyProperty.Register(nameof(s_date), typeof(string), typeof(DatePicker));
              MessageBoxButton.OK, MessageBoxImage.Error);
             if (Date == "Start")
                 bl.Task.update_engineer_id(0, id);
+            this.Close();
             return;
         }
        

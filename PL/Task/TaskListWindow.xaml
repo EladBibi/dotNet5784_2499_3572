@@ -39,6 +39,19 @@
         <ListView Grid.Row="1" ItemsSource="{Binding TasksList}"
                 
                    PreviewMouseRightButtonDown="delete_task" MouseDoubleClick="EditTask" Tag="{Binding}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <!-- קובע ברירת מחדל שכל הפריטים נגישים -->
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="Done">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="Background" Value="Orange"/>
+                                <!-- משנה פריטים עם סטטוס "Inactive" ללא נגישים -->
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

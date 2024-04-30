@@ -77,7 +77,8 @@ public partial class SuggestedTasks : Window
                      MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                new DatePicker("start", id, Id).ShowDialog();
+                bl.Task.UpdateDate(DateTime.Now.Date, id, "start");
+                MessageBox.Show("The operation was successful");
                 this.Close();
 
 

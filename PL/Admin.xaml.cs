@@ -24,9 +24,27 @@ public partial class Admin : Window
 {
 
     private readonly IBl bl = BlApi.Factory.Get();
-    
-    
-    
+
+
+
+    public bool FINISH
+    {
+        get { return (bool)GetValue(FINISHProperty); }
+        set { SetValue(FINISHProperty, value); }
+    }
+
+    public static readonly DependencyProperty FINISHProperty =
+      DependencyProperty.Register(nameof(FINISH), typeof(bool), typeof(Admin));
+
+
+
+
+
+
+
+
+
+
     public bool is_all_schedule
     {
         get { return (bool)GetValue(is_all_scheduleProperty); }
@@ -57,6 +75,7 @@ public partial class Admin : Window
     public Admin()
     {
         is_all_schedule = bl.Task.Schedule_date();
+        FINISH = bl.Task.finish_project() && bl.GetDate("FinishDate") == DateTime.MinValue;
         gantt = !is_all_schedule;
         InitializeComponent();
         
@@ -114,9 +133,16 @@ public partial class Admin : Window
     }
 
    
-    
+    private void Finish_Project(object sender, RoutedEventArgs e)
+    {
+        bl.SetDate(DateTime.Now,"FinishDate");
+        MessageBox.Show("Congratulations!");
+        this.Close();
+       
+    }
 
-   
+
+
 
 
 

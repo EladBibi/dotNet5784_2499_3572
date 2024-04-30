@@ -147,8 +147,7 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         if (Task!.Dependencies is null)
             Task.Dependencies = new List<BO.TaskInList>();
 
-        if (Task.Engineer is null)
-            Task.Engineer = new BO.EngineerInTask();
+       
 
         EngineerList = bl.Engineer.Read_Engineer_In_Task();
 
@@ -179,11 +178,18 @@ DependencyProperty.Register(nameof(dependency_id), typeof(int?), typeof(EditTask
         (sender as Button)!.IsEnabled = false;
         if (Task!.Id != 0)
         {
-            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to update the dependencies?", "Update",
-                  MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-                new update_dependency(Task!.Id).Show();
-
+            if (bl.GetDate("StartDate") == DateTime.MinValue)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to update the dependencies?", "Update",
+                      MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    new update_dependency(Task!.Id).Show();
+                    this.Close();
+                    return;
+                }
+            }
+            MessageBox.Show("The operation was successful");
             this.Close();
 
         }
