@@ -7,4 +7,5 @@ public class TaskInGantt
     public int TaskLenght { get; set; }
     public Status Status { get; set; }
     public int CompliteValue { get; set; }
+    public List<int>? Dependencies_id { get; set; }
 }

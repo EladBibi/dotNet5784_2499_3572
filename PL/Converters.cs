@@ -11,6 +11,33 @@ using System.Windows.Media;
 namespace PL;
 
 
+public class IntListToStringConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is List<int> intList)
+        {
+            return String.Join(" ", intList);
+        }
+        return String.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(); // ConvertBack אינו נדרש במקרה זה
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 internal class Convert_done_to_Bool : IValueConverter

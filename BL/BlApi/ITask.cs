@@ -14,7 +14,7 @@ public interface ITask
     public void AddDependency(int IdDepented, int IdDepentedOn);
     public void DeleteDependency(int IdDepented, int IdDepentedOn);
     public void UpdateDate(DateTime? d, int id,string s);
-    public void CreateSchedule(DateTime date);
+  
     public BO.Status getstatus(DO.Task T);
     public bool Schedule_date();
     public void reset_schdule_date();

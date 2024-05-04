@@ -143,43 +143,7 @@ internal class TaskImplementation : ITask
     }
 
 
-    public void CreateSchedule(DateTime date)
-    {
-
-
-
-        _bl.SetDate(_bl.Clock, "StartDate");
-        foreach (var temp in _dal.Task.ReadAll())
-        {
-            Console.WriteLine("enter the scheduled date for the task");
-            string s = Console.ReadLine()!;
-            if (!DateTime.TryParse(s, out date))
-                throw new BlInvalidInputException("The data you entered is incorrect for a date");
-            if (!_dal.Dependency.ReadAll(p => p.DependentTask == temp.Id).Any())
-            {
-                if (_bl.GetDate("StartDate") > date)
-                    throw new BlLogicalErrorException("The start date cannot be later than the project start date");
-                DO.Task dotask = temp with { scheduledDate = date };
-                _dal.Task.Update(dotask);
-            }
-            else
-            {
-                try
-                {
-                    UpdateDate(date, temp.Id, "schedule");
-                }
-                catch (BlLogicalErrorException)
-                {
-
-                    throw;
-                }
-
-            }
-        }
-
-
-
-    }
+   
 
     public void Delete(int id)
     {
@@ -358,18 +322,21 @@ internal class TaskImplementation : ITask
 
     public IEnumerable<BO.TaskInGantt> GanttList(DateTime date)
     {
-        var x= from task in _dal.Task.ReadAll()
-               select new BO.TaskInGantt()
-               {
-                   Id = task.Id,
-                   Name = task.Description!,
-                   StartOffset = (int)(task.scheduledDate - date)!.Value.TotalMinutes,
-                   TaskLenght = (int)task.RequiredEffortTime!.Value.TotalMinutes,
-                   Status = getstatus(task),
-                   CompliteValue = CalcValue(task)
+        var x = from task in _dal.Task.ReadAll()
+                select new BO.TaskInGantt()
+                {
+                    Id = task.Id,
+                    Name = task.Alias!,
+                    StartOffset = (int)(task.scheduledDate - date)!.Value.TotalMinutes,
+                    TaskLenght = (int)task.RequiredEffortTime!.Value.TotalMinutes,
+                    Status = getstatus(task),
+                    CompliteValue = CalcValue(task),
+                    Dependencies_id = (from dep in _dal.Dependency.ReadAll(p=>p.DependentTask == task.Id)
+                                       select dep.DependsOnTask).ToList()
                };
         return x;
     }
+   
 
     bool CheckData(BO.Task item)
     {
@@ -643,7 +610,8 @@ internal class TaskImplementation : ITask
 
         DateTime clock = Factory.Get().Clock;
         if (clock > task.StartDate && task.CompleteDate is null)
-            return (int)((double)(clock - task.StartDate).Value.TotalDays / (double)task.RequiredEffortTime!.Value.TotalDays) * 100;
+            return (int)((double)(clock - task.StartDate).Value.TotalDays /
+                (double)task.RequiredEffortTime!.Value.TotalDays) * 100;
 
         return 0;
     }

@@ -14,7 +14,8 @@
             </ResourceDictionary.MergedDictionaries>
            
             <local:ConvertStartDateTo_un_Bool x:Key="ConvertStartDateTo_un_Boolkey"/>
-           
+
+            <local:IntListToStringConverter x:Key="IntListToStringConverterkey"/>
             <local:ConvertStartDateToBool x:Key="ConvertStartDateToBoolkey"/>
             <local:Convert_done_to_Bool x:Key="Convert_done_to_Bool_key"/>
             <local:ConvertIdToContentTask x:Key="ConvertIdToContentTask_key"/>

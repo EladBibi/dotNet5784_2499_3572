@@ -1,10 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfEngineers>
-  <Engineer>
-    <id>23</id>
-    <cost>3</cost>
-    <name>ere</name>
-    <email>er</email>
-    <level>AdvancedBeginner</level>
-  </Engineer>
-</ArrayOfEngineers>
+<ArrayOfEngineers />

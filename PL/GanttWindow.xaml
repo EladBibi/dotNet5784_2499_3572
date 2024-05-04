@@ -10,18 +10,23 @@
     <Window.Resources>
         <local:ConvertStatusToColor x:Key="ConvertStatusToColorKey"/>
     </Window.Resources>
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="121*"/>
             <ColumnDefinition Width="79*"/>
         </Grid.ColumnDefinitions>
         <ListView Margin="0,38,0,-6" Grid.ColumnSpan="2"
-          ItemsSource="{Binding GanttList}">
+                  ItemsSource="{Binding GanttList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name }"/>
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status }"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Dependencies" DisplayMemberBinding=
+                    "{Binding Dependencies_id, Converter={StaticResource IntListToStringConverterkey}}"/>
+
                     <GridViewColumn Width="700">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -36,41 +41,40 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
-            
+
 
 
 
         </ListView>
         <Button Content="Unscheduled"
         HorizontalAlignment="Left" 
-        Margin="301,0,0,0" VerticalAlignment="Top" Height="27" Width="116" Foreground="#DD3E4033" FontWeight="Bold">
+        Margin="17,1,0,0" VerticalAlignment="Top" Height="27" Width="116" Foreground="#DD3E4033" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="LightGray" />
             </Button.Background>
         </Button>
 
-        <Button Content="Scheduled" HorizontalAlignment="Left" Margin="301,32,0,0"
+        <Button Content="Scheduled" HorizontalAlignment="Left" Margin="133,1,0,0"
                 VerticalAlignment="Top" Width="116" Height="27" FontWeight="Bold" FontStyle="Italic" Foreground="#DD2F0B0B">
             <Button.Background>
                 <SolidColorBrush Color="LightGoldenrodYellow"/>
             </Button.Background>
         </Button>
-        <Button Content="OnTrack" HorizontalAlignment="Left" Margin="429,0,0,0"
-                VerticalAlignment="Top" Width="116" Height="27" Foreground="#DD222B2D" FontStyle="Italic" Grid.ColumnSpan="2" FontWeight="Bold">
+        <Button Content="OnTrack" HorizontalAlignment="Left" Margin="249,1,0,0"
+                VerticalAlignment="Top" Width="116" Height="27" Foreground="#DD222B2D" FontStyle="Italic" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="Yellow"/>
             </Button.Background>
         </Button>
 
         <Button Content="Done" HorizontalAlignment="Left"
-                Margin="429,32,0,0" VerticalAlignment="Top" Width="116" Height="27" FontStyle="Italic" Foreground="#DD5F1E1E" Grid.ColumnSpan="2" FontWeight="Bold">
+                Margin="365,1,0,0" VerticalAlignment="Top" Width="116" Height="27" FontStyle="Italic" Foreground="#DD5F1E1E" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="Orange"/>
             </Button.Background>
         </Button>
 
-        <Button   Content="Delayed" HorizontalAlignment="Left"
-                Margin="73,1,0,0" VerticalAlignment="Top" Width="116" Height="26" FontStyle="Italic" Foreground="#DD3E1414" Grid.Column="1" FontWeight="Bold">
+        <Button   Content="Delayed" HorizontalAlignment="Left" VerticalAlignment="Top" Width="116" Height="26" FontStyle="Italic" Foreground="#DD3E1414" FontWeight="Bold" Margin="0,2,0,0" Grid.Column="1">
             <Button.Background>
                 <SolidColorBrush Color="Red"/>
             </Button.Background>

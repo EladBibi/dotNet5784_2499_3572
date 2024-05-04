@@ -1,17 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfTask>
-  <Task>
-    <id>1</id>
-    <engineerid>23</engineerid>
-    <alias>sdsd</alias>
-    <description></description>
-    <deliverables></deliverables>
-    <remarks></remarks>
-    <createdAtDate>2024-04-30T15:19:12.1712228+03:00</createdAtDate>
-    <scheduledDate>2024-04-30T00:00:00</scheduledDate>
-    <startDate>2024-04-30T00:00:00+03:00</startDate>
-    <completeDate>2024-04-30T00:00:00+03:00</completeDate>
-    <complexity>Beginner</complexity>
-    <requiredEffortTime>P3D</requiredEffortTime>
-  </Task>
-</ArrayOfTask>
+<ArrayOfTask />
