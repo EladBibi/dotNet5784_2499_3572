@@ -120,8 +120,16 @@ public partial class Engineers_Window : Window
                     {
                         int id = ((TaskInList)listView.SelectedItem).Id;
 
-
-                        bl.Task.finish_task(id);
+                        try
+                        {
+                            bl.Task.finish_task(id);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error", ex.Message,
+                             MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
                         TasksList = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.OnTrack);
                         TasksList_done = bl.Task.ReadAll(k => k.EngineerId == Id && bl.Task.getstatus(k) == BO.Status.Done);
 

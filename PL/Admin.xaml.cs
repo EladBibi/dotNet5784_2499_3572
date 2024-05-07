@@ -130,6 +130,7 @@ public partial class Admin : Window
         new CreateSchedule().ShowDialog();
         is_all_schedule = bl.Task.Schedule_date();
         gantt = !bl.Task.Schedule_date();
+       
     }
 
    

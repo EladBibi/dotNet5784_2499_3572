@@ -22,7 +22,7 @@ public class Initialization
             TimeSpan? span = new TimeSpan(1, s_rand.Next(1, 10), 0);
             DateTime DateTimeCreate = DateTime.Now;
 
-            Task NewTask = new Task(0, 1 + i, "", "", "", "", DateTimeCreate, null, null, null, 
+            Task NewTask = new Task(0, 0, $"id: { i+1 }", "", "", "", DateTimeCreate, null, null, null, 
                 (DO.EngineerExperience)(i % 5),RequiredEffortTime:  span);
             s_dal!.Task.Create(NewTask);
         }
@@ -124,11 +124,11 @@ public class Initialization
     }
 
 
-    public static void Set_Sistem_Date()
+    public static void Set_Sistem_Date(DateTime d)
     {
        
         XElement root = XElement.Load(@"..\xml\data-config.xml");
-        root.Element("SistemDate")?.SetValue((DateTime.Now).ToString());
+        root.Element("SistemDate")?.SetValue((d).ToString());
         root.Save(@"..\xml\data-config.xml");
     }
 

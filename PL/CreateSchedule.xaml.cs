@@ -105,7 +105,7 @@ public partial class CreateSchedule : Window
     public CreateSchedule()
     {
         X = true;
-        StartDate = DateTime.Now;
+        StartDate = bl.Clock;
         StartDateEnabled = false;
         TasksList = bl.Task.ReadAll();
         InitializeComponent();
@@ -120,7 +120,7 @@ public partial class CreateSchedule : Window
     private void Add_Date(object sender, RoutedEventArgs e)
     {
 
-        if (StartDate.Date < DateTime.Now.Date)
+        if (StartDate.Date < bl.Clock.Date)
         {
             MessageBox.Show("Error", "The date you entered has already passed",
                 MessageBoxButton.OK, MessageBoxImage.Error);

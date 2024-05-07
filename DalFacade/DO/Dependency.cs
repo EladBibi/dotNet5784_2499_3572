@@ -17,6 +17,8 @@ public record Dependency(
   )
 {
     public Dependency() : this(0, 0, 0) { }
+
+    public int DepentedTask { get; set; }
 }
 
 

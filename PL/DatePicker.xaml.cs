@@ -59,7 +59,7 @@ DependencyProperty.Register(nameof(s_date), typeof(string), typeof(DatePicker));
          Date = date;
         s_date = "Enter the " + date + " date of the task";
         id = i;
-        schedule_start_date = DateTime.Now;
+        schedule_start_date = bl.Clock;
         InitializeComponent();
     }
 

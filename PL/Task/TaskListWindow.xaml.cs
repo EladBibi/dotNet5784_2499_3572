@@ -104,7 +104,7 @@ public partial class TaskListWindow : Window
 
         }
         TasksList = bl.Task.ReadAll();
-        this.Close();
+        
 
     }
 

@@ -22,7 +22,7 @@ internal class TaskImplementation : ITask
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
-   
+    public int DepentedTask { get; private set; }
 
     public bool Schedule_date()
     {
@@ -71,7 +71,7 @@ internal class TaskImplementation : ITask
 
        
         DO.Task doTask = new DO.Task(item.Id, EngineerId, item.Alias, item.Description, item.Deliverables,
-            item.Remarks, DateTime.Now, item.ScheduledDate, item.StartDate, item.CompleteDate,
+            item.Remarks, _bl.Clock, item.ScheduledDate, item.StartDate, item.CompleteDate,
              (DO.EngineerExperience?)item.Complexity, item.RequiredEffortTime);
 
         int idTask;
@@ -322,13 +322,17 @@ internal class TaskImplementation : ITask
 
     public IEnumerable<BO.TaskInGantt> GanttList(DateTime date)
     {
+        
         var x = from task in _dal.Task.ReadAll()
                 select new BO.TaskInGantt()
                 {
+                    
+                    
                     Id = task.Id,
                     Name = task.Alias!,
-                    StartOffset = (int)(task.scheduledDate - date)!.Value.TotalMinutes,
-                    TaskLenght = (int)task.RequiredEffortTime!.Value.TotalMinutes,
+                    StartOffset =(task.StartDate is null)? (int)(task.scheduledDate-date )!.Value.TotalHours:
+                    (int)(task.StartDate - date)!.Value.TotalHours,
+                    TaskLenght = (int)task.RequiredEffortTime!.Value.TotalHours,
                     Status = getstatus(task),
                     CompliteValue = CalcValue(task),
                     Dependencies_id = (from dep in _dal.Dependency.ReadAll(p=>p.DependentTask == task.Id)
@@ -536,7 +540,19 @@ internal class TaskImplementation : ITask
         max = max + T.RequiredEffortTime;
 
         return max;
+   }
+
+
+    // פונקציית עזר להחזרת כל המשימות שבה המשימה המתקבלת תלויה, בשביל
+    public List <DO.Task> Dependecies_Tasks(DO.Task T)
+    {
+        return (from dep in _dal.Dependency.ReadAll(p => p.DepentedTask == T.Id)
+               select _dal.Task.Read(dep.DependsOnTask)).ToList();
     }
+
+
+
+    
 
     public Status getstatus(DO.Task T)
     {
@@ -544,15 +560,28 @@ internal class TaskImplementation : ITask
        
         int i = 0;
         if (T.scheduledDate is not null)
-            i = 1;
+        {
+            if (Dependecies_Tasks(T).Any(t => getstatus(t) == Status.Delayed) is true)
+                i = 4;
+            else
+                i = 1;
+
+        }
+           
         else
             return (Status)0;
 
         if (T.StartDate is not null)
-            if (T.StartDate >= _bl.Clock.Date)
+        {
+
+            if (forcaste(T) < _bl.Clock.Date)
+                i = 4;
+            else
                 i = 2;
+
+        }
         if (T.CompleteDate is not null)
-            if (T.CompleteDate <= _bl.Clock.Date)
+           
                 i = 3;
 
         switch (i)
@@ -568,6 +597,9 @@ internal class TaskImplementation : ITask
 
             case 3:
                 return (Status)3;
+            case 4:
+                return (Status)4;   
+
 
             default:
                 return 0;
@@ -580,7 +612,9 @@ internal class TaskImplementation : ITask
     {
 
         DO.Task task = _dal.Task.Read(id)! with { CompleteDate = DateTime.Today };
-        
+        if(forcaste(task) > _bl.Clock.Date)
+            throw new BlLogicalErrorException("You didn't work long enough on the task");
+
 
         _dal.Task.Update(task);
         

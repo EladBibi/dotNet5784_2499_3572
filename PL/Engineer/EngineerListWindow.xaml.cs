@@ -92,7 +92,7 @@ public partial class EngineerListWindow : Window
         {
             new EngineerWindow(Engineer.Id).ShowDialog();
             EngineerList = s_bl?.Engineer.ReadAll()!;
-            this.Close();
+            
         }
 
 

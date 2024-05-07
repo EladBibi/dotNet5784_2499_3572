@@ -34,8 +34,8 @@ public partial class GanttWindow : Window
 
     public GanttWindow()
     {
-        bl.Task.ScheduleTasks(DateTime.Now);
-        GanttList = bl.Task.GanttList(DateTime.Now);
+        //bl.Task.ScheduleTasks(DateTime.Now);
+        GanttList = bl.Task.GanttList(bl.Clock);
         InitializeComponent();
     }
 }

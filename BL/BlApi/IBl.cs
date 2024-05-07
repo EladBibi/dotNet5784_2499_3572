@@ -20,7 +20,7 @@ public  interface IBl
     public DateTime? GetDate(string date);
     public void SetDate(DateTime d,string date);
     public string? getDataBase();
-    public void Set_Sistem_Date();
+    public void Set_Sistem_Date(DateTime d);
     public DateTime Get_Sistem_Date();
     
 

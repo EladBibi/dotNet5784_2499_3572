@@ -102,6 +102,12 @@ class ConvertStatusToColor : IValueConverter
                         return Brushes.Yellow;
                     case BO.Status.Done:
                         return Brushes.Orange;
+                    case BO.Status.Delayed:
+                        return Brushes.Red;
+
+
+
+
                     default: return Brushes.Black;
                 }
             }

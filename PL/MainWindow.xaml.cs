@@ -19,6 +19,7 @@ using BlApi;
 using System.Windows.Threading;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Markup;
+using PL.Task;
 
 
 
@@ -34,7 +35,22 @@ using System.Windows.Markup;
 public partial class MainWindow : Window
 {
     bool first = true;
-   
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public string CurrentTime
     {
@@ -60,10 +76,12 @@ public partial class MainWindow : Window
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
     static public bool first_login { get; set; }
     DateTime SistemDate;
+    
     public MainWindow()
     {
         first_login = true;
         InitializeComponent();
+       
         SistemDate = s_bl.Get_Sistem_Date();
 
 
@@ -94,24 +112,42 @@ public partial class MainWindow : Window
     private void Is_Admin(object sender, RoutedEventArgs e)
     {
         if (first_login is true)
-        {
+           
             new LoginWindow().ShowDialog();
-            
-        }
+
+
+
+
+
         else
+
             new Admin().Show();
+
+
+
+
+
+
     }
 
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        
-        s_bl.Set_Sistem_Date();
+        MessageBoxResult result = MessageBox.Show("Do you want to save the date?", "Exit",
+              MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+            s_bl.Set_Sistem_Date(s_bl.Clock);
+        else
+            s_bl.Set_Sistem_Date(DateTime.Now);
+
+
+
+
         if (s_bl.getDataBase() == "xml")
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to save the data?", "Exit",
+            MessageBoxResult result_1 = MessageBox.Show("Do you want to save the data?", "Exit",
                MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.No)
+            if (result_1 == MessageBoxResult.No)
                 Factory.Get().ResetDB();
         }
     }
@@ -143,12 +179,12 @@ public partial class MainWindow : Window
 
     private void ChangeDate(object sender, RoutedEventArgs e)
     {
-        timer.Stop();
-        if (first is true)
-        {
-            s_bl.InitializeTime();
-            first = false;
-        }
+        //timer.Stop();
+        //if (first is true)
+        //{
+           // s_bl.InitializeTime();
+           // first = false;
+       // }
 
         try
         {
@@ -177,9 +213,14 @@ public partial class MainWindow : Window
                 }
             }
         }
-        catch { }
-       
-       CurrentTime= s_bl.Clock.ToString();
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error", ex.Message,
+          MessageBoxButton.OK, MessageBoxImage.Error); return;
+
+        }
+        SistemDate = s_bl.Clock;
+        CurrentTime = s_bl.Clock.ToString();
 
     }
     
