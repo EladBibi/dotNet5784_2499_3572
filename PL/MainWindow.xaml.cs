@@ -133,24 +133,35 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        MessageBoxResult result = MessageBox.Show("Do you want to save the date?", "Exit",
-              MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if (result == MessageBoxResult.Yes)
-            s_bl.Set_Sistem_Date(s_bl.Clock);
-        else
-            s_bl.Set_Sistem_Date(DateTime.Now);
+       
 
-
-
-
-        if (s_bl.getDataBase() == "xml")
+      if (s_bl.getDataBase() == "xml")
         {
+
             MessageBoxResult result_1 = MessageBox.Show("Do you want to save the data?", "Exit",
-               MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result_1 == MessageBoxResult.No)
-                Factory.Get().ResetDB();
+               MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if (result_1 == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+            
+                if (result_1 == MessageBoxResult.No)
+                    Factory.Get().ResetDB();
+
+            MessageBoxResult result = MessageBox.Show("Do you want to save the date?", "Exit",
+         MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+                s_bl.Set_Sistem_Date(s_bl.Clock);
+            else
+                s_bl.Set_Sistem_Date(DateTime.Now);
+
         }
     }
+
+
+
+
 
     private void is_engineer(object sender, RoutedEventArgs e)
     {
