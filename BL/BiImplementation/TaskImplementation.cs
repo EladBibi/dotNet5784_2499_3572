@@ -148,7 +148,8 @@ internal class TaskImplementation : ITask
     public void Delete(int id)
     {
         if (_bl.GetDate("StartDate") != DateTime.MinValue)
-            throw new BlLogicalErrorException("It is not possible to delete  tasks after entering a start date for the project");
+            throw new BlLogicalErrorException("It is not possible to delete tasks after the start of the project");
+               
 
 
 
@@ -214,8 +215,7 @@ internal class TaskImplementation : ITask
 
         return (filter is not null) ?
             (from DO.Task doTask in _dal.Task.ReadAll(p => filter(p))
-                 //(int?)p.Complexity <= (int?)(DO.EngineerExperience)level && p.EngineerId == 0
-                 //&& EndOfTasks(p) ||)
+               
              select new BO.TaskInList
              {
                  Id = doTask.Id,
@@ -332,7 +332,8 @@ internal class TaskImplementation : ITask
                     Name = task.Alias!,
                     StartOffset =(task.StartDate is null)? (int)(task.scheduledDate-date )!.Value.TotalHours:
                     (int)(task.StartDate - date)!.Value.TotalHours,
-                    TaskLenght = (int)task.RequiredEffortTime!.Value.TotalHours,
+                    TaskLenght =(task.CompleteDate is null)? (int)task.RequiredEffortTime!.Value.TotalHours:
+                        (int)(task.CompleteDate - task.StartDate)!.Value.TotalMinutes+15,
                     Status = getstatus(task),
                     CompliteValue = CalcValue(task),
                     Dependencies_id = (from dep in _dal.Dependency.ReadAll(p=>p.DependentTask == task.Id)
@@ -379,9 +380,9 @@ internal class TaskImplementation : ITask
             
             if(Tasks.Any(p=>_dal.Task.Read(p.DependsOnTask)!.scheduledDate is null) is true)
             throw new BlLogicalErrorException("The dates of the tasks on which the task depends are not yet updated");
-            if (s== "schedule" && Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) > d) is not null)
-                throw new BlLogicalErrorException("It is not possible to update a date for" +
-                    "a task that is earlier than the completion of pending tasks");
+            if (s == "schedule" && Tasks.FirstOrDefault(p => forcaste(_dal.Task.Read(p.DependsOnTask)!) > d) is not null)
+                throw new BlLogicalErrorException("It is not possible to update a date earlier than finish of pending task");
+                    
         }
         DO.Task? UpdateTask;
         if ( s== "schedule")
@@ -612,8 +613,8 @@ internal class TaskImplementation : ITask
     {
 
         DO.Task task = _dal.Task.Read(id)! with { CompleteDate = DateTime.Today };
-        if(forcaste(task) > _bl.Clock.Date)
-            throw new BlLogicalErrorException("You didn't work long enough on the task");
+        //if(forcaste(task) > _bl.Clock.Date)
+            //throw new BlLogicalErrorException("You didn't work long enough on the task");
 
 
         _dal.Task.Update(task);

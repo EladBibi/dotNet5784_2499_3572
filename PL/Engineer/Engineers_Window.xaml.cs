@@ -125,7 +125,7 @@ public partial class Engineers_Window : Window
                             bl.Task.finish_task(id);
                         }
                         catch (Exception ex)
-                        {
+                       {
                             MessageBox.Show("Error", ex.Message,
                              MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
